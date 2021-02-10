@@ -1,0 +1,17 @@
+@import '_variables';
+.chat {
+    height: 100%;
+    &__container {
+        display: flex;
+        flex-direction: row;
+        height: 100%;
+        background-color: #ffffff;
+    }
+    &__sidebar {
+        flex: 0 0 30%;
+        border-right: 1px solid $borderColor;
+    }
+    &__content {
+        flex: 0 0 70%;
+    }
+}
