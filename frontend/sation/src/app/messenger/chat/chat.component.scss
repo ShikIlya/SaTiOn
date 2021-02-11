@@ -1,0 +1,122 @@
+@import "_variables";
+.chat {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr auto;
+    min-height: calc(100vh - 30px); //переменные
+    overflow: hidden;
+    gap: 0px 0px;
+    grid-template-areas:
+        "chat-header"
+        "chat-content"
+        "chat-footer";
+    &__header {
+        grid-area: chat-header;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        border-bottom: 1px solid $borderColor;
+        padding: 8px 20px;
+    }
+    &__info {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    &__name {
+        font-weight: 600;
+        font-size: 14px;
+    }
+    &__status {
+        font-weight: 400;
+        font-size: 14px;
+    }
+    &__tools {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-right: -15px;
+    }
+    &__btn {
+        margin-right: 15px;
+    }
+    &__btn-icon {
+        font-size: 1.7em;
+    }
+    &__btn--blue {
+        &:hover {
+            color: $chatMessageSend;
+        }
+    }
+    &__content {
+        grid-area: chat-content;
+        padding: 12px 20px;
+        overflow-y: auto;
+        max-height: calc(100vh - 50px - 54px - 30px);
+    }
+    &__message {
+        margin-top: 8px;
+        position: relative;
+        &:first-child {
+            margin-top: auto;
+        }
+    }
+    &__footer {
+        grid-area: chat-footer;
+        display: flex;
+        border-top: 1px solid $borderColor;
+        padding: 12px 20px;
+    }
+    &__write-message {
+        flex: 1;
+        margin-left: 10px;
+        resize: none; //??
+    }
+}
+.message {
+    display: flex;
+    flex-direction: column;
+    &--left {
+        align-items: flex-start;
+    }
+    &--right {
+        align-items: flex-end;
+    }
+    &__container {
+        display: inline-block;
+        border-radius: 5px;
+        padding: 12px 12px 15px 12px;
+        position: relative;
+        max-width: 390px;
+    }
+    &__container--blue {
+        background: $chatReceivedMesBg;
+    }
+    &__container--green {
+        background: $chatSentMesBg;
+    }
+    &__content {
+        display: inline-block;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 20px;
+    }
+    &__time {
+        font-weight: 300;
+        font-size: 14px;
+        position: absolute;
+        bottom: 0;
+        right: 4px;
+    }
+}
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: $listScrollColor;
+    &:hover {
+        background-color: $listScrollHoverColor;
+    }
+}
