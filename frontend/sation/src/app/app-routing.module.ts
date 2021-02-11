@@ -4,11 +4,11 @@ import { RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '**',
-    redirectTo: '/chat'
+    redirectTo: '/messenger'
   },
   {
-    path: 'chat',
-    loadChildren: () => import('./chat/chat.module').then(m => m.ChatModule)
+    path: 'messenger',
+    loadChildren: () => import('./messenger/messenger.module').then(m => m.MessengerModule)
   },
   {
     path: '**',

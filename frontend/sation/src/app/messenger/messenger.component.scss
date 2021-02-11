@@ -1,17 +1,18 @@
-@import '_variables';
-.chat {
+@import "_variables";
+.messenger {
     height: 100%;
+    padding: 15px 0;
     &__container {
         display: flex;
         flex-direction: row;
         height: 100%;
         background-color: #ffffff;
     }
-    &__sidebar {
+    &__chats {
         flex: 0 0 30%;
         border-right: 1px solid $borderColor;
     }
-    &__content {
+    &__chat {
         flex: 0 0 70%;
     }
 }
