@@ -1,31 +1,52 @@
 @font-face {
-    font-family: "Alegreya Sans";
-    src: url("AlegreyaSans-Bold.woff2") format("woff2"), url("AlegreyaSans-Bold.woff") format("woff"),
-        url("AlegreyaSans-Bold.ttf") format("truetype");
+    font-family: "Fira Sans";
+    src: url("./FiraSans/FiraSansCondensed-Regular.woff2") format("woff2"),
+        url("./FiraSans/FiraSansCondensed-Regular.woff") format("woff"),
+        url("./FiraSans/FiraSansCondensed-Regular.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Fira Sans";
+    src: url("./FiraSans/FiraSansCondensed-Bold.woff2") format("woff2"),
+        url("./FiraSans/FiraSansCondensed-Bold.woff") format("woff"),
+        url("./FiraSans/FiraSansCondensed-Bold.ttf") format("truetype");
     font-weight: 700;
     font-style: normal;
 }
 
 @font-face {
-    font-family: "Alegreya Sans";
-    src: url("AlegreyaSans-Light.woff2") format("woff2"), url("AlegreyaSans-Light.woff") format("woff"),
-        url("AlegreyaSans-Light.ttf") format("truetype");
+    font-family: "Fira Sans";
+    src: url("./FiraSans/FiraSansCondensed-Light.woff2") format("woff2"),
+        url("./FiraSans/FiraSansCondensed-Light.woff") format("woff"),
+        url("./FiraSans/FiraSansCondensed-Light.ttf") format("truetype");
     font-weight: 300;
     font-style: normal;
 }
 
 @font-face {
-    font-family: "Alegreya Sans";
-    src: url("AlegreyaSans-Medium.woff2") format("woff2"), url("AlegreyaSans-Medium.woff") format("woff"),
-        url("AlegreyaSans-Medium.ttf") format("truetype");
+    font-family: "Fira Sans";
+    src: url("./FiraSans/FiraSansCondensed-Medium.woff2") format("woff2"),
+        url("./FiraSans/FiraSansCondensed-Medium.woff") format("woff"),
+        url("./FiraSans/FiraSansCondensed-Medium.ttf") format("truetype");
     font-weight: 500;
     font-style: normal;
 }
-
 @font-face {
-    font-family: "Alegreya Sans";
-    src: url("AlegreyaSans-Regular.woff2") format("woff2"), url("AlegreyaSans-Regular.woff") format("woff"),
-        url("AlegreyaSans-Regular.ttf") format("truetype");
+    font-family: "Nunito";
+    src: url("./Nunito/Nunito-Light.woff2") format("woff2"), url("./Nunito/Nunito-Regular.woff") format("woff"),
+        url("./Nunito/Nunito-Regular.ttf") format("truetype");
     font-weight: 400;
     font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Nunito";
+    src: url("./Nunito/Nunito-Light.woff2") format("woff2"), url("./Nunito/Nunito-Light.woff") format("woff"),
+        url("./Nunito/Nunito-Light.ttf") format("truetype");
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
 }

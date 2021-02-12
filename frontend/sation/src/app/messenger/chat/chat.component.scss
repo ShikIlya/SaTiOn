@@ -16,20 +16,9 @@
         flex-direction: row;
         justify-content: space-between;
         border-bottom: 1px solid $borderColor;
-        padding: 8px 20px;
+        padding: 9px 15px;
     }
-    &__info {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-    }
-    &__name {
-        font-weight: 600;
-        font-size: 14px;
-    }
-    &__status {
-        font-weight: 400;
-        font-size: 14px;
+    &__channel {
     }
     &__tools {
         display: flex;
@@ -41,7 +30,7 @@
         margin-right: 15px;
     }
     &__btn-icon {
-        font-size: 1.7em;
+        font-size: 1.6em;
     }
     &__btn--blue {
         &:hover {
@@ -50,27 +39,44 @@
     }
     &__content {
         grid-area: chat-content;
-        padding: 12px 20px;
-        overflow-y: auto;
-        max-height: calc(100vh - 50px - 54px - 30px);
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
     }
     &__message {
-        margin-top: 8px;
-        position: relative;
-        &:first-child {
-            margin-top: auto;
+        &:not(:first-child) {
+            margin-top: 8px;
         }
     }
     &__footer {
         grid-area: chat-footer;
         display: flex;
         border-top: 1px solid $borderColor;
-        padding: 12px 20px;
+        padding: 12px 15px;
     }
     &__write-message {
         flex: 1;
         margin-left: 10px;
         resize: none; //??
+    }
+}
+.channel {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    &__name {
+        font-weight: 500;
+    }
+    &__status {
+        font-weight: 400;
+        font-size: 14px;
+    }
+}
+.content {
+    &__container {
+        padding: 12px 15px;
+        overflow-y: auto;
+        max-height: calc(100vh - 50px - 54px - 30px);
     }
 }
 .message {
@@ -85,7 +91,7 @@
     &__container {
         display: inline-block;
         border-radius: 5px;
-        padding: 12px 12px 15px 12px;
+        padding: 6px 10px;
         position: relative;
         max-width: 390px;
     }
@@ -95,23 +101,22 @@
     &__container--green {
         background: $chatSentMesBg;
     }
+    &__time {
+        font-family: "Nunito";
+        font-weight: 300;
+        font-size: 12px;
+        text-align: right;
+    }
     &__content {
         display: inline-block;
         font-weight: 400;
         font-size: 14px;
         line-height: 20px;
     }
-    &__time {
-        font-weight: 300;
-        font-size: 14px;
-        position: absolute;
-        bottom: 0;
-        right: 4px;
-    }
 }
 ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    width: 4px;
+    height: 4px;
 }
 
 ::-webkit-scrollbar-thumb {

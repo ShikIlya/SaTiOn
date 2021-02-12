@@ -9,6 +9,7 @@
     &__btn {
     }
     &__btn-icon {
+        font-size: 2em;
     }
     &__search {
         font-size: 16px;
@@ -65,25 +66,26 @@
         margin-left: 10px;
     }
     &__name {
-        font-weight: 600;
+        font-weight: 500;
     }
     &__message {
         font-weight: 300;
-        opacity: 0.7;
+        opacity: 0.8;
     }
     &__time {
+        font-family: "Nunito";
         font-weight: 400;
-        opacity: 0.5;
+        font-size: 14px;
+        opacity: 0.7;
     }
 }
 ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    width: 4px;
+    height: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
     background-color: $listScrollColor;
-    border-radius: 4px;
     &:hover {
         background-color: $listScrollHoverColor;
     }
