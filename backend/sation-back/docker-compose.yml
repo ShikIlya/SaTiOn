@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   api:
-    # image: test/dockerised
+    container_name: sation_api
     build: 
       dockerfile: Dockerfile
       context: .
@@ -9,17 +9,31 @@ services:
       - postgres
     environment: 
       DATABASE_URL: postgresql://postgres:F4dS12x87@postgres:5432/db
+      JWT_SECRET: ASddjhnjkwd723423
       NODE_ENV: development
       PORT: 3000
     ports: 
       - "8080:3000"
   
   postgres:
+    container_name: postgres_container
     image: postgres:13.1
-    ports: 
-      - "35000:5432"
+    restart: always
     environment: 
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: F4dS12x87
       POSTGRES_DB: db
-
+    ports: 
+      - "5432:5432"
+  
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin_container
+    restart: always
+    depends_on: 
+      - postgres
+    environment: 
+      PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
+      PGADMIN_DEFAULT_PASSWORD: F4dS12x87
+    ports: 
+      - "5050:80"
