@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -8,7 +9,7 @@ import { Component, OnInit } from '@angular/core';
 export class LoginComponent implements OnInit {
   hide = true;
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -16,4 +17,9 @@ export class LoginComponent implements OnInit {
   onSubmit() {
 
   }
+
+  navToRegist() {
+    this.router.navigate([this.router.url, 'registration']);
+  }
+
 }

@@ -1,18 +1,21 @@
 <div class="auth">
     <form class="auth__form form" (ngSubmit)="onSubmit()">
-        <p class="form__title">Авторизация</p>
-        <mat-form-field appearance="standard">
-            <mat-label>Enter your email</mat-label>
-            <input matInput placeholder="pat@example.com">
+        <h1 class="form__title">Авторизация</h1>
+        <mat-form-field class="form__field" appearance="standard">
+            <mat-label class="form__label">Enter your email</mat-label>
+            <input class="form__input" matInput placeholder="pat@example.com">
         </mat-form-field>
-        <mat-form-field appearance="standard">
-            <mat-label>Enter your password</mat-label>
-            <input matInput [type]="hide ? 'password' : 'text'">
-            <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
-                [attr.aria-pressed]="hide">
-                <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        <mat-form-field class="form__field" appearance="standard">
+            <mat-label class="form__label">Enter your password</mat-label>
+            <input class="form__input" matInput [type]="hide ? 'password' : 'text'">
+            <button class="form__pass-hide" mat-icon-button matSuffix (click)="hide = !hide"
+                [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                <mat-icon class="form__icon">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
             </button>
         </mat-form-field>
-        <button mat-flat-button type="submit">Войти</button>
+        <span class="form__forgot-pass">Забыли пароль?</span>
+        <button class="form__action" mat-flat-button type="submit" color="primary">Войти</button>
+        <button class="form__action" mat-stroked-button
+            [routerLink]="'/authentification/registration'">Регистрация</button>
     </form>
 </div>

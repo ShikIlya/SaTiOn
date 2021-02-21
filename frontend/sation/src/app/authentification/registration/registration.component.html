@@ -1,1 +1,26 @@
-<p>registration works!</p>
+<div class="auth">
+    <form class="auth__form form" (ngSubmit)="onSubmit()">
+        <h1 class="form__title">Регистрация</h1>
+        <mat-form-field class="form__field" appearance="standard">
+            <mat-label class="form__label">Enter your email</mat-label>
+            <input class="form__input" matInput placeholder="pat@example.com">
+        </mat-form-field>
+        <mat-form-field class="form__field" appearance="standard">
+            <mat-label class="form__label">Enter your login</mat-label>
+            <input class="form__input" matInput>
+        </mat-form-field>
+        <mat-form-field class="form__field" appearance="standard">
+            <mat-label class="form__label">Enter your password</mat-label>
+            <input class="form__input" matInput [type]="hide ? 'password' : 'text'">
+            <button class="form__pass-hide" mat-icon-button matSuffix (click)="hide = !hide"
+                [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                <mat-icon class="form__icon">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+        </mat-form-field>
+        <mat-form-field class="form__field" appearance="standard">
+            <mat-label class="form__label">Enter your nickname</mat-label>
+            <input class="form__input" matInput>
+        </mat-form-field>
+        <button class="form__action" mat-flat-button color="primary">Зарегистрироваться</button>
+    </form>
+</div>
