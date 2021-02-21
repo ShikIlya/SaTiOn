@@ -5,11 +5,13 @@
             <span class="channel__status">В сети</span>
         </div>
         <div class="chat__tools">
-            <button class="chat__btn">
-                <i class="chat__btn-icon fas fa-search"></i>
+            <button class="chat__btn" mat-icon-button>
+                <!-- <i class="chat__btn-icon fas fa-search"></i> -->
+                <mat-icon class="chat__btn-icon">search</mat-icon>
             </button>
-            <button class="chat__btn">
-                <i class="chat__btn-icon fas fa-ellipsis-v"></i>
+            <button class="chat__btn" mat-icon-button>
+                <!-- <i class="chat__btn-icon fas fa-ellipsis-v"></i> -->
+                <mat-icon class="chat__btn-icon">more_vert</mat-icon>
             </button>
         </div>
     </div>
@@ -138,17 +140,23 @@
         </div>
     </div>
     <div class="chat__footer">
-        <button class="chat__btn">
-            <i class="chat__btn-icon fas fa-paperclip"></i>
+        <button class="chat__btn" mat-icon-button>
+            <!-- <i class="chat__btn-icon fas fa-paperclip"></i> -->
+            <mat-icon class="chat__btn-icon">add_circle_outline</mat-icon>
         </button>
-        <textarea class="chat__write-message" type="text"
-            placeholder="Надо думать, не всё так просто с textarea"></textarea>
+        <!-- <textarea class="chat__write-message" type="text"
+            placeholder="Надо думать, не всё так просто с textarea"></textarea> -->
+        <div class="chat__write-message">
+
+        </div>
         <div class="chat__tools">
-            <button class="chat__btn">
-                <i class="chat__btn-icon far fa-laugh"></i>
+            <button class="chat__btn" mat-icon-button>
+                <!-- <i class="chat__btn-icon far fa-laugh"></i> -->
+                <mat-icon class="chat__btn-icon">mood</mat-icon>
             </button>
-            <button class="chat__btn chat__btn--blue">
-                <i class="chat__btn-icon far fa-paper-plane"></i>
+            <button class="chat__btn chat__btn--blue" mat-icon-button>
+                <!-- <i class="chat__btn-icon far fa-paper-plane"></i> -->
+                <mat-icon class="chat__btn-icon">send</mat-icon>
             </button>
         </div>
     </div>

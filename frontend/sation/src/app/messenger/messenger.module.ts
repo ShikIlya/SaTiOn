@@ -5,6 +5,7 @@ import { ChatsComponent } from './chats/chats.component';
 import { ChatComponent } from './chat/chat.component';
 import { MessengerRoutingModule } from './messenger-routing.module';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 
 @NgModule({
@@ -13,6 +14,7 @@ import { MatButtonModule } from '@angular/material/button';
     CommonModule,
     MessengerRoutingModule,
     MatButtonModule,
+    MatIconModule
   ]
 })
 export class MessengerModule { }
