@@ -1,0 +1,19 @@
+@import "~@angular/material/theming";
+
+@include mat-core();
+
+$sation-primary: mat-palette($mat-teal, 400);
+$sation-accent: mat-palette($mat-deep-orange, 400);
+
+$sation-warn: mat-palette($mat-red, 600);
+
+$sation-theme: mat-light-theme(
+  (
+    color: (
+      primary: $sation-primary,
+      accent: $sation-accent,
+      warn: $sation-warn,
+    ),
+  )
+);
+@include angular-material-theme($sation-theme);

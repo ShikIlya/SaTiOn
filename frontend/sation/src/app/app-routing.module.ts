@@ -3,16 +3,16 @@ import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: '**',
-    redirectTo: '/messenger'
-  },
-  {
     path: 'messenger',
     loadChildren: () => import('./messenger/messenger.module').then(m => m.MessengerModule)
   },
   {
+    path: 'authentification',
+    loadChildren: () => import('./authentification/authentification.module').then(m => m.AuthentificationModule)
+  },
+  {
     path: '**',
-    redirectTo: '/'
+    redirectTo: '/messenger'
   }
 ];
 
