@@ -43,15 +43,21 @@ export class UserService {
 
     login(loginUserDto: LoginUserDto): Observable<string> {
         return this.findUserByEmail(loginUserDto.email).pipe(
-            switchMap((user: UserI) => this.validatePassword(loginUserDto.password, user.password).pipe(
-                map((match: boolean) => {
-                    if (match) {
-                        return "Login Sucksess"
-                    } else {
-                        throw new HttpException('Login sucked dick', HttpStatus.UNAUTHORIZED);
-                    }
-                })
-            ))
+            switchMap((user: UserI) => {
+                if (user) {
+                    return this.validatePassword(loginUserDto.password, user.password).pipe(
+                        map((match: boolean) => {
+                            if (match) {
+                                return "Login Sucksess";
+                            } else {
+                                throw new HttpException('Login sucked dick', HttpStatus.UNAUTHORIZED);
+                            }
+                        })
+                    )
+                } else {
+                    throw new HttpException("Usssr not found", HttpStatus.NOT_FOUND);
+                }
+            })
         )
     }
 
