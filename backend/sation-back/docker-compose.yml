@@ -7,13 +7,16 @@ services:
       context: .
     depends_on:
       - postgres
-    environment: 
+    environment:
       DATABASE_URL: postgresql://postgres:F4dS12x87@postgres:5432/db
       JWT_SECRET: ASddjhnjkwd723423
       NODE_ENV: development
       PORT: 3000
     ports: 
       - "8080:3000"
+    networks:
+      static-network:
+        ipv4_address: 172.18.0.2
   
   postgres:
     container_name: postgres_container
@@ -25,6 +28,9 @@ services:
       POSTGRES_DB: db
     ports: 
       - "5432:5432"
+    networks:
+      static-network:
+        ipv4_address: 172.18.0.4
   
   pgadmin:
     image: dpage/pgadmin4
@@ -37,3 +43,13 @@ services:
       PGADMIN_DEFAULT_PASSWORD: F4dS12x87
     ports: 
       - "5050:80"
+    networks:
+      static-network:
+        ipv4_address: 172.18.0.5
+
+
+networks:
+  static-network:
+    ipam:
+      config:
+        - subnet: 172.18.0.0/24
