@@ -9,7 +9,7 @@ services:
       - postgres
     environment:
       DATABASE_URL: postgresql://postgres:F4dS12x87@postgres:5432/db
-      JWT_SECRET: ASddjhnjkwd723423
+      JWT_SECRET: xKczt54fyMzKo0q2aXgjrvko6SnnJd3K
       NODE_ENV: development
       PORT: 3000
     ports: 

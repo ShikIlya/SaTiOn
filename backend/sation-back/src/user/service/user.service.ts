@@ -46,9 +46,11 @@ export class UserService {
             switchMap((user: UserI) => {
                 if (user) {
                     return this.validatePassword(loginUserDto.password, user.password).pipe(
-                        map((match: boolean) => {
+                        switchMap((match: boolean) => {
                             if (match) {
-                                return "Login Sucksess";
+                                return this.findOne(user.id).pipe(
+                                    switchMap((user: UserI) => this.authService.generateJwt(user))
+                                )
                             } else {
                                 throw new HttpException('Login sucked dick', HttpStatus.UNAUTHORIZED);
                             }
@@ -59,6 +61,10 @@ export class UserService {
                 }
             })
         )
+    }
+
+    findOne(id: number): Observable<UserI> {
+        return from(this.userRepository.findOne({ id }))
     }
 
     findAll(): Observable<UserI[]> {
