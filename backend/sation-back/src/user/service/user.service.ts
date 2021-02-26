@@ -6,7 +6,6 @@ import { AuthService } from 'src/auth/services/auth/auth.service';
 import { Repository } from 'typeorm';
 import { UserEntity } from '../models/user.entity';
 import { UserI } from '../models/user.interface';
-import e from 'express';
 import { LoginUserDto } from '../models/dto/LoginUser.dto';
 import { CreateUserDto } from '../models/dto/CreateUser.dto';
 
@@ -49,7 +48,7 @@ export class UserService {
                         switchMap((match: boolean) => {
                             if (match) {
                                 return this.findOne(user.id).pipe(
-                                    switchMap((user: UserI) => this.authService.generateJwt(user, '30s'))
+                                    switchMap((user: UserI) => this.authService.generateJwt(user, '300s'))
                                 )
                             } else {
                                 throw new HttpException('Login sucked dick', HttpStatus.UNAUTHORIZED);
