@@ -1,4 +1,5 @@
-import { Body, Controller, Get, HttpCode, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Post, Req, Res, UseGuards } from '@nestjs/common';
+import { Response } from 'express'
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
@@ -18,23 +19,22 @@ export class UserController {
     }
 
     @Post('login')
-    @HttpCode(200)
-    login(@Body() loginUserDto: LoginUserDto): Observable<Object> {
+    login(@Body() loginUserDto: LoginUserDto, @Res() response: Response) {
         return this.userService.login(loginUserDto).pipe(
             map((jwt: string) => {
-                return {
-                    access_token: jwt,
-                    token_type: 'JWT',
-                    expires_in: "300s"
-                }
+                response.cookie('access_token', jwt, {
+                    expires: new Date(Date.now() + 1000 * 60 * 5),
+                    httpOnly: true,
+                    secure: true
+                })
+                return response.status(HttpStatus.ACCEPTED).send();
             })
         )
     }
 
     @UseGuards(JwtAuthGuard)
     @Get()
-    findAll(@Req() req): Observable<UserI[]> {
-        console.log(req.user)
+    findAll(): Observable<UserI[]> {
         return this.userService.findAll();
     }
 

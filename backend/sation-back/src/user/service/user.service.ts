@@ -49,7 +49,7 @@ export class UserService {
                         switchMap((match: boolean) => {
                             if (match) {
                                 return this.findOne(user.id).pipe(
-                                    switchMap((user: UserI) => this.authService.generateJwt(user))
+                                    switchMap((user: UserI) => this.authService.generateJwt(user, '30s'))
                                 )
                             } else {
                                 throw new HttpException('Login sucked dick', HttpStatus.UNAUTHORIZED);
