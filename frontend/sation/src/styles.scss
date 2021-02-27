@@ -79,7 +79,16 @@ body {
     display: flex;
     flex-direction: column;
     border-radius: 4px;
-    // align-items: flex-start;
+    &__header {
+        position: relative;
+        padding-bottom: 2px;
+        line-height: 40px;
+    }
+    &__back {
+        position: absolute !important;
+        top: 0;
+        left: 0;
+    }
     &__title {
         font-size: 22px;
         font-weight: 500;
@@ -94,8 +103,6 @@ body {
     &__pass-hide {
     }
     &__icon {
-        font-size: 24px !important;
-        width: 24px !important;
     }
     &__forgot-pass {
         align-self: flex-start;
@@ -122,5 +129,11 @@ body {
     &__action {
         margin-top: 15px !important;
         font-size: 18px;
+    }
+}
+
+.back {
+    align-self: flex-start;
+    &__icon {
     }
 }

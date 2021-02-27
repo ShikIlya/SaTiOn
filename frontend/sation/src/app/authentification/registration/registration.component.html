@@ -1,6 +1,11 @@
 <div class="auth">
     <form class="auth__form form" (ngSubmit)="onSubmit()">
-        <h1 class="form__title">Регистрация</h1>
+        <div class="form__header">
+            <a class="form__back back" mat-icon-button (click)="goBack()">
+                <mat-icon class="back__icon">west</mat-icon>
+            </a>
+            <h1 class="form__title">Регистрация</h1>
+        </div>
         <mat-form-field class="form__field" appearance="standard">
             <mat-label class="form__label">Enter your email</mat-label>
             <input class="form__input" matInput placeholder="pat@example.com">

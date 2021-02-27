@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-registration',
@@ -8,11 +9,14 @@ import { Router } from '@angular/router';
 })
 export class RegistrationComponent implements OnInit {
   hide = true;
-  constructor(private router: Router) { }
+  constructor(private router: Router, private location: Location) { }
 
   ngOnInit(): void {
   }
   onSubmit() {
 
+  }
+  goBack() {
+    this.location.back();
   }
 }
