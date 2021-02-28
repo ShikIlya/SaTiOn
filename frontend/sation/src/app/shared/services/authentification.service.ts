@@ -14,11 +14,11 @@ export class AuthentificationService {
   constructor(private http: HttpClient) { }
 
   login(user: User) {
-    return this.http.post(`${this.apiUrl}/users/login`, user, { observe: 'response' });
+    return this.http.post(`${this.apiUrl}/users/login`, user, { observe: 'response', withCredentials: true });
   }
 
   getUser(): Observable<User> {
-    return this.http.get<User>(`${this.apiUrl}/users`);
+    return this.http.get<User>(`${this.apiUrl}/users`, { withCredentials: true });
   }
 
 }
