@@ -24,7 +24,7 @@ export class UserController {
             map((jwt: string) => {
                 response.cookie('access_token', jwt, {
                     expires: new Date(Date.now() + 1000 * 60 * 5),
-                    httpOnly: true,
+                    httpOnly: false,
                     secure: false
                 })
                 return response.status(HttpStatus.ACCEPTED).send();

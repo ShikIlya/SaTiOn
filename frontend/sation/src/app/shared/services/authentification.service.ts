@@ -11,10 +11,14 @@ export class AuthentificationService {
 
   apiUrl: string = environment.baseUrl;
 
-  constructor(private htpp: HttpClient) { }
+  constructor(private http: HttpClient) { }
 
   login(user: User) {
-    return this.htpp.post(`${this.apiUrl}/users/login`, user);
+    return this.http.post(`${this.apiUrl}/users/login`, user, { observe: 'response' });
+  }
+
+  getUser(): Observable<User> {
+    return this.http.get<User>(`${this.apiUrl}/users`);
   }
 
 }

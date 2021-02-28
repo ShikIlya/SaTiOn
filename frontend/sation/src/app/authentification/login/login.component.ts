@@ -38,7 +38,11 @@ export class LoginComponent implements OnInit {
 
   login() {
     if (this.loginFormGroup.valid)
-      this.authService.login(this.loginFormGroup.value).subscribe(v => console.log(v));
+      this.authService.login(this.loginFormGroup.value).subscribe(response => {
+        console.log(response.status);
+        if (response.status === 202)
+          this.authService.getUser().subscribe(user => console.log(user));
+      });
   }
 
 }
