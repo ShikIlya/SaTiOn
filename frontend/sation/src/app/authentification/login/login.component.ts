@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthentificationService } from 'src/app/shared/services/authentification.service';
 
 @Component({
   selector: 'app-login',
@@ -7,9 +9,14 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  hide = true;
 
-  constructor(private router: Router) { }
+  hidePass = true;
+  loginFormGroup: FormGroup;
+
+
+  constructor(private router: Router, private fb: FormBuilder, private authService: AuthentificationService) {
+    this.initializeLoginForm();
+  }
 
   ngOnInit(): void {
   }
@@ -20,6 +27,18 @@ export class LoginComponent implements OnInit {
 
   navToRegist() {
     this.router.navigate([this.router.url, 'registration']);
+  }
+
+  initializeLoginForm() {
+    this.loginFormGroup = this.fb.group({
+      "email": ["", [Validators.required, Validators.email]],
+      "password": ["", [Validators.required]],
+    });
+  }
+
+  login() {
+    if (this.loginFormGroup.valid)
+      this.authService.login(this.loginFormGroup.value).subscribe(v => console.log(v));
   }
 
 }
