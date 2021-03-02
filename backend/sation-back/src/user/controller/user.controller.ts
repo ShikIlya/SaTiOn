@@ -39,6 +39,14 @@ export class UserController {
         return this.userService.findOne(request.user.id);
     }
 
+    @UseGuards(JwtAuthGuard)
+    @Get('is_auth')
+    checck(@Req() request) {
+        if (request.user)
+            return true;
+    }
+
+
 
 
 
