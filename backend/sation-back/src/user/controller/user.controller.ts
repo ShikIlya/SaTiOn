@@ -41,7 +41,7 @@ export class UserController {
 
     @UseGuards(JwtAuthGuard)
     @Get('is_auth')
-    checck(@Req() request) {
+    check(@Req() request) {
         if (request.user)
             return true;
     }

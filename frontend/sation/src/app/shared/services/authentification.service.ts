@@ -21,4 +21,8 @@ export class AuthentificationService {
     return this.http.get<User>(`${this.apiUrl}/users`, { withCredentials: true });
   }
 
+  isAuthenticated(): Observable<boolean> {
+    return this.http.get<boolean>(`${this.apiUrl}/users/is_auth`, { withCredentials: true });
+  }
+
 }
