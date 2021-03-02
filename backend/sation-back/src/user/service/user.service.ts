@@ -25,9 +25,10 @@ export class UserService {
                     return this.authService.hashPassword(createUserDto.password).pipe(
                         switchMap((passHash: string) => {
                             createUserDto.password = passHash;
-                            return from(this.userRepository.save(createUserDto)).pipe(
+                            const instance = this.userRepository.create(createUserDto);
+                            return from(this.userRepository.save(instance)).pipe(
                                 map((savedUser: UserI) => {
-                                    const { password, ...user } = savedUser;
+                                    const { password, creationTime, updateTime, ...user } = savedUser;
                                     return user;
                                 })
                             )

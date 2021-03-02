@@ -1,6 +1,10 @@
 export interface UserI {
     id: number;
-    name: string;
+    login: string;
     email: string;
     password?: string;
+    nickname?: string;
+    creationTime?: string;
+    updateTime?: string;
+
 }
