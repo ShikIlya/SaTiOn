@@ -1,22 +1,24 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
+import { generateString, InjectRepository } from '@nestjs/typeorm';
 import { map, switchMap } from 'rxjs/operators'
-import { from, Observable, ObservableInput } from 'rxjs';
+import { from, Observable } from 'rxjs';
 import { AuthService } from 'src/auth/services/auth/auth.service';
-import { Repository } from 'typeorm';
+import { Repository, UpdateResult } from 'typeorm';
 import { UserEntity } from '../models/user.entity';
 import { UserI } from '../models/user.interface';
 import { LoginUserDto } from '../models/dto/LoginUser.dto';
 import { CreateUserDto } from '../models/dto/CreateUser.dto';
 import { RefreshTokenI } from '../models/refresh-token.interface';
 import { RefreshTokenDto } from '../models/dto/RefreshToken.dto';
-
+import { RefreshTokenEntity } from '../models/refresh-token.entity';
+import { v4 as uuidv4 } from 'uuid';
 @Injectable()
 export class UserService {
 
     constructor(
         @InjectRepository(UserEntity)
         private userRepository: Repository<UserI>,
+        @InjectRepository(RefreshTokenEntity)
         private refreshRepository: Repository<RefreshTokenI>,
         private authService: AuthService
     ) { }
@@ -67,19 +69,36 @@ export class UserService {
         )
     }
 
-    makeRefreshToken(refreshTokenDto: RefreshTokenDto): Observable<string>{
+    makeRefreshToken(refreshTokenDto: RefreshTokenDto): Observable<RefreshTokenI> {
         return from(this.refreshRepository.save(
             this.refreshRepository.create(refreshTokenDto)
         )).pipe(
             map((refresh: RefreshTokenI) => {
-                return refresh.token;
-            } )
+                return refresh;
+            })
         )
     }
 
-    // updateRefreshToken(token: string): Observable<any>{
-    //     return ;
-    // }
+    updateRefreshToken(token: string): Observable<UpdateResult> {
+        return from(this.refreshRepository.findOne({ token })).pipe(
+            switchMap((refreshToken: RefreshTokenI) => {
+                const newRefreshToken = { ...refreshToken }
+                let today = new Date();
+                today.setMonth(today.getMonth() + 2)
+                newRefreshToken.expireDate = today;
+                newRefreshToken.token = uuidv4();
+                return this.refreshRepository.update(refreshToken.id, newRefreshToken)
+            })
+        )
+    }
+
+    deleteRefreshToken(token: string) {
+        return from(this.refreshRepository.findOne({ token })).pipe(
+            switchMap((refreshToken: RefreshTokenI) => {
+                return this.refreshRepository.delete(refreshToken);
+            })
+        )
+    }
 
     findOne(id: number): Observable<UserI> {
         return from(this.userRepository.findOne({ id }))

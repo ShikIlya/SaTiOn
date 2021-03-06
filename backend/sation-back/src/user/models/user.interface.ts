@@ -3,7 +3,7 @@ export interface UserI {
     login: string;
     email: string;
     password?: string;
-    nickname?: string;
+    nickname: string;
     creationTime?: string;
     updateTime?: string;
 

@@ -7,16 +7,15 @@ export class RefreshTokenEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({})
+    @Column()
     @Generated("uuid")
     token: string;
 
     @Column('date')
     expireDate: Date;
 
-    // @OneToOne(type => UserEntity)
-    // @JoinColumn()
-    @Column()
+    @OneToOne(type => UserEntity)
+    @JoinColumn()
     user: UserEntity;
 
 }
