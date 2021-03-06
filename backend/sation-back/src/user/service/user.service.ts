@@ -1,13 +1,15 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { map, switchMap } from 'rxjs/operators'
-import { from, Observable } from 'rxjs';
+import { from, Observable, ObservableInput } from 'rxjs';
 import { AuthService } from 'src/auth/services/auth/auth.service';
 import { Repository } from 'typeorm';
 import { UserEntity } from '../models/user.entity';
 import { UserI } from '../models/user.interface';
 import { LoginUserDto } from '../models/dto/LoginUser.dto';
 import { CreateUserDto } from '../models/dto/CreateUser.dto';
+import { RefreshTokenI } from '../models/refresh-token.interface';
+import { RefreshTokenDto } from '../models/dto/RefreshToken.dto';
 
 @Injectable()
 export class UserService {
@@ -15,6 +17,7 @@ export class UserService {
     constructor(
         @InjectRepository(UserEntity)
         private userRepository: Repository<UserI>,
+        private refreshRepository: Repository<RefreshTokenI>,
         private authService: AuthService
     ) { }
 
@@ -25,8 +28,9 @@ export class UserService {
                     return this.authService.hashPassword(createUserDto.password).pipe(
                         switchMap((passHash: string) => {
                             createUserDto.password = passHash;
-                            const instance = this.userRepository.create(createUserDto);
-                            return from(this.userRepository.save(instance)).pipe(
+                            return from(this.userRepository.save(
+                                this.userRepository.create(createUserDto)
+                            )).pipe(
                                 map((savedUser: UserI) => {
                                     const { password, creationTime, updateTime, ...user } = savedUser;
                                     return user;
@@ -62,6 +66,20 @@ export class UserService {
             })
         )
     }
+
+    makeRefreshToken(refreshTokenDto: RefreshTokenDto): Observable<string>{
+        return from(this.refreshRepository.save(
+            this.refreshRepository.create(refreshTokenDto)
+        )).pipe(
+            map((refresh: RefreshTokenI) => {
+                return refresh.token;
+            } )
+        )
+    }
+
+    // updateRefreshToken(token: string): Observable<any>{
+    //     return ;
+    // }
 
     findOne(id: number): Observable<UserI> {
         return from(this.userRepository.findOne({ id }))
