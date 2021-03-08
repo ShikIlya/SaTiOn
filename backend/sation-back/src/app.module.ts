@@ -6,6 +6,7 @@ import { ConfigModule } from '@nestjs/config';
 import { from } from 'rxjs';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { SessionModule } from './session/session.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -16,7 +17,8 @@ import { AuthModule } from './auth/auth.module';
       synchronize: true
     }),
     UserModule,
-    AuthModule
+    AuthModule,
+    SessionModule
   ],
   controllers: [AppController],
   providers: [AppService],

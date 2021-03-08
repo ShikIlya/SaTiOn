@@ -8,19 +8,17 @@ import { UserEntity } from '../models/user.entity';
 import { UserI } from '../models/user.interface';
 import { LoginUserDto } from '../models/dto/LoginUser.dto';
 import { CreateUserDto } from '../models/dto/CreateUser.dto';
-import { RefreshTokenI } from '../models/refresh-token.interface';
-import { RefreshTokenDto } from '../models/dto/RefreshToken.dto';
-import { RefreshTokenEntity } from '../models/refresh-token.entity';
-import { v4 as uuidv4 } from 'uuid';
+import { SessionService } from 'src/session/services/session.service';
+import { RefreshTokenI } from 'src/session/models/refresh-token.interface';
+
 @Injectable()
 export class UserService {
 
     constructor(
         @InjectRepository(UserEntity)
         private userRepository: Repository<UserI>,
-        @InjectRepository(RefreshTokenEntity)
-        private refreshRepository: Repository<RefreshTokenI>,
-        private authService: AuthService
+        private authService: AuthService,
+        private sessionService: SessionService
     ) { }
 
     create(createUserDto: CreateUserDto): Observable<UserI> {
@@ -47,7 +45,7 @@ export class UserService {
         )
     }
 
-    login(loginUserDto: LoginUserDto): Observable<string> {
+    login(loginUserDto: LoginUserDto): Observable<Object> {
         return this.findUserByEmail(loginUserDto.email).pipe(
             switchMap((user: UserI) => {
                 if (user) {
@@ -55,47 +53,21 @@ export class UserService {
                         switchMap((match: boolean) => {
                             if (match) {
                                 return this.findOne(user.id).pipe(
-                                    switchMap((user: UserI) => this.authService.generateJwt(user, '300s'))
+                                    map((user: UserI) => {
+                                        return {
+                                            jwt: this.authService.generateJwt(user, '300s'),
+                                            refresh: this.sessionService.makeRefreshToken(user.id)
+                                        }
+                                    })
                                 )
                             } else {
-                                throw new HttpException('Login sucked dick', HttpStatus.UNAUTHORIZED);
+                                throw new HttpException('Login failed!', HttpStatus.UNAUTHORIZED);
                             }
                         })
                     )
                 } else {
-                    throw new HttpException("Usssr not found", HttpStatus.NOT_FOUND);
+                    throw new HttpException("User not found, Nigga!", HttpStatus.NOT_FOUND);
                 }
-            })
-        )
-    }
-
-    makeRefreshToken(refreshTokenDto: RefreshTokenDto): Observable<RefreshTokenI> {
-        return from(this.refreshRepository.save(
-            this.refreshRepository.create(refreshTokenDto)
-        )).pipe(
-            map((refresh: RefreshTokenI) => {
-                return refresh;
-            })
-        )
-    }
-
-    updateRefreshToken(token: string): Observable<UpdateResult> {
-        return from(this.refreshRepository.findOne({ token })).pipe(
-            switchMap((refreshToken: RefreshTokenI) => {
-                const newRefreshToken = { ...refreshToken }
-                let today = new Date();
-                today.setMonth(today.getMonth() + 2)
-                newRefreshToken.expireDate = today;
-                newRefreshToken.token = uuidv4();
-                return this.refreshRepository.update(refreshToken.id, newRefreshToken)
-            })
-        )
-    }
-
-    deleteRefreshToken(token: string) {
-        return from(this.refreshRepository.findOne({ token })).pipe(
-            switchMap((refreshToken: RefreshTokenI) => {
-                return this.refreshRepository.delete(refreshToken);
             })
         )
     }
