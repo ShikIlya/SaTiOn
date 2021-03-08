@@ -54,10 +54,7 @@ export class UserService {
                             if (match) {
                                 return this.findOne(user.id).pipe(
                                     map((user: UserI) => {
-                                        return {
-                                            jwt: this.authService.generateJwt(user, '300s'),
-                                            refresh: this.sessionService.makeRefreshToken(user.id)
-                                        }
+                                        return this.authService.generateJwt(user, '300s')
                                     })
                                 )
                             } else {

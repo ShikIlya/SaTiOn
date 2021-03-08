@@ -24,6 +24,7 @@ export class UserController {
     login(@Body() loginUserDto: LoginUserDto, @Res() response: Response) {
         return this.userService.login(loginUserDto).pipe(
             map((val) => {
+                console.log(val);
                 response.cookie('access_token', val['jwt'], {
                     expires: new Date(Date.now() + 1000 * 60 * 5),
                     httpOnly: true,
