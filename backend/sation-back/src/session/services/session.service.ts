@@ -18,6 +18,7 @@ export class SessionService {
 
 
     makeRefreshToken(userId: number): Observable<RefreshTokenI> {
+        console.log("I AM HEREEEEE");
         return from(this.refreshRepository.save(
             this.refreshRepository.create(this.generateRefreshTokenDto(userId)))
         )

@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { RefreshTokenEntity } from './models/refresh-token.entity';
 import { SessionService } from './services/session.service';

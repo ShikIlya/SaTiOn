@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { generateString, InjectRepository } from '@nestjs/typeorm';
-import { map, switchMap } from 'rxjs/operators'
+import { map, mergeMap, switchMap } from 'rxjs/operators'
 import { from, Observable } from 'rxjs';
 import { AuthService } from 'src/auth/services/auth/auth.service';
 import { Repository, UpdateResult } from 'typeorm';
@@ -46,18 +46,14 @@ export class UserService {
         )
     }
 
-    login(loginUserDto: LoginUserDto): Observable<string> {
+    login(loginUserDto: LoginUserDto): Observable<SessionI> {
         return this.findUserByEmail(loginUserDto.email).pipe(
             switchMap((user: UserI) => {
                 if (user) {
                     return this.validatePassword(loginUserDto.password, user.password).pipe(
                         switchMap((match: boolean) => {
                             if (match) {
-                                return this.findOne(user.id).pipe(
-                                    switchMap((user: UserI) => {
-                                        return this.authService.generateJwt(user, '300s')
-                                    })
-                                )
+                                return this.generateSession(user);
                             } else {
                                 throw new HttpException('Login failed!', HttpStatus.UNAUTHORIZED);
                             }
@@ -70,13 +66,21 @@ export class UserService {
         )
     }
 
-    makeRefreshTokenByEmail(email: string): Observable<RefreshTokenI> {
-        return this.findUserByEmail(email).pipe(
+    generateSession(user: UserI): Observable<SessionI> {
+        return this.findOne(user.id).pipe(
             switchMap((user: UserI) => {
-                if (user)
-                    return this.sessionService.makeRefreshToken(user.id);
-                else
-                    throw new HttpException("User not found, Nigga!", HttpStatus.NOT_FOUND);
+                return this.authService.generateJwt(user, '300s').pipe(
+                    switchMap((jwt: string) => {
+                        return this.sessionService.makeRefreshToken(user.id).pipe(
+                            map((refresh: RefreshTokenI) => {
+                                return <SessionI>{
+                                    access_token: jwt,
+                                    refresh_token: refresh
+                                }
+                            })
+                        )
+                    })
+                )
             })
         )
     }
