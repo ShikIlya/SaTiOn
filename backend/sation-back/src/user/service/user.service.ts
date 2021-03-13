@@ -10,6 +10,7 @@ import { LoginUserDto } from '../models/dto/LoginUser.dto';
 import { CreateUserDto } from '../models/dto/CreateUser.dto';
 import { SessionService } from 'src/session/services/session.service';
 import { RefreshTokenI } from 'src/session/models/refresh-token.interface';
+import { SessionI } from 'src/session/models/session.interface';
 
 @Injectable()
 export class UserService {
@@ -45,7 +46,7 @@ export class UserService {
         )
     }
 
-    login(loginUserDto: LoginUserDto): Observable<Object> {
+    login(loginUserDto: LoginUserDto): Observable<string> {
         return this.findUserByEmail(loginUserDto.email).pipe(
             switchMap((user: UserI) => {
                 if (user) {
@@ -53,7 +54,7 @@ export class UserService {
                         switchMap((match: boolean) => {
                             if (match) {
                                 return this.findOne(user.id).pipe(
-                                    map((user: UserI) => {
+                                    switchMap((user: UserI) => {
                                         return this.authService.generateJwt(user, '300s')
                                     })
                                 )
@@ -65,6 +66,17 @@ export class UserService {
                 } else {
                     throw new HttpException("User not found, Nigga!", HttpStatus.NOT_FOUND);
                 }
+            })
+        )
+    }
+
+    makeRefreshTokenByEmail(email: string): Observable<RefreshTokenI> {
+        return this.findUserByEmail(email).pipe(
+            switchMap((user: UserI) => {
+                if (user)
+                    return this.sessionService.makeRefreshToken(user.id);
+                else
+                    throw new HttpException("User not found, Nigga!", HttpStatus.NOT_FOUND);
             })
         )
     }

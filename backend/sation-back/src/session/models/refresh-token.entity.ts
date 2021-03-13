@@ -1,4 +1,4 @@
-import { Column, Entity, Generated, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { UserEntity } from "../../user/models/user.entity";
 
 @Entity()
@@ -7,13 +7,13 @@ export class RefreshTokenEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column('uuid', { unique: true })
+    @Column('uuid')
     token: string;
 
     @Column('timestamp with time zone')
     expireDate: Date;
 
-    @OneToOne(() => UserEntity)
+    @ManyToOne(() => UserEntity)
     @JoinColumn({ name: "userId", referencedColumnName: "id" })
     userId: number;
 

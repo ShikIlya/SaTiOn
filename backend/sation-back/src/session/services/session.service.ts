@@ -23,8 +23,8 @@ export class SessionService {
         )
     }
 
-    updateRefreshToken(refreshToken: RefreshTokenI): Observable<boolean> {
-        return from(this.refreshRepository.update(refreshToken.id, this.generateRefreshTokenDto(refreshToken.userId))).pipe(
+    updateRefreshToken(token: string): Observable<boolean> {
+        return from(this.refreshRepository.update(token, this.generateRefreshTokenDto())).pipe(
             map((result: UpdateResult) => {
                 if (result.affected)
                     return true;
@@ -34,8 +34,8 @@ export class SessionService {
         )
     }
 
-    deleteRefreshToken(refreshToken: RefreshTokenI): Observable<boolean> {
-        return from(this.refreshRepository.delete(refreshToken)).pipe(
+    deleteRefreshToken(token: string): Observable<boolean> {
+        return from(this.refreshRepository.delete(token)).pipe(
             map((result: DeleteResult) => {
                 if (result.affected)
                     return true;
@@ -49,13 +49,15 @@ export class SessionService {
         return from(this.refreshRepository.findOne({ token }));
     }
 
-    private generateRefreshTokenDto(id: number): RefreshTokenDto {
+    private generateRefreshTokenDto(userId?: number): RefreshTokenDto {
         let date = new Date();
         date.setDate(date.getDate() + 15);
         const refreshTokenDto: RefreshTokenDto = {
             token: uuidv4(),
-            expireDate: date,
-            userId: id
+            expireDate: date
+        }
+        if (userId) {
+            refreshTokenDto.userId = userId;
         }
         return refreshTokenDto;
     }
