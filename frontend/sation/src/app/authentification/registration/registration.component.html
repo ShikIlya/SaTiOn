@@ -1,31 +1,37 @@
 <div class="auth">
-    <form class="auth__form form" (ngSubmit)="onSubmit()">
+    <form class="auth__form form" (ngSubmit)="onSubmit()" [formGroup]="registrationFormGroup">
         <div class="form__header">
-            <a class="form__back back" mat-icon-button (click)="goBack()">
+            <a class="form__back back" mat-icon-button [routerLink]="'/authentification/login'">
                 <mat-icon class="back__icon">west</mat-icon>
             </a>
             <h1 class="form__title">Регистрация</h1>
         </div>
         <mat-form-field class="form__field" appearance="standard">
             <mat-label class="form__label">Enter your email</mat-label>
-            <input class="form__input" matInput placeholder="pat@example.com">
+            <input class="form__input" matInput placeholder="pat@example.com" formControlName="email">
+            <mat-error *ngIf="registrationFormGroup.get('email').invalid">
+                {{getErrorMessage(registrationFormGroup.get('email'), 'Некорректный email')}}</mat-error>
         </mat-form-field>
         <mat-form-field class="form__field" appearance="standard">
             <mat-label class="form__label">Enter your login</mat-label>
-            <input class="form__input" matInput>
+            <input class="form__input" matInput formControlName="login">
+            <mat-error *ngIf="registrationFormGroup.get('login').invalid">
+                {{getErrorMessage(registrationFormGroup.get('login'), 'Только латинские символы')}}</mat-error>
         </mat-form-field>
         <mat-form-field class="form__field" appearance="standard">
             <mat-label class="form__label">Enter your password</mat-label>
-            <input class="form__input" matInput [type]="hide ? 'password' : 'text'">
-            <button class="form__pass-hide" mat-icon-button matSuffix (click)="hide = !hide"
-                [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-                <mat-icon class="form__icon">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            <input class="form__input" matInput [type]="hidePass ? 'password' : 'text'" placeholder="paSsword!"
+                formControlName="password">
+            <mat-error *ngIf="registrationFormGroup.get('password').invalid">
+                {{getErrorMessage(registrationFormGroup.get('password'),
+                'Пароль должен содержать не менее 8 знаков, включать минимум 1 заглавную букву и спецсимвол')}}
+            </mat-error>
+            <button class="form__pass-hidePass" mat-icon-button matSuffix (click)="hidePass = !hidePass"
+                [attr.aria-label]="'hidePass password'" [attr.aria-pressed]="hidePass">
+                <mat-icon class="form__icon">{{hidePass ? 'visibility_off' : 'visibility'}}</mat-icon>
             </button>
         </mat-form-field>
-        <mat-form-field class="form__field" appearance="standard">
-            <mat-label class="form__label">Enter your nickname</mat-label>
-            <input class="form__input" matInput>
-        </mat-form-field>
+
         <button class="form__action" mat-flat-button color="primary">Зарегистрироваться</button>
     </form>
 </div>
