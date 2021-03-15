@@ -6,7 +6,7 @@ const routes: Routes = [
   {
     path: 'messenger',
     loadChildren: () => import('./messenger/messenger.module').then(m => m.MessengerModule),
-    //canActivate: [AuthGuard]
+    canActivate: [AuthGuard]
   },
   {
     path: 'authentification',

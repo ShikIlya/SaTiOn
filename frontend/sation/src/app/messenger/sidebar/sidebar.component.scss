@@ -40,15 +40,15 @@
     }
     &--active {
         background-color: $listActiveBg;
-        color: #ffffff;
+        /*  color: #ffffff; */
         &:hover {
             background-color: $listActiveBg;
-            color: #ffffff;
+            /* color: #ffffff; */
         }
-        .channel__message,
+        /* .channel__message,
         .channel__last-time {
             opacity: 1;
-        }
+        } */
     }
     &__content {
         display: flex;
