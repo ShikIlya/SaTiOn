@@ -2,8 +2,8 @@
 
 @include mat-core();
 
-$sation-primary: mat-palette($mat-indigo, 500);
-$sation-accent: mat-palette($mat-orange, 700);
+$sation-primary: mat-palette($mat-blue, 700);
+$sation-accent: mat-palette($mat-orange, A700);
 
 $sation-warn: mat-palette($mat-red, 600);
 
