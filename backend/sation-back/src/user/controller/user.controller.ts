@@ -14,9 +14,12 @@ export class UserController {
 
     constructor(private userService: UserService) { }
 
-    @Post('create')
-    create(@Body() createUserDto: CreateUserDto): Observable<UserI> {
-        return this.userService.create(createUserDto);
+    @Post('register')
+    create(@Body() createUserDto: CreateUserDto, @Res() response: Response) {
+        return this.userService.create(createUserDto).pipe(map((user: UserI) => {
+            if (user)
+                return response.status(HttpStatus.ACCEPTED).send();
+        }))
     }
 
     @Post('login')

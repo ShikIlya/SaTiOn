@@ -6,8 +6,8 @@ export class UserEntity {
     @BeforeInsert()
     doSomeMagic() {
         this.email = this.email.toLocaleLowerCase();
-        this.login = this.login.toLocaleLowerCase();
         this.nickname = this.login;
+        this.login = this.login.toLocaleLowerCase();
     }
 
     @PrimaryGeneratedColumn()

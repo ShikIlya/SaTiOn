@@ -23,22 +23,31 @@ export class UserService {
     ) { }
 
     create(createUserDto: CreateUserDto): Observable<UserI> {
-        return this.mailExists(createUserDto.email).pipe(
-            switchMap((exists: boolean) => {
-                if (!exists) {
-                    return this.authService.hashPassword(createUserDto.password).pipe(
-                        switchMap((passHash: string) => {
-                            createUserDto.password = passHash;
-                            return from(this.userRepository.save(
-                                this.userRepository.create(createUserDto)
-                            )).pipe(
-                                map((savedUser: UserI) => {
-                                    const { password, creationTime, updateTime, ...user } = savedUser;
-                                    return user;
-                                })
-                            )
-                        })
-                    )
+        return this.mailExists(createUserDto.email.toLowerCase()).pipe(
+            switchMap((mailExists: boolean) => {
+                if (!mailExists) {
+                    return this.loginExists(createUserDto.login.toLowerCase()).pipe(
+                        switchMap((loginExists: boolean) => {
+                            if (!loginExists) {
+                                console.log(loginExists);
+                                return this.authService.hashPassword(createUserDto.password).pipe(
+                                    switchMap((passHash: string) => {
+                                        createUserDto.password = passHash;
+                                        return from(this.userRepository.save(
+                                            this.userRepository.create(createUserDto)
+                                        )).pipe(
+                                            map((savedUser: UserI) => {
+                                                const { id, password, creationTime, updateTime, ...user } = savedUser;
+                                                return user;
+                                            })
+                                        )
+                                    })
+                                )
+                            } else {
+                                throw new HttpException("Login zanyat", HttpStatus.CONFLICT);
+                            }
+                        }))
+
                 } else {
                     throw new HttpException("Email zanyat", HttpStatus.CONFLICT);
                 }
@@ -104,11 +113,15 @@ export class UserService {
     private mailExists(email: string): Observable<boolean> {
         return from(this.userRepository.findOne({ email })).pipe(
             map((user: UserI) => {
-                if (user) {
-                    return true;
-                }
-                else
-                    return false;
+                return user ? true : false;
+            })
+        )
+    }
+
+    private loginExists(login: string): Observable<boolean> {
+        return from(this.userRepository.findOne({ login })).pipe(
+            map((user: UserI) => {
+                return user ? true : false;
             })
         )
     }
