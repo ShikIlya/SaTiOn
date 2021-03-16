@@ -29,7 +29,6 @@ export class UserService {
                     return this.loginExists(createUserDto.login.toLowerCase()).pipe(
                         switchMap((loginExists: boolean) => {
                             if (!loginExists) {
-                                console.log(loginExists);
                                 return this.authService.hashPassword(createUserDto.password).pipe(
                                     switchMap((passHash: string) => {
                                         createUserDto.password = passHash;
