@@ -33,7 +33,7 @@ services:
         ipv4_address: 172.18.0.4
   
   pgadmin:
-    image: dpage/pgadmin4
+    image: dpage/pgadmin4:5.0
     container_name: pgadmin_container
     restart: always
     depends_on: 
