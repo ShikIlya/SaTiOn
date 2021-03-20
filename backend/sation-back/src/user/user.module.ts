@@ -13,6 +13,7 @@ import { SessionModule } from 'src/session/session.module';
         SessionModule
     ],
     providers: [UserService],
-    controllers: [UserController]
+    controllers: [UserController],
+    exports: [UserService]
 })
 export class UserModule { }

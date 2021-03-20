@@ -27,7 +27,7 @@ export class UserController {
         return this.userService.login(loginUserDto).pipe(
             map((session: SessionI) => {
                 response.cookie('access_token', session.access_token, {
-                    expires: new Date(Date.now() + 1000 * 60 * 5),
+                    expires: new Date(Date.now() + 10 * 60 * 5),
                     httpOnly: true,
                     secure: false,
                 })

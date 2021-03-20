@@ -18,22 +18,21 @@ export class SessionService {
 
 
     makeRefreshToken(userId: number): Observable<RefreshTokenI> {
-        console.log("I AM HEREEEEE");
         return from(this.refreshRepository.save(
             this.refreshRepository.create(this.generateRefreshTokenDto(userId)))
         )
     }
 
-    updateRefreshToken(token: string): Observable<boolean> {
-        return from(this.refreshRepository.update(token, this.generateRefreshTokenDto())).pipe(
-            map((result: UpdateResult) => {
-                if (result.affected)
-                    return true;
-                else
-                    return false
-            })
-        )
-    }
+    // updateRefreshToken(token: string): Observable<boolean> {
+    //     return from(this.refreshRepository.update(token, this.generateRefreshTokenDto())).pipe(
+    //         map((result: UpdateResult) => {
+    //             if (result.affected)
+    //                 return true;
+    //             else
+    //                 return false
+    //         })
+    //     )
+    // }
 
     deleteRefreshToken(token: string): Observable<boolean> {
         return from(this.refreshRepository.delete(token)).pipe(
@@ -46,8 +45,12 @@ export class SessionService {
         )
     }
 
-    getUserIdByToken(token: string): Observable<RefreshTokenI> {
-        return from(this.refreshRepository.findOne({ token }));
+    getUserIdByToken(token: string): Observable<number> {
+        return from(this.refreshRepository.findOne({ token })).pipe(
+            map((token: RefreshTokenI) => {
+                return token.userId;
+            })
+        );
     }
 
     private generateRefreshTokenDto(userId?: number): RefreshTokenDto {
