@@ -1,17 +1,17 @@
 import { ExecutionContext, Injectable, UnauthorizedException } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import { map, switchMap } from "rxjs/operators";
-import { SessionI } from "src/session/models/session.interface";
-import { SessionService } from "src/session/services/session.service";
+import { SessionI } from "src/auth/models/session.interface";
 import { UserI } from "src/user/models/user.interface";
 import { UserService } from "src/user/service/user.service";
+import { RefreshTokenI } from "../models/refresh-token.interface";
 import { AuthService } from "../services/auth/auth.service";
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {
     constructor(
-        private sessionService: SessionService,
-        private userServise: UserService
+        private userService: UserService,
+        private authService: AuthService
     ) {
         super()
     }
@@ -22,6 +22,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
         const response = context.switchToHttp().getResponse();
         const access_token = request.cookies['access_token'];
         const refresh_token = request.cookies['refresh_token'];
+        
         if (access_token) {
             return super.canActivate(context);
         }
@@ -30,17 +31,17 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
         // console.log(response);
 
         if (refresh_token) {
-            this.sessionService.getUserIdByToken(refresh_token).pipe(
-                switchMap((userId: number) => {
+            this.authService.getUserIdByToken(refresh_token).pipe(
+                switchMap((token: RefreshTokenI) => {
                     console.log('suda1');
-                    return this.sessionService.deleteRefreshToken(refresh_token).pipe(
+                    return this.authService.deleteRefreshToken(refresh_token).pipe(
                         switchMap((result: boolean) => {
                             console.log('suda2');
                             if (result) {
-                                return this.userServise.findOne(userId).pipe(
+                                return this.userService.findOne(token.userId).pipe(
                                     switchMap((user: UserI) => {
                                         console.log('suda3');
-                                        return this.userServise.generateSession(user).pipe(
+                                        return this.userService.generateSession(user).pipe(
                                             map((session: SessionI) => {
                                                 console.log('suda4');
                                                 response.cookie('access_token', session.access_token, {

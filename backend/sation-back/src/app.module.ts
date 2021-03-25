@@ -3,10 +3,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
-import { from } from 'rxjs';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
-import { SessionModule } from './session/session.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -17,8 +15,7 @@ import { SessionModule } from './session/session.module';
       synchronize: true
     }),
     UserModule,
-    AuthModule,
-    SessionModule
+    AuthModule
   ],
   controllers: [AppController],
   providers: [AppService],

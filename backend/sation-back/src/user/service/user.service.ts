@@ -8,9 +8,8 @@ import { UserEntity } from '../models/user.entity';
 import { UserI } from '../models/user.interface';
 import { LoginUserDto } from '../models/dto/LoginUser.dto';
 import { CreateUserDto } from '../models/dto/CreateUser.dto';
-import { SessionService } from 'src/session/services/session.service';
-import { RefreshTokenI } from 'src/session/models/refresh-token.interface';
-import { SessionI } from 'src/session/models/session.interface';
+import { RefreshTokenI } from 'src/auth/models/refresh-token.interface';
+import { SessionI } from 'src/auth/models/session.interface';
 
 @Injectable()
 export class UserService {
@@ -18,8 +17,7 @@ export class UserService {
     constructor(
         @InjectRepository(UserEntity)
         private userRepository: Repository<UserI>,
-        private authService: AuthService,
-        private sessionService: SessionService
+        private authService: AuthService
     ) { }
 
     create(createUserDto: CreateUserDto): Observable<UserI> {
@@ -79,7 +77,7 @@ export class UserService {
             switchMap((user: UserI) => {
                 return this.authService.generateJwt(user, '300s').pipe(
                     switchMap((jwt: string) => {
-                        return this.sessionService.makeRefreshToken(user.id).pipe(
+                        return this.authService.makeRefreshToken(user.id).pipe(
                             map((refresh: RefreshTokenI) => {
                                 return <SessionI>{
                                     access_token: jwt,
@@ -102,7 +100,8 @@ export class UserService {
     }
 
     private findUserByEmail(email: string): Observable<UserI> {
-        return from(this.userRepository.findOne({ email }, { select: ["id", "email", "email", "password"] }));
+        email = email.toLowerCase();
+        return from(this.userRepository.findOne({ email }, { select: ["id", "email", "password"] }));
     }
 
     private validatePassword(password: string, storedHash: string): Observable<boolean> {

@@ -1,15 +1,63 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { InjectRepository } from '@nestjs/typeorm';
 import { from, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { RefreshTokenDto } from 'src/auth/models/dto/RefreshToken.dto';
+import { RefreshTokenEntity } from 'src/auth/models/refresh-token.entity';
+import { RefreshTokenI } from 'src/auth/models/refresh-token.interface';
 import { UserI } from 'src/user/models/user.interface';
-
+import { DeleteResult, Repository } from 'typeorm';
+import { v4 as uuidv4 } from 'uuid';
 const bcrypt = require('bcrypt');
 
 @Injectable()
 export class AuthService {
 
-    constructor(private readonly jwtService: JwtService) { }
+    constructor(
+        private readonly jwtService: JwtService,
+        @InjectRepository(RefreshTokenEntity)
+        private refreshRepository: Repository<RefreshTokenI>
+    ) { }
 
+    makeRefreshToken(userId: number): Observable<RefreshTokenI> {
+        return from(this.refreshRepository.save(
+            this.refreshRepository.create(this.generateRefreshTokenDto(userId)))
+        )
+    }
+
+    deleteRefreshToken(token: string): Observable<boolean> {
+        return from(this.refreshRepository.delete(token)).pipe(
+            map((result: DeleteResult) => {
+                if (result.affected)
+                    return true;
+                else
+                    return false;
+            })
+        )
+    }
+
+    getUserIdByToken(_token: string): Observable<RefreshTokenI> {
+        console.log('(((((');
+        return from(this.refreshRepository
+            .createQueryBuilder('refresh')
+            .innerJoinAndSelect('refresh.userId','userEntity')
+            .getOne());
+    }
+
+    generateRefreshTokenDto(userId?: number): RefreshTokenDto {
+        let date = new Date();
+        date.setDate(date.getDate() + 15);
+        const refreshTokenDto: RefreshTokenDto = {
+            token: uuidv4(),
+            expireDate: date
+        }
+        if (userId) {
+            refreshTokenDto.userId = userId;
+        }
+        return refreshTokenDto;
+    }
+        
     generateJwt(user: UserI, expireTime: string): Observable<string> {
         return from(this.jwtService.signAsync({ user }, { expiresIn: expireTime }));
     }
