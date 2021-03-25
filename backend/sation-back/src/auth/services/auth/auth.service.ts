@@ -8,7 +8,7 @@ import { RefreshTokenEntity } from 'src/auth/models/refresh-token.entity';
 import { RefreshTokenI } from 'src/auth/models/refresh-token.interface';
 import { UserEntity } from 'src/user/models/user.entity';
 import { UserI } from 'src/user/models/user.interface';
-import { DeleteResult, Repository} from 'typeorm';
+import { DeleteResult, Repository } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 const bcrypt = require('bcrypt');
 
@@ -29,8 +29,8 @@ export class AuthService {
         )
     }
 
-    deleteRefreshToken(token: string): Observable<boolean> {
-        return from(this.refreshRepository.delete(token)).pipe(
+    deleteRefreshToken(token: string, userId: number): Observable<boolean> {
+        return from(this.refreshRepository.delete({ token, userId })).pipe(
             map((result: DeleteResult) => {
                 if (result.affected)
                     return true;
@@ -43,10 +43,10 @@ export class AuthService {
     getUserByToken(refresh: string): Observable<UserI> {
         return from(this.userRepository
             .createQueryBuilder('user')
-            .innerJoin('user.refresh_tokens','refresh')
-            .where('refresh.token = :token', {token: refresh})
+            .innerJoin('user.refresh_tokens', 'refresh')
+            .where('refresh.token = :token', { token: refresh })
             .getOne()).pipe(
-                map((user: UserI)=>{
+                map((user: UserI) => {
                     console.log(user);
                     return user;
                 })
@@ -65,7 +65,7 @@ export class AuthService {
         }
         return refreshTokenDto;
     }
-        
+
     generateJwt(user: UserI, expireTime: string): Observable<string> {
         return from(this.jwtService.signAsync({ user }, { expiresIn: expireTime }));
     }
