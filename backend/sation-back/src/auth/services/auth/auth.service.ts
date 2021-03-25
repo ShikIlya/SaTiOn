@@ -6,8 +6,9 @@ import { map } from 'rxjs/operators';
 import { RefreshTokenDto } from 'src/auth/models/dto/RefreshToken.dto';
 import { RefreshTokenEntity } from 'src/auth/models/refresh-token.entity';
 import { RefreshTokenI } from 'src/auth/models/refresh-token.interface';
+import { UserEntity } from 'src/user/models/user.entity';
 import { UserI } from 'src/user/models/user.interface';
-import { DeleteResult, Repository } from 'typeorm';
+import { DeleteResult, Repository} from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 const bcrypt = require('bcrypt');
 
@@ -17,7 +18,9 @@ export class AuthService {
     constructor(
         private readonly jwtService: JwtService,
         @InjectRepository(RefreshTokenEntity)
-        private refreshRepository: Repository<RefreshTokenI>
+        private refreshRepository: Repository<RefreshTokenI>,
+        @InjectRepository(UserEntity)
+        private userRepository: Repository<UserI>
     ) { }
 
     makeRefreshToken(userId: number): Observable<RefreshTokenI> {
@@ -37,12 +40,17 @@ export class AuthService {
         )
     }
 
-    getUserIdByToken(_token: string): Observable<RefreshTokenI> {
-        console.log('(((((');
-        return from(this.refreshRepository
-            .createQueryBuilder('refresh')
-            .innerJoinAndSelect('refresh.userId','userEntity')
-            .getOne());
+    getUserByToken(refresh: string): Observable<UserI> {
+        return from(this.userRepository
+            .createQueryBuilder('user')
+            .innerJoin('user.refresh_tokens','refresh')
+            .where('refresh.token = :token', {token: refresh})
+            .getOne()).pipe(
+                map((user: UserI)=>{
+                    console.log(user);
+                    return user;
+                })
+            )
     }
 
     generateRefreshTokenDto(userId?: number): RefreshTokenDto {

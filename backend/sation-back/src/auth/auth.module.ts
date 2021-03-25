@@ -4,9 +4,9 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthService } from './services/auth/auth.service';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { JwtStrategy } from './strategies/jwt.strategy';
-import { UserModule } from 'src/user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { RefreshTokenEntity } from 'src/auth/models/refresh-token.entity';
+import { UserEntity } from 'src/user/models/user.entity';
 
 @Module({
   imports: [
@@ -17,7 +17,7 @@ import { RefreshTokenEntity } from 'src/auth/models/refresh-token.entity';
         secret: configService.get('JWT_SECRET')
       })
     }),
-    TypeOrmModule.forFeature([RefreshTokenEntity])
+    TypeOrmModule.forFeature([RefreshTokenEntity, UserEntity])
     
   ],
   providers: [AuthService, JwtStrategy, JwtAuthGuard],

@@ -31,14 +31,14 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
         // console.log(response);
 
         if (refresh_token) {
-            this.authService.getUserIdByToken(refresh_token).pipe(
-                switchMap((token: RefreshTokenI) => {
+            this.authService.getUserByToken(refresh_token).pipe(
+                switchMap((user: UserI) => {
                     console.log('suda1');
                     return this.authService.deleteRefreshToken(refresh_token).pipe(
                         switchMap((result: boolean) => {
                             console.log('suda2');
                             if (result) {
-                                return this.userService.findOne(token.userId).pipe(
+                                return this.userService.findOne(user.id).pipe(
                                     switchMap((user: UserI) => {
                                         console.log('suda3');
                                         return this.userService.generateSession(user).pipe(

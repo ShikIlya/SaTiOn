@@ -1,3 +1,4 @@
+import { type } from "os";
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { UserEntity } from "../../user/models/user.entity";
 
@@ -13,7 +14,7 @@ export class RefreshTokenEntity {
     @Column('timestamp with time zone')
     expireDate: Date;
 
-    @ManyToOne(() => UserEntity)
+    @ManyToOne(type => UserEntity, user => user.refresh_tokens)
     @JoinColumn({ name: "userId", referencedColumnName: "id" })
     userId: number;
 
