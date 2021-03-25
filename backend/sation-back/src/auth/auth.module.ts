@@ -7,6 +7,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { RefreshTokenEntity } from 'src/auth/models/refresh-token.entity';
 import { UserEntity } from 'src/user/models/user.entity';
+import { SessionGuard } from './guards/session.guard';
 
 @Module({
   imports: [
@@ -18,7 +19,7 @@ import { UserEntity } from 'src/user/models/user.entity';
       })
     }),
     TypeOrmModule.forFeature([RefreshTokenEntity, UserEntity])
-    
+
   ],
   providers: [AuthService, JwtStrategy, JwtAuthGuard],
   exports: [AuthService]

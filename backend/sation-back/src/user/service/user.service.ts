@@ -75,6 +75,7 @@ export class UserService {
     generateSession(user: UserI): Observable<SessionI> {
         return this.findOne(user.id).pipe(
             switchMap((user: UserI) => {
+                console.log('ya zdes bil')
                 return this.authService.generateJwt(user, '300s').pipe(
                     switchMap((jwt: string) => {
                         return this.authService.makeRefreshToken(user.id).pipe(

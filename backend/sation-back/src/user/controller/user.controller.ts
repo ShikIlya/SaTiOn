@@ -3,6 +3,7 @@ import { Response } from 'express';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { SessionGuard } from 'src/auth/guards/session.guard';
 import { SessionI } from 'src/auth/models/session.interface';
 import { CreateUserDto } from '../models/dto/CreateUser.dto';
 import { LoginUserDto } from '../models/dto/LoginUser.dto';
@@ -27,7 +28,7 @@ export class UserController {
         return this.userService.login(loginUserDto).pipe(
             map((session: SessionI) => {
                 response.cookie('access_token', session.access_token, {
-                    expires: new Date(Date.now() + 10 * 60 * 5),
+                    expires: new Date(Date.now() + 100 * 60 * 5),
                     httpOnly: true,
                     secure: false,
                 })
@@ -49,7 +50,7 @@ export class UserController {
         return this.userService.findOne(request.user.id);
     }
 
-    @UseGuards(JwtAuthGuard)
+    @UseGuards(SessionGuard, JwtAuthGuard)
     @Get('is_auth')
     check(@Req() request) {
         if (request.user)
