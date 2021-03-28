@@ -1,6 +1,6 @@
 import { ExecutionContext, Injectable, UnauthorizedException } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
-import { from, Observable, of } from "rxjs";
+import { forkJoin, from, Observable, of } from "rxjs";
 import { map, switchMap } from "rxjs/operators";
 import { UserI } from "src/user/models/user.interface";
 import { UserService } from "src/user/service/user.service";
@@ -26,8 +26,8 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
         else if (refresh_token)
             return this.authService.getUserByToken(refresh_token).pipe(
                 switchMap((user: UserI) => {
-                    return this.userService.generateSession(user).pipe(
-                        switchMap((session: SessionI) => {
+                    return forkJoin([this.authService.deleteRefreshToken(refresh_token, user.id), this.userService.generateSession(user)]).pipe(
+                        switchMap(([deleted, session]: [boolean, SessionI]) => {
                             response.cookie('access_token', session.access_token, {
                                 expires: new Date(Date.now() + 1000 * 60 * 5),
                                 httpOnly: true,
@@ -45,8 +45,8 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
                                     return result;
                                 })
                             )
-
                         })
+
                     )
                 }
                 )

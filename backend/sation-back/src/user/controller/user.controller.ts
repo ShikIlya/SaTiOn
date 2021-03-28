@@ -3,7 +3,6 @@ import { Response } from 'express';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { SessionGuard } from 'src/auth/guards/session.guard';
 import { SessionI } from 'src/auth/models/session.interface';
 import { CreateUserDto } from '../models/dto/CreateUser.dto';
 import { LoginUserDto } from '../models/dto/LoginUser.dto';
