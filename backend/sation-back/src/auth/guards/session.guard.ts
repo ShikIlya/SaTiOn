@@ -1,5 +1,5 @@
-import { CanActivate, ExecutionContext, forwardRef, Inject, Injectable, UnauthorizedException } from "@nestjs/common";
-import { forkJoin, Observable } from "rxjs";
+import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from "@nestjs/common";
+import { Observable } from "rxjs";
 import { map, switchMap } from "rxjs/operators";
 import { UserI } from "src/user/models/user.interface";
 import { UserService } from "src/user/service/user.service";

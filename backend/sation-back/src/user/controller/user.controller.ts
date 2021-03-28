@@ -50,7 +50,7 @@ export class UserController {
         return this.userService.findOne(request.user.id);
     }
 
-    @UseGuards(SessionGuard, JwtAuthGuard)
+    @UseGuards(JwtAuthGuard)
     @Get('is_auth')
     check(@Req() request) {
         if (request.user)
