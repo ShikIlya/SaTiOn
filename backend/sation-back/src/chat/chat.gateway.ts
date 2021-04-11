@@ -1,5 +1,5 @@
 import { Body } from "@nestjs/common";
-import { MessageBody, SubscribeMessage, WebSocketGateway, WebSocketServer } from "@nestjs/websockets";
+import { SubscribeMessage, WebSocketGateway, WebSocketServer } from "@nestjs/websockets";
 import { Server } from 'socket.io'
 
 
@@ -9,7 +9,7 @@ export class ChatGateway {
   server: Server;
 
   @SubscribeMessage('message')
-  listen(@MessageBody() message: string){
+  listen(@Body() message: string){
     this.server.sockets.emit('message', message);
   }
 
