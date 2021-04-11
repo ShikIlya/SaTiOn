@@ -6,7 +6,7 @@ import * as io from 'socket.io-client';
   providedIn: 'root'
 })
 export class ChatService {
-  private socket: any;
+  private socket: SocketIOClient.Socket;
 
   constructor() { 
     this.socket = io('http://localhost:8080');
