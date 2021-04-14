@@ -18,7 +18,9 @@ export class UserController {
     @UseGuards(JwtAuthGuard)
     @Get('logout')
     logout(@Res() response){
-        return response.clearCokie();
+        response.clearCookie('refresh_token');
+        response.clearCookie('access_token');
+        return response.status(200).json('User Logged out')
     }
 
     @Post('register')
