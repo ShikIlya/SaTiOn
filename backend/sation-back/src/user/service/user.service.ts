@@ -100,6 +100,10 @@ export class UserService {
         return from(this.userRepository.find());
     }
 
+    findOneByLogin(login: string): Observable<UserI> {
+        return from(this.userRepository.findOne({ login}));
+    }
+
     private findUserByEmail(email: string): Observable<UserI> {
         email = email.toLowerCase();
         return from(this.userRepository.findOne({ email }, { select: ["id", "email", "password"] }));
