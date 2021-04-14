@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ChatService } from '../services/chat.service';
 
 @Component({
@@ -7,6 +8,8 @@ import { ChatService } from '../services/chat.service';
   styleUrls: ['./chat.component.scss']
 })
 export class ChatComponent implements OnInit {
+
+  @ViewChild('messagesList') messagesList: ElementRef;
 
   constructor(private chatService: ChatService) { }
 

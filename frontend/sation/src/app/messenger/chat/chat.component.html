@@ -14,7 +14,7 @@
         </div>
     </div>
     <div class="chat__content content">
-        <div class="content__container">
+        <div class="content__container" #messagesList [scrollTop]="messagesList.scrollHeight">
             <div class="chat__message message message--left">
                 <div class="message__container message__container--blue">
                     <p class="message__content">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nam reiciendis
