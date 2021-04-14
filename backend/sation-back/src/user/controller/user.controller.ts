@@ -16,7 +16,7 @@ export class UserController {
     constructor(private userService: UserService) { }
 
     @UseGuards(JwtAuthGuard)
-    @Get()
+    @Get('logout')
     logout(@Res() response){
         return response.clearCokie();
     }
