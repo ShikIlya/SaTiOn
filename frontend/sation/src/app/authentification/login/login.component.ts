@@ -40,7 +40,9 @@ export class LoginComponent implements OnInit {
     if (this.loginFormGroup.valid)
       this.authService.login(this.loginFormGroup.value).subscribe(response => {
         if (response.status === 202)
-          this.authService.getUser().subscribe(user => console.log(user));
+          this.authService.getUser().subscribe(res => {
+            this.router.navigate(['/messenger']);
+          });
       });
   }
 
