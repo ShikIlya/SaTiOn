@@ -4,6 +4,10 @@
         <mat-label class="form__label">Название чата</mat-label>
         <input class="form__input" matInput formControlName="chatName">
     </mat-form-field>
+    <mat-form-field class="form__field" appearance="standard">
+      <mat-label class="form__label">Пригласить пользователя (логин)</mat-label>
+      <input class="form__input" matInput formControlName="inviteLogin">
+  </mat-form-field>
     <button class="form__action" mat-flat-button type="submit" color="primary" (click)="createChat()">Создать</button>
     <button class="form__action" mat-flat-button mat-dialog-close color="warn">Отмена</button>
 </form>

@@ -16,14 +16,19 @@ export class SidebarComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  logout(){
+  logout() {
     this.authService.logout().subscribe(res => {
       this.router.navigate(['/authentification/login']);
     });
   }
 
-  openDialogNewChat(){
-    this.dialog.open(DialogNewChatComponent);
+  openDialogNewChat() {
+    const dialogRef = this.dialog.open(DialogNewChatComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result)
+        console.log(result);
+    });
   }
 
-} 
+}
