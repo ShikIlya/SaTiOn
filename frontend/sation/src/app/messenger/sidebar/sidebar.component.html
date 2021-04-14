@@ -11,7 +11,7 @@
         </mat-menu>
         <input class="sidebar__search" type="text" placeholder="Поиск">
     </div>
-    <button class="sidebar__new-chat-btn" mat-stroked-button color="accent">Новый чат</button>
+    <button class="sidebar__new-chat-btn" mat-stroked-button color="warn" (click)="openDialogNewChat()">Новый чат</button>
     <ul class="sidebar__list list-chats">
         <li class="list-chats__channel channel">
             <div class="channel__content">
