@@ -3,9 +3,9 @@
 @include mat-core();
 
 $sation-primary: mat-palette($mat-blue, 700);
-$sation-accent: mat-palette($mat-orange, A700);
+$sation-accent: mat-palette($mat-red, 500);
 
-$sation-warn: mat-palette($mat-red, 600);
+$sation-warn: mat-palette($mat-orange, 600);
 
 $sation-theme: mat-light-theme(
   (

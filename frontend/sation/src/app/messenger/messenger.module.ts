@@ -5,6 +5,7 @@ import { ChatComponent } from './chat/chat.component';
 import { MessengerRoutingModule } from './messenger-routing.module';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import {MatMenuModule} from '@angular/material/menu';
 import { SidebarComponent } from './sidebar/sidebar.component';
 
 
@@ -14,7 +15,8 @@ import { SidebarComponent } from './sidebar/sidebar.component';
     CommonModule,
     MessengerRoutingModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    MatMenuModule
   ]
 })
 export class MessengerModule { }

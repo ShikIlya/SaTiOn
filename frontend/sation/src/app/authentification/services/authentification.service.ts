@@ -31,4 +31,8 @@ export class AuthentificationService {
     return this.http.post(`${this.apiUrl}/users/register`, user, { observe: 'response', withCredentials: true });
   }
 
+  logout(){
+    return this.http.get(`${this.apiUrl}/users/logout`, { withCredentials: true });
+  }
+
 }
