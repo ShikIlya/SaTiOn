@@ -1,5 +1,6 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Post, Req, Res, UseGuards } from '@nestjs/common';
-import { Response } from 'express';
+import { response, Response } from 'express';
+import { get } from 'http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
@@ -14,6 +15,12 @@ export class UserController {
 
     constructor(private userService: UserService) { }
 
+    @UseGuards(JwtAuthGuard)
+    @Get()
+    logout(@Res() response){
+        return response.clearCokie();
+    }
+
     @Post('register')
     create(@Body() createUserDto: CreateUserDto, @Res() response: Response) {
         return this.userService.create(createUserDto).pipe(map((user: UserI) => {
@@ -27,7 +34,7 @@ export class UserController {
         return this.userService.login(loginUserDto).pipe(
             map((session: SessionI) => {
                 response.cookie('access_token', session.access_token, {
-                    expires: new Date(Date.now() + 100 * 60 * 5),
+                    expires: new Date(Date.now() + 1000 * 60 * 5),
                     httpOnly: true,
                     secure: false,
                 })

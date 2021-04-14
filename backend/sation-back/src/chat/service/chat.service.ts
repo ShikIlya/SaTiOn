@@ -59,6 +59,15 @@ export class ChatService {
     return from(this.messagerepository.save(messageDto));
   }
 
+  getAllChatMessages(chatId: string): Observable<any>{
+    return from(this.chatRepository
+      .createQueryBuilder('chat')
+      .innerJoin('chat.messages', 'message')
+      .where('message.chatId = :id', {id: chatId})
+      .innerJoin('user.messages', 'message')
+      .getMany())
+  }
+
   deleteMessage(messageId: number): Observable<boolean>{
     return from(this.messagerepository.delete({id : messageId})).pipe(
       map((result: DeleteResult)=>{
