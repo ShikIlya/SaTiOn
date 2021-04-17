@@ -12,10 +12,13 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import { DialogNewChatComponent } from './dialog-new-chat/dialog-new-chat.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
+import { ChatsListComponent } from './chats-list/chats-list.component';
+import { ChatsListItemComponent } from './chats-list-item/chats-list-item.component';
+import { UserMenuComponent } from './user-menu/user-menu.component';
 
 
 @NgModule({
-  declarations: [MessengerComponent, ChatComponent, SidebarComponent, DialogNewChatComponent],
+  declarations: [MessengerComponent, ChatComponent, SidebarComponent, DialogNewChatComponent, ChatsListComponent, ChatsListItemComponent, UserMenuComponent],
   imports: [
     CommonModule,
     MessengerRoutingModule,

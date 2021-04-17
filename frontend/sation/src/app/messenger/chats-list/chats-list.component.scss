@@ -1,0 +1,6 @@
+@import "_variables";
+
+.list-chats {
+  overflow-y: overlay;
+  max-height: calc(100vh - 56px - 36px - 6px - 10px - 30px); //исправить под переменные
+}

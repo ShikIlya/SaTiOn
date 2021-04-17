@@ -6,23 +6,27 @@ import { LoginGuard } from './shared/guards/login/login.guard';
 const routes: Routes = [
   {
     path: 'messenger',
-    loadChildren: () => import('./messenger/messenger.module').then(m => m.MessengerModule),
-    canActivate: [AuthGuard]
+    loadChildren: () =>
+      import('./messenger/messenger.module').then((m) => m.MessengerModule),
+    // canActivate: [AuthGuard]
   },
   {
     path: 'authentification',
-    loadChildren: () => import('./authentification/authentification.module').then(m => m.AuthentificationModule),
-    canActivate: [LoginGuard]
+    loadChildren: () =>
+      import('./authentification/authentification.module').then(
+        (m) => m.AuthentificationModule
+      ),
+    // canActivate: [LoginGuard]
   },
   {
     path: '**',
-    redirectTo: '/messenger'
-  }
+    redirectTo: '/messenger',
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
-  providers: [AuthGuard]
+  providers: [AuthGuard],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

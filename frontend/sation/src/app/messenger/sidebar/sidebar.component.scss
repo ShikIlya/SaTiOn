@@ -1,97 +1,40 @@
 @import "_variables";
 .sidebar {
-    &__header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 8px 12px;
-    }
-    &__btn {
-    }
-    &__btn-icon {
-        font-size: 32px;
-        width: 32px;
-    }
-    &__search {
-        font-size: 16px;
-        flex: 0 0 85%;
-        background-color: $inputBg;
-        padding: 6px;
-        border-radius: 4px;
-    }
-    &__new-chat-btn{
-        margin: 6px 0 0 12px;
-    }
-    &__list {
-      margin-top: 10px;
-    }
-}
-.list-chats {
-    overflow-y: overlay;
-    max-height: calc(100vh - 56px - 36px - 6px - 10px - 30px); //исправить под переменные
-    &__channel {
-    }
-}
-.channel {
+  &__header {
     display: flex;
-    flex-direction: row;
+    align-items: center;
     justify-content: space-between;
-    padding: 8px 14px 8px 10px;
-    cursor: pointer;
-    user-select: none;
-    &:hover {
-        background-color: $listHoverBg;
-    }
-    &--active {
-        background-color: $listActiveBg;
-        /*  color: #ffffff; */
-        &:hover {
-            background-color: $listActiveBg;
-            /* color: #ffffff; */
-        }
-        .channel__last-message,
-        .channel__last-time {
-            opacity: 1;
-        }
-    }
-    &__content {
-        display: flex;
-        flex-direction: row;
-    }
-    &__img {
-        border-radius: 50%;
-        background-color: lightblue ;
-        width: 50px;
-        height: 50px;
-    }
-    &__info {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        margin-left: 10px;
-    }
-    &__name {
-        font-weight: 500;
-    }
-    &__last-message {
-        font-weight: 300;
-        opacity: 0.8;
-    }
-    &__last-time {
-        font-family: "Nunito";
-        font-weight: 400;
-        font-size: 14px;
-        opacity: 0.7;
-    }
+    padding: 8px 12px;
+  }
+  &__btn {
+  }
+  &__btn-icon {
+    font-size: 32px;
+    width: 32px;
+  }
+  &__search {
+    font-size: 16px;
+    flex: 0 0 85%;
+    background-color: $inputBg;
+    padding: 6px;
+    border-radius: 4px;
+  }
+  &__new-chat-btn {
+    margin: 6px 0 0 12px;
+  }
+  &__list {
+    margin-top: 10px;
+  }
 }
+
 ::-webkit-scrollbar {
-    width: 4px;
-    height: 4px;
+  width: 4px;
+  height: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: $listScrollColor;
-    &:hover {
-        background-color: $listScrollHoverColor;
-    }
+  background-color: $listScrollColor;
+  &:hover {
+    background-color: $listScrollHoverColor;
+  }
 }
