@@ -1,0 +1,6 @@
+<div class="message" [ngClass]="item.type ? 'message_right': 'message_left'">
+  <div class="message__container" [ngClass]="item.type ? 'message__container_green':'message__container_blue'">
+    <p class="message__content">{{item.message}}</p>
+    <p class="message__time">{{item.time}}</p>
+  </div>
+</div>

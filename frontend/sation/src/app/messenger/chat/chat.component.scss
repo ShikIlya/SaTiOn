@@ -1,122 +1,13 @@
 @import "_variables";
 .chat {
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: auto 1fr auto;
-    min-height: calc(100vh - 30px); //переменные
-    overflow: hidden;
-    gap: 0px 0px;
-    grid-template-areas:
-        "chat-header"
-        "chat-content"
-        "chat-footer";
-    &__header {
-        grid-area: chat-header;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        border-bottom: 1px solid $borderColor;
-        padding: 9px 15px;
-    }
-    &__channel {
-    }
-    &__tools {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-    }
-    &__btn {
-        margin-right: 4px;
-    }
-    &__btn-icon {
-        font-size: 28px;
-        width: 28px;
-    }
-    &__content {
-        grid-area: chat-content;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-end;
-    }
-    &__message {
-        &:not(:first-child) {
-            margin-top: 8px;
-        }
-    }
-    &__footer {
-        grid-area: chat-footer;
-        display: flex;
-        border-top: 1px solid $borderColor;
-        padding: 4px 10px;
-    }
-    &__write-message {
-        flex: 1;
-        margin-left: 10px;
-        resize: none; //??
-    }
-}
-.channel {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    &__name {
-        font-weight: 500;
-    }
-    &__status {
-        font-weight: 400;
-        font-size: 14px;
-    }
-}
-.content {
-    &__container {
-        padding: 12px 15px;
-        overflow-y: auto;
-        max-height: calc(100vh - 59px - 49px - 30px); //переменные
-    }
-}
-.message {
-    display: flex;
-    flex-direction: column;
-    &--left {
-        align-items: flex-start;
-    }
-    &--right {
-        align-items: flex-end;
-    }
-    &__container {
-        display: inline-block;
-        border-radius: 5px;
-        padding: 6px 10px;
-        position: relative;
-        max-width: 390px;
-    }
-    &__container--blue {
-        background: $chatReceivedMesBg;
-    }
-    &__container--green {
-        background: $chatSentMesBg;
-    }
-    &__time {
-        font-family: "Nunito";
-        font-weight: 300;
-        font-size: 12px;
-        text-align: right;
-    }
-    &__content {
-        display: inline-block;
-        font-weight: 400;
-        font-size: 14px;
-        line-height: 20px;
-    }
-}
-::-webkit-scrollbar {
-    width: 4px;
-    height: 4px;
-}
-
-::-webkit-scrollbar-thumb {
-    background-color: $listScrollColor;
-    &:hover {
-        background-color: $listScrollHoverColor;
-    }
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr auto;
+  min-height: calc(100vh - 30px); //переменные
+  overflow: hidden;
+  gap: 0px 0px;
+  grid-template-areas:
+    "chat-header"
+    "chat-content"
+    "chat-footer";
 }

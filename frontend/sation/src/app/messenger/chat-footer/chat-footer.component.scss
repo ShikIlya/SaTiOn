@@ -1,0 +1,28 @@
+@import "_variables";
+.chat {
+  &__footer {
+    grid-area: chat-footer;
+    display: flex;
+    border-top: 1px solid $borderColor;
+    padding: 4px 10px;
+  }
+
+  &__tools {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+  &__btn {
+    margin-right: 4px;
+  }
+  &__btn-icon {
+    font-size: 28px;
+    width: 28px;
+  }
+
+  &__write-message {
+    flex: 1;
+    margin-left: 10px;
+    resize: none; //??
+  }
+}

@@ -26,15 +26,3 @@
     margin-top: 10px;
   }
 }
-
-::-webkit-scrollbar {
-  width: 4px;
-  height: 4px;
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: $listScrollColor;
-  &:hover {
-    background-color: $listScrollHoverColor;
-  }
-}

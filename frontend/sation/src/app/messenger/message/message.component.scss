@@ -1,0 +1,37 @@
+@import "_variables";
+
+.message {
+  display: flex;
+  flex-direction: column;
+  &_left {
+    align-items: flex-start;
+  }
+  &_right {
+    align-items: flex-end;
+  }
+  &__container {
+    display: inline-block;
+    border-radius: 5px;
+    padding: 6px 10px;
+    position: relative;
+    max-width: 390px;
+  }
+  &__container_blue {
+    background: $chatReceivedMesBg;
+  }
+  &__container_green {
+    background: $chatSentMesBg;
+  }
+  &__time {
+    font-family: "Nunito";
+    font-weight: 300;
+    font-size: 12px;
+    text-align: right;
+  }
+  &__content {
+    display: inline-block;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+  }
+}

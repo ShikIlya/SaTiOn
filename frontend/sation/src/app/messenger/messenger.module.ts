@@ -15,10 +15,14 @@ import { MatInputModule } from '@angular/material/input';
 import { ChatsListComponent } from './chats-list/chats-list.component';
 import { ChatsListItemComponent } from './chats-list-item/chats-list-item.component';
 import { UserMenuComponent } from './user-menu/user-menu.component';
+import { MessageComponent } from './message/message.component';
+import { MessagesListComponent } from './messages-list/messages-list.component';
+import { ChatHeaderComponent } from './chat-header/chat-header.component';
+import { ChatFooterComponent } from './chat-footer/chat-footer.component';
 
 
 @NgModule({
-  declarations: [MessengerComponent, ChatComponent, SidebarComponent, DialogNewChatComponent, ChatsListComponent, ChatsListItemComponent, UserMenuComponent],
+  declarations: [MessengerComponent, ChatComponent, SidebarComponent, DialogNewChatComponent, ChatsListComponent, ChatsListItemComponent, UserMenuComponent, MessageComponent, MessagesListComponent, ChatHeaderComponent, ChatFooterComponent],
   imports: [
     CommonModule,
     MessengerRoutingModule,

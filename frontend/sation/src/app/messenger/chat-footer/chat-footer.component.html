@@ -1,0 +1,14 @@
+<div class="chat__footer">
+  <button class="chat__btn" mat-icon-button>
+    <mat-icon class="chat__btn-icon">add_circle_outline</mat-icon>
+  </button>
+  <input class="chat__write-message" #messageInput>
+  <div class="chat__tools">
+    <!-- <button class="chat__btn" mat-icon-button>
+              <mat-icon class="chat__btn-icon">mood</mat-icon>
+          </button> -->
+    <button class="chat__btn" mat-icon-button color="primary">
+      <mat-icon class="chat__btn-icon" (click)="sendMessage(messageInput.value)">send</mat-icon>
+    </button>
+  </div>
+</div>

@@ -1,0 +1,35 @@
+@import "_variables";
+
+.chat {
+  &__content {
+    grid-area: chat-content;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+  &__message {
+    &:not(:first-child) {
+      margin-top: 8px;
+    }
+  }
+}
+
+.content {
+  &__container {
+    padding: 12px 15px;
+    overflow-y: auto;
+    max-height: calc(100vh - 59px - 49px - 30px); //переменные
+  }
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: $listScrollColor;
+  &:hover {
+    background-color: $listScrollHoverColor;
+  }
+}

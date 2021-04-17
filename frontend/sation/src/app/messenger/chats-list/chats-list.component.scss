@@ -4,3 +4,15 @@
   overflow-y: overlay;
   max-height: calc(100vh - 56px - 36px - 6px - 10px - 30px); //исправить под переменные
 }
+
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: $listScrollColor;
+  &:hover {
+    background-color: $listScrollHoverColor;
+  }
+}

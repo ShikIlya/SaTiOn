@@ -1,0 +1,7 @@
+<div class="chat__content content">
+  <div class="content__container" #messagesList [scrollTop]="messagesList.scrollHeight">
+    <ng-container *ngFor="let item of array">
+      <app-message class="chat__message" [item]="item"></app-message>
+    </ng-container>
+  </div>
+</div>
