@@ -9,7 +9,7 @@ import { ChatService } from '../services/chat.service';
   styleUrls: ['./chat.component.scss'],
 })
 export class ChatComponent implements OnInit {
-  messageArray: Message[] = [
+  messages: Message[] = [
     {
       message:
         'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nam reiciendis eos fugit eius animi ex pariatur perferendis earum, deleniti atque consequuntur voluptatibus optioiste, dolores dolorum ipsam ad praesentium dolor!',
@@ -86,7 +86,7 @@ export class ChatComponent implements OnInit {
 
   @ViewChild('messagesList') messagesList: ElementRef;
 
-  constructor(private chatService: ChatService) {}
+  constructor(private chatService: ChatService) { }
 
   ngOnInit(): void {
     this.chatService.onNewMessage().subscribe((msg) => {
