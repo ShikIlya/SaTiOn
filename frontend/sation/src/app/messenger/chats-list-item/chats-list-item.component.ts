@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ChatsListItem } from 'src/app/shared/models/chatsListItem.model';
 
 @Component({
@@ -7,9 +7,16 @@ import { ChatsListItem } from 'src/app/shared/models/chatsListItem.model';
   styleUrls: ['./chats-list-item.component.scss'],
 })
 export class ChatsListItemComponent implements OnInit {
-  @Input() item: ChatsListItem;
+  @Input() chatListItem: ChatsListItem;
+  @Input() currentChatId: string;
+  @Output() currentChatIdOnChange = new EventEmitter<string>();
 
-  constructor() {}
+  constructor() { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
+
+  setChat(id: string) {
+    this.currentChatIdOnChange.emit(id);
+  }
+
 }
