@@ -7,7 +7,7 @@ import { ChatTicketEntity } from '../models/chat-ticket.entity';
 import { ChatTicketI } from '../models/chat-ticket.interface';
 import { ChatEntity } from '../models/chat.entity';
 import { ChatI } from '../models/chat.interface';
-import { ChatTicketDto } from '../models/dto/chat-ticket.dto';
+import { TicketDto } from '../models/dto/chat-ticket.dto';
 import { ChatDto } from '../models/dto/chat.dto';
 import { MessageDto } from '../models/dto/message.dto';
 import { MessageEntity } from '../models/message.entity';
@@ -24,10 +24,19 @@ export class ChatService {
     @InjectRepository(MessageEntity)
     private messagerepository: Repository<MessageI>
   ) { }
-  
+
+  getChatsByUser(id: number): Observable<ChatI[]>{
+    return from(this.chatRepository
+      .createQueryBuilder('chat')
+      .innerJoin('chat.tickets', 'tickets')
+      .where('tickets.memberId = :id', {id: id})
+      .getMany())
+  }
+
   createChat(chatDto: ChatDto): Observable<ChatI>{
     return from(this.chatRepository.save(chatDto));
   }
+
 
   deleteChat(chatId: string): Observable<boolean>{
     return from(this.chatRepository.delete({id : chatId})).pipe(
@@ -40,9 +49,13 @@ export class ChatService {
     )
   }
   
-  createTicket(ticketDto: ChatTicketDto): Observable<ChatTicketI>{
+  createOneTicket(ticketDto: TicketDto): Observable<ChatTicketI>{
     return from(this.ticketRepository.save(ticketDto));
   }
+
+  // createManyTickets(): Observable<ChatTicketI[]>{
+  //   return from(this.ticketRepository.save());
+  // }
 
   deleteTicket(ticketId: number): Observable<boolean>{
     return from(this.ticketRepository.delete({id : ticketId})).pipe(

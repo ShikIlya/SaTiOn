@@ -47,7 +47,6 @@ export class AuthService {
             .where('refresh.token = :token', { token: refresh })
             .getOne()).pipe(
                 map((user: UserI) => {
-                    console.log(user);
                     return user;
                 })
             )

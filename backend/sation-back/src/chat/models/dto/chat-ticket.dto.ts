@@ -1,4 +1,4 @@
-export class ChatTicketDto {
+export class TicketDto {
   chatId: string;
   memberId: number;
 }

@@ -38,7 +38,6 @@ export class SessionGuard implements CanActivate {
                                 httpOnly: true,
                                 secure: false,
                             })
-                            console.log('ass1');
                             response.user = user;
                             return true;
                         })

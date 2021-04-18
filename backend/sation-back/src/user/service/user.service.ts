@@ -75,7 +75,6 @@ export class UserService {
     generateSession(user: UserI): Observable<SessionI> {
         return this.findOne(user.id).pipe(
             switchMap((user: UserI) => {
-                console.log('ya zdes bil')
                 return this.authService.generateJwt(user, '300s').pipe(
                     switchMap((jwt: string) => {
                         return this.authService.makeRefreshToken(user.id).pipe(
@@ -100,8 +99,19 @@ export class UserService {
         return from(this.userRepository.find());
     }
 
-    findOneByLogin(login: string): Observable<UserI> {
-        return from(this.userRepository.findOne({ login}));
+    checkLogin(login: string): Observable<UserI> {
+        console.log(login);
+        return from(this.userRepository.findOne({login}))
+        .pipe(
+            map((user: UserI) => {
+                if (user){
+                    console.log(user);
+                    return user;
+                }
+                else
+                throw new HttpException("User not found, Nigga!", HttpStatus.NOT_FOUND);
+            })
+        )
     }
 
     private findUserByEmail(email: string): Observable<UserI> {
