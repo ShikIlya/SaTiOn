@@ -1,14 +1,21 @@
 <div class="dialog-new-chat">
   <form class="dialog-new-chat__form form" (ngSubmit)="onSubmit()" [formGroup]="newChatFormGroup">
     <mat-form-field class="form__field" appearance="standard">
-        <mat-label class="form__label">Название чата</mat-label>
-        <input class="form__input" matInput formControlName="chatName">
+      <mat-label class="form__label">Название чата</mat-label>
+      <input class="form__input" matInput formControlName="chatName">
     </mat-form-field>
     <mat-form-field class="form__field" appearance="standard">
       <mat-label class="form__label">Пригласить пользователя (логин)</mat-label>
       <input class="form__input" matInput formControlName="inviteLogin">
-  </mat-form-field>
-    <button class="form__action" mat-flat-button type="submit" color="primary" (click)="createChat()">Создать</button>
-    <button class="form__action" mat-flat-button mat-dialog-close color="warn">Отмена</button>
-</form>
+    </mat-form-field>
+    <div class="form__actions">
+      <div class="form__action">
+        <button class="form__action-btn" mat-flat-button mat-dialog-close color="warn">Отмена</button>
+      </div>
+      <div class="form__action">
+        <button class="form__action-btn" mat-flat-button type="submit" color="primary"
+          (click)="createChat()">Создать</button>
+      </div>
+    </div>
+  </form>
 </div>
