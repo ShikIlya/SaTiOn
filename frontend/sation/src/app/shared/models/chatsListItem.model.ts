@@ -1,6 +1,4 @@
 export interface ChatsListItem {
+  id: string;
   name: string;
-  lastMessage: string;
-  lastMessageTime: string;
-  active: boolean;
 }

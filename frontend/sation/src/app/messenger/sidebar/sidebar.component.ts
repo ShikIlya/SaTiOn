@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 import { AuthentificationService } from 'src/app/authentification/services/authentification.service';
 import { ChatsListItem } from 'src/app/shared/models/chatsListItem.model';
+import { CreateChat } from 'src/app/shared/models/createChat.model';
 import { DialogNewChatComponent } from '../dialog-new-chat/dialog-new-chat.component';
+import { ChatService } from '../services/chat.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -11,34 +14,18 @@ import { DialogNewChatComponent } from '../dialog-new-chat/dialog-new-chat.compo
   styleUrls: ['./sidebar.component.scss'],
 })
 export class SidebarComponent implements OnInit {
-  listArray: ChatsListItem[] = [
-    {
-      name: 'Vasia',
-      lastMessage: 'Привет',
-      lastMessageTime: '19:30',
-      active: false,
-    },
-    {
-      name: 'Petya',
-      lastMessage: 'Пока',
-      lastMessageTime: '19:21',
-      active: true,
-    },
-    {
-      name: '3 курс',
-      lastMessage: 'ыивоамраповипшриваприваршип апвпьавлптвалдт  тапот',
-      lastMessageTime: '19:34',
-      active: false,
-    },
-  ];
+  chatsList: Observable<ChatsListItem[]>;
 
   constructor(
     private authService: AuthentificationService,
     private router: Router,
-    public dialog: MatDialog
-  ) {}
+    public dialog: MatDialog,
+    private chatService: ChatService
+  ) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.getUserChats();
+  }
 
   logout() {
     this.authService.logout().subscribe((res) => {
@@ -50,7 +37,18 @@ export class SidebarComponent implements OnInit {
     const dialogRef = this.dialog.open(DialogNewChatComponent);
 
     dialogRef.afterClosed().subscribe((result) => {
-      if (result) console.log(result);
+      if (result) this.createChat(result);
     });
   }
+
+  getUserChats() {
+    this.chatsList = this.chatService.getUserChats();
+  }
+
+  createChat(data: CreateChat) {
+    this.chatService.createChat(data).subscribe(res => {
+      this.getUserChats();
+    })
+  }
+
 }

@@ -8,7 +8,7 @@ const routes: Routes = [
     path: 'messenger',
     loadChildren: () =>
       import('./messenger/messenger.module').then((m) => m.MessengerModule),
-    // canActivate: [AuthGuard]
+    canActivate: [AuthGuard]
   },
   {
     path: 'authentification',
@@ -16,7 +16,7 @@ const routes: Routes = [
       import('./authentification/authentification.module').then(
         (m) => m.AuthentificationModule
       ),
-    // canActivate: [LoginGuard]
+    canActivate: [LoginGuard]
   },
   {
     path: '**',
@@ -29,4 +29,4 @@ const routes: Routes = [
   exports: [RouterModule],
   providers: [AuthGuard],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

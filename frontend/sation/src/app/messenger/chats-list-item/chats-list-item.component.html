@@ -1,13 +1,12 @@
-<li [ngClass]="item.active ? 'channel channel_active': 'channel'">
+<li class="channel">
   <div class="channel__content">
     <div class="channel__img">
     </div>
     <div class="channel__info">
       <span class="channel__name">{{item.name}}</span>
-      <span class="channel__last-message">{{item.lastMessage}}</span>
+      <span class="channel__last-message">Сообщение</span>
     </div>
   </div>
-  <div class="channel__last-time">
-    {{item.lastMessageTime}}
-  </div>
+  <div class="channel__last-time">14:27</div>
 </li>
+<!-- [ngClass]="item.active ? 'channel channel_active': 'channel'" -->

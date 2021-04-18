@@ -25,13 +25,12 @@ export class DialogNewChatComponent implements OnInit {
   initializeLoginForm() {
     this.newChatFormGroup = this.fb.group({
       "chatName": ["", [Validators.required]],
-      "inviteLogin": ["", [Validators.required]],
+      "invitedLogin": ["", [Validators.required]],
     });
   }
 
   createChat() {
     if (this.newChatFormGroup.valid) {
-      console.log(this.newChatFormGroup.value);
       this.dialogRef.close(this.newChatFormGroup.value);
     }
   }

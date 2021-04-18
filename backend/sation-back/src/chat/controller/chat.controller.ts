@@ -17,22 +17,22 @@ export class ChatController {
   constructor(
     private chatService: ChatService,
     private userService: UserService
-  ){}
-  
+  ) { }
+
   @UseGuards(JwtAuthGuard)
   @Post('create')
-  createTwoPersonChat(@Body() inv: TwoPersonChatDto, @Req() req){
+  createTwoPersonChat(@Body() inv: TwoPersonChatDto, @Req() req) {
     return this.userService.checkLogin(inv.invitedLogin)
       .pipe(
-        switchMap((user: UserI)=>{
-          return this.chatService.createChat({...ChatDto, name: inv.name, creatorId: inv.creatorId}).pipe(
-            switchMap((chat: ChatI)=>{
+        switchMap((user: UserI) => {
+          return this.chatService.createChat({ ...ChatDto, name: inv.chatName, creatorId: req.user.id }).pipe(
+            switchMap((chat: ChatI) => {
               return forkJoin([
-                this.chatService.createOneTicket({...TicketDto, chatId: chat.id, memberId: user.id}),
-                this.chatService.createOneTicket({...TicketDto, chatId: chat.id, memberId: inv.creatorId})
+                this.chatService.createOneTicket({ ...TicketDto, chatId: chat.id, memberId: user.id }),
+                this.chatService.createOneTicket({ ...TicketDto, chatId: chat.id, memberId: req.user.id })
               ]).pipe(
-                map((tickets: ChatTicketI[])=>{
-                    return tickets;
+                map((tickets: ChatTicketI[]) => {
+                  return tickets;
                 })
               )
             })
@@ -42,8 +42,8 @@ export class ChatController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('your_chats')
-  getYourChats(@Req() req){
+  @Get()
+  getYourChats(@Req() req) {
     return this.chatService.getChatsByUser(req.user.id)
   }
 
