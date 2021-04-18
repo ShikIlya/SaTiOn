@@ -34,7 +34,7 @@ export class SidebarComponent implements OnInit {
   }
 
   openDialogNewChat() {
-    const dialogRef = this.dialog.open(DialogNewChatComponent);
+    const dialogRef = this.dialog.open(DialogNewChatComponent, { restoreFocus: false });
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) this.createChat(result);
