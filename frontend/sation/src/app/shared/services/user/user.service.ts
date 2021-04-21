@@ -12,7 +12,10 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
-
+  /**
+   * Получить авторизованного пользователя
+   * @returns Пользователь типа User
+   */
   getUser(): Observable<User> {
     return this.http.get<User>(`${this.apiUrl}/users`, { withCredentials: true });
   }

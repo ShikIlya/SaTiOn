@@ -10,6 +10,10 @@ import { catchError, map } from 'rxjs/operators';
 export class AuthGuard implements CanActivate {
   constructor(private authService: AuthentificationService, private router: Router) { }
 
+  /**
+   * Проверка возможности перехода на маршрут "Мессенджер"
+   * @returns True или false
+   */
   canActivate(): Observable<boolean> {
     return this.authService.isAuthenticated().pipe(map((response) => {
       return response;

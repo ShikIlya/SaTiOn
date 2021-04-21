@@ -10,10 +10,14 @@ import { AuthentificationService } from 'src/app/authentification/services/authe
 })
 export class LoginGuard implements CanActivate {
   constructor(private authService: AuthentificationService, private router: Router) { }
-  
+
+  /**
+ * Проверка возможности перехода на маршрут "Авторизация"
+ * @returns True или false
+ */
   canActivate(): Observable<boolean> {
     return this.authService.isAuthenticated().pipe(map((response) => {
-      if(response){
+      if (response) {
         this.router.navigate(['/messenger']);
         return false;
       }

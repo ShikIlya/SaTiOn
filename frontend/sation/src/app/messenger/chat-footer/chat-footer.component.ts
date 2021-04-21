@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ChatService } from '../services/chat.service';
+import { ChatService } from '../services/chat/chat.service';
 
 @Component({
   selector: 'app-chat-footer',
@@ -7,9 +7,9 @@ import { ChatService } from '../services/chat.service';
   styleUrls: ['./chat-footer.component.scss'],
 })
 export class ChatFooterComponent implements OnInit {
-  constructor(private chatService: ChatService) {}
+  constructor(private chatService: ChatService) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   sendMessage(data: any) {
     this.chatService.sendMessage(data);

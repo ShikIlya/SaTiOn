@@ -6,7 +6,7 @@ import { AuthentificationService } from 'src/app/authentification/services/authe
 import { ChatsListItem } from 'src/app/shared/models/chatsListItem.model';
 import { CreateChat } from 'src/app/shared/models/createChat.model';
 import { DialogNewChatComponent } from '../dialog-new-chat/dialog-new-chat.component';
-import { ChatService } from '../services/chat.service';
+import { ChatService } from '../services/chat/chat.service';
 
 @Component({
   selector: 'app-sidebar',

@@ -1,7 +1,7 @@
 import { ElementRef } from '@angular/core';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Message } from 'src/app/shared/models/message.model';
-import { ChatService } from '../services/chat.service';
+import { ChatService } from '../services/chat/chat.service';
 
 @Component({
   selector: 'app-chat',
