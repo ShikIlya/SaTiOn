@@ -3,15 +3,15 @@ import { RouterModule, Routes } from '@angular/router';
 import { MessengerComponent } from './messenger.component';
 
 
-const routes: Routes = [
-    {
-        path: '',
-        component: MessengerComponent
-    }
+const MESSENGER_ROUTES: Routes = [
+  {
+    path: '',
+    component: MessengerComponent
+  }
 ];
 
 @NgModule({
-    imports: [RouterModule.forChild(routes)],
-    exports: [RouterModule]
+  imports: [RouterModule.forChild(MESSENGER_ROUTES)],
+  exports: [RouterModule]
 })
 export class MessengerRoutingModule { }
