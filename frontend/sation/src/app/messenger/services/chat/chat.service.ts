@@ -48,7 +48,6 @@ export class ChatService {
   /**
 * Создание чата
 * @param data Имя чата и приглашенный логин пользователя
-* @returns Список чатов пользователя
 */
   createChat(data: CreateChat) {
     return this.http.post(`${this.apiUrl}/chat/create`, data, { withCredentials: true });
