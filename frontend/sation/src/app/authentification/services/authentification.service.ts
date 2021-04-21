@@ -19,10 +19,6 @@ export class AuthentificationService {
     return this.http.post(`${this.apiUrl}/users/login`, user, { observe: 'response', withCredentials: true });
   }
 
-  getUser(): Observable<User> {
-    return this.http.get<User>(`${this.apiUrl}/users`, { withCredentials: true });
-  }
-
   isAuthenticated(): Observable<boolean> {
     return this.http.get<boolean>(`${this.apiUrl}/users/is_auth`, { withCredentials: true });
   }
@@ -31,7 +27,7 @@ export class AuthentificationService {
     return this.http.post(`${this.apiUrl}/users/register`, user, { observe: 'response', withCredentials: true });
   }
 
-  logout(){
+  logout() {
     return this.http.get(`${this.apiUrl}/users/logout`, { withCredentials: true });
   }
 

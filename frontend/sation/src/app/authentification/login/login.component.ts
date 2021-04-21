@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthentificationService } from 'src/app/authentification/services/authentification.service';
+import { UserService } from 'src/app/shared/services/user/user.service';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +15,7 @@ export class LoginComponent implements OnInit {
   loginFormGroup: FormGroup;
 
 
-  constructor(private router: Router, private fb: FormBuilder, private authService: AuthentificationService) {
+  constructor(private router: Router, private fb: FormBuilder, private authService: AuthentificationService, private userService: UserService) {
     this.initializeLoginForm();
   }
 
@@ -40,7 +41,7 @@ export class LoginComponent implements OnInit {
     if (this.loginFormGroup.valid)
       this.authService.login(this.loginFormGroup.value).subscribe(response => {
         if (response.status === 202)
-          this.authService.getUser().subscribe(res => {
+          this.userService.getUser().subscribe(res => {
             this.router.navigate(['/messenger']);
           });
       });
