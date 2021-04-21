@@ -86,9 +86,12 @@ export class ChatComponent implements OnInit {
 
   @ViewChild('messagesList') messagesList: ElementRef;
 
-  constructor(private chatService: ChatService) { }
+  constructor(private chatService: ChatService) {}
 
   ngOnInit(): void {
+    /**
+     * Получение новых сообщений в socket
+     */
     this.chatService.onNewMessage().subscribe((msg) => {
       console.log('got a message: ' + msg);
     });

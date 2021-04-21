@@ -21,34 +21,51 @@ export class SidebarComponent implements OnInit {
     private router: Router,
     public dialog: MatDialog,
     private chatService: ChatService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.getUserChats();
   }
 
+  /**
+   * Выход пользователя из системы
+   */
   logout() {
     this.authService.logout().subscribe((res) => {
       this.router.navigate(['/authentification/login']);
     });
   }
 
+  /**
+   * Открытие модального окна создания нового чата
+   */
   openDialogNewChat() {
-    const dialogRef = this.dialog.open(DialogNewChatComponent, { restoreFocus: false });
+    const dialogRef = this.dialog.open(DialogNewChatComponent, {
+      restoreFocus: false,
+    });
 
+    /**
+     * Подписка на получение результата из модального окна
+     */
     dialogRef.afterClosed().subscribe((result) => {
       if (result) this.createChat(result);
     });
   }
 
+  /**
+   * Получение чатов пользователя
+   */
   getUserChats() {
     this.chatsList = this.chatService.getUserChats();
   }
 
+  /**
+   * Создание чата
+   * @param data Название чата и логин приглашенного пользователя
+   */
   createChat(data: CreateChat) {
-    this.chatService.createChat(data).subscribe(res => {
+    this.chatService.createChat(data).subscribe((res) => {
       this.getUserChats();
-    })
+    });
   }
-
 }

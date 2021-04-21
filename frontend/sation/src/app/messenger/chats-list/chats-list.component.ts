@@ -7,15 +7,21 @@ import { ChatsListItem } from 'src/app/shared/models/chatsListItem.model';
   styleUrls: ['./chats-list.component.scss'],
 })
 export class ChatsListComponent implements OnInit {
+  /**
+   * Список чатов пользователя
+   */
   @Input() userChats: ChatsListItem[];
   currentChatId: string = null;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 
+  /**
+   * Замена активного чата
+   * @param id Идентификатор чата
+   */
   setCurrentChatId(id: string) {
     this.currentChatId = id;
   }
-
 }

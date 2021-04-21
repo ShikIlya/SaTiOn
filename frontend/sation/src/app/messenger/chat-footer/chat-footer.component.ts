@@ -7,10 +7,14 @@ import { ChatService } from '../services/chat/chat.service';
   styleUrls: ['./chat-footer.component.scss'],
 })
 export class ChatFooterComponent implements OnInit {
-  constructor(private chatService: ChatService) { }
+  constructor(private chatService: ChatService) {}
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 
+  /**
+   * Отправка сообщения
+   * @param data Сообщение
+   */
   sendMessage(data: any) {
     this.chatService.sendMessage(data);
   }
