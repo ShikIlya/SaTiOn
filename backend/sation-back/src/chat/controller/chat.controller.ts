@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
-import { forkJoin, from } from 'rxjs';
+import { forkJoin, from, Observable } from 'rxjs';
 import { map, mergeMap, switchMap } from 'rxjs/operators';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { UserI } from 'src/user/models/user.interface';
@@ -19,6 +19,11 @@ export class ChatController {
     private userService: UserService
   ) { }
 
+  /**
+   * Создать чат с двумя человеками
+   * @param inv Вводные параметры в форме TwoPersonChatDto
+   * @returns массив ticket'ов 
+   */
   @UseGuards(JwtAuthGuard)
   @Post('create')
   createTwoPersonChat(@Body() inv: TwoPersonChatDto, @Req() req) {
@@ -41,9 +46,13 @@ export class ChatController {
       )
   }
 
+  /**
+   * Получить чаты текущего пользователя
+   * @returns массив чатов ChatI
+   */
   @UseGuards(JwtAuthGuard)
   @Get()
-  getYourChats(@Req() req) {
+  getYourChats(@Req() req): Observable<ChatI[]> {
     return this.chatService.getChatsByUser(req.user.id)
   }
 

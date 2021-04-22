@@ -25,22 +25,36 @@ export class ChatService {
     private messagerepository: Repository<MessageI>
   ) { }
 
-  getChatsByUser(id: number): Observable<ChatI[]>{
+  /**
+   * Получить чаты пользователя
+   * @param id id пользователя
+   * @returns Массив чатов ChatI[]
+   */
+  getChatsByUser(id: number): Observable<ChatI[]> {
     return from(this.chatRepository
       .createQueryBuilder('chat')
       .innerJoin('chat.tickets', 'tickets')
-      .where('tickets.memberId = :id', {id: id})
+      .where('tickets.memberId = :id', { id: id })
       .getMany())
   }
 
-  createChat(chatDto: ChatDto): Observable<ChatI>{
+  /**
+   * Создать чат
+   * @param chatDto вводные данные чата
+   * @returns чат в форме ChatI
+   */
+  createChat(chatDto: ChatDto): Observable<ChatI> {
     return from(this.chatRepository.save(chatDto));
   }
 
-
-  deleteChat(chatId: string): Observable<boolean>{
-    return from(this.chatRepository.delete({id : chatId})).pipe(
-      map((result: DeleteResult)=>{
+  /**
+   * Удалить чат
+   * @param chatId id чата
+   * @returns true/false
+   */
+  deleteChat(chatId: string): Observable<boolean> {
+    return from(this.chatRepository.delete({ id: chatId })).pipe(
+      map((result: DeleteResult) => {
         if (result.affected)
           return true;
         else
@@ -48,18 +62,24 @@ export class ChatService {
       })
     )
   }
-  
-  createOneTicket(ticketDto: TicketDto): Observable<ChatTicketI>{
+
+  /**
+   * Создать ticket
+   * @param ticketDto вводные данные ticket'a
+   * @returns ChatTicketI
+   */
+  createOneTicket(ticketDto: TicketDto): Observable<ChatTicketI> {
     return from(this.ticketRepository.save(ticketDto));
   }
 
-  // createManyTickets(): Observable<ChatTicketI[]>{
-  //   return from(this.ticketRepository.save());
-  // }
-
-  deleteTicket(ticketId: number): Observable<boolean>{
-    return from(this.ticketRepository.delete({id : ticketId})).pipe(
-      map((result: DeleteResult)=>{
+  /**
+   * Удалить ticket
+   * @param ticketId id ticket'a
+   * @returns true/false
+   */
+  deleteTicket(ticketId: number): Observable<boolean> {
+    return from(this.ticketRepository.delete({ id: ticketId })).pipe(
+      map((result: DeleteResult) => {
         if (result.affected)
           return true;
         else
@@ -68,22 +88,37 @@ export class ChatService {
     )
   }
 
-  sendMessage(messageDto: MessageDto): Observable<MessageI>{
+  /**
+   * Сохранить сообщение
+   * @param messageDto данные сообщения
+   * @returns сообщение в форме MessageI
+   */
+  sendMessage(messageDto: MessageDto): Observable<MessageI> {
     return from(this.messagerepository.save(messageDto));
   }
 
-  getAllChatMessages(chatId: string): Observable<any>{
+  /**
+   * Получуть все сообщения чата
+   * @param chatId id чата
+   * @returns чат с сообщениями
+   */
+  getAllChatMessages(chatId: string): Observable<ChatI[]> {
     return from(this.chatRepository
       .createQueryBuilder('chat')
       .innerJoin('chat.messages', 'message')
-      .where('message.chatId = :id', {id: chatId})
+      .where('message.chatId = :id', { id: chatId })
       .innerJoin('user.messages', 'message')
       .getMany())
   }
 
-  deleteMessage(messageId: number): Observable<boolean>{
-    return from(this.messagerepository.delete({id : messageId})).pipe(
-      map((result: DeleteResult)=>{
+  /**
+   * Удалить сообщения
+   * @param messageId id сообщения
+   * @returns true/false
+   */
+  deleteMessage(messageId: number): Observable<boolean> {
+    return from(this.messagerepository.delete({ id: messageId })).pipe(
+      map((result: DeleteResult) => {
         if (result.affected)
           return true;
         else

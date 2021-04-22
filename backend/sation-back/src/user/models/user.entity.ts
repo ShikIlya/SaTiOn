@@ -7,40 +7,40 @@ import { BeforeInsert, Column, CreateDateColumn, Entity, Generated, OneToMany, P
 @Entity()
 export class UserEntity {
 
-    @BeforeInsert()
-    doSomeMagic() {
-        this.email = this.email.toLocaleLowerCase();
-        this.nickname = this.login;
-        this.login = this.login.toLocaleLowerCase();
-    }
+  @BeforeInsert()
+  doSomeMagic() {
+    this.email = this.email.toLocaleLowerCase();
+    this.nickname = this.login;
+    this.login = this.login.toLocaleLowerCase();
+  }
 
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column({ unique: true, length: 50 })
-    login: string;
+  @Column({ unique: true, length: 50 })
+  login: string;
 
-    @Column({ unique: true, length: 100 })
-    email: string
+  @Column({ unique: true, length: 100 })
+  email: string
 
-    @Column({ select: false })
-    password: string
+  @Column({ select: false })
+  password: string
 
-    @Column({ length: 125, nullable: true })
-    nickname: string
+  @Column({ length: 125, nullable: true })
+  nickname: string
 
-    @CreateDateColumn({ select: false })
-    creationTime: string;
+  @CreateDateColumn({ select: false })
+  creationTime: string;
 
-    @OneToMany(type => RefreshTokenEntity, refresh => refresh.userId)
-    refresh_tokens: RefreshTokenEntity[];
+  @OneToMany(type => RefreshTokenEntity, refresh => refresh.userId)
+  refresh_tokens: RefreshTokenEntity[];
 
-    @OneToMany(type => ChatEntity, chat => chat.creatorId)
-    chats: ChatEntity[];
+  @OneToMany(type => ChatEntity, chat => chat.creatorId)
+  chats: ChatEntity[];
 
-    @OneToMany(type => MessageEntity, message => message.senderId)
-    messages: MessageEntity[];
+  @OneToMany(type => MessageEntity, message => message.senderId)
+  messages: MessageEntity[];
 
-    @OneToMany(type => ChatTicketEntity, ticket => ticket.memberId)
-    tickets: ChatTicketEntity[];
+  @OneToMany(type => ChatTicketEntity, ticket => ticket.memberId)
+  tickets: ChatTicketEntity[];
 }

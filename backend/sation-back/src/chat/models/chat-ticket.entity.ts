@@ -8,11 +8,11 @@ export class ChatTicketEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(type => ChatEntity, chat => chat.tickets, {nullable: false})
+  @ManyToOne(type => ChatEntity, chat => chat.tickets, { nullable: false })
   @JoinColumn({ name: "chatId", referencedColumnName: "id" })
   chatId: string;
-  
-  @ManyToOne( type => UserEntity, user => user.tickets, {nullable: false})
+
+  @ManyToOne(type => UserEntity, user => user.tickets, { nullable: false })
   @JoinColumn({ name: "memberId", referencedColumnName: "id" })
   memberId: number;
 

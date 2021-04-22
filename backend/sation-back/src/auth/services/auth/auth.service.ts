@@ -15,70 +15,104 @@ const bcrypt = require('bcrypt');
 @Injectable()
 export class AuthService {
 
-    constructor(
-        private readonly jwtService: JwtService,
-        @InjectRepository(RefreshTokenEntity)
-        private refreshRepository: Repository<RefreshTokenI>,
-        @InjectRepository(UserEntity)
-        private userRepository: Repository<UserI>
-    ) { }
+  constructor(
+    private readonly jwtService: JwtService,
+    @InjectRepository(RefreshTokenEntity)
+    private refreshRepository: Repository<RefreshTokenI>,
+    @InjectRepository(UserEntity)
+    private userRepository: Repository<UserI>
+  ) { }
 
-    makeRefreshToken(userId: number): Observable<RefreshTokenI> {
-        return from(this.refreshRepository.save(
-            this.refreshRepository.create(this.generateRefreshTokenDto(userId)))
-        )
-    }
+  /**
+   * Создать Refresh Token
+   * @param userId id пользователя
+   * @returns RefreshTokenI
+   */
+  makeRefreshToken(userId: number): Observable<RefreshTokenI> {
+    return from(this.refreshRepository.save(
+      this.refreshRepository.create(this.generateRefreshTokenDto(userId)))
+    )
+  }
 
-    deleteRefreshToken(token: string, userId: number): Observable<boolean> {
-        return from(this.refreshRepository.delete({ token, userId })).pipe(
-            map((result: DeleteResult) => {
-                if (result.affected)
-                    return true;
-                else
-                    return false;
-            })
-        )
-    }
+  /**
+   * Удалить Refresh Token из бд
+   * @param token значение токена
+   * @param userId id пользователя
+   * @returns true/false
+   */
+  deleteRefreshToken(token: string, userId: number): Observable<boolean> {
+    return from(this.refreshRepository.delete({ token, userId })).pipe(
+      map((result: DeleteResult) => {
+        if (result.affected)
+          return true;
+        else
+          return false;
+      })
+    )
+  }
 
-    getUserByToken(refresh: string): Observable<UserI> {
-        return from(this.userRepository
-            .createQueryBuilder('user')
-            .innerJoin('user.refresh_tokens', 'refresh')
-            .where('refresh.token = :token', { token: refresh })
-            .getOne()).pipe(
-                map((user: UserI) => {
-                    return user;
-                })
-            )
-    }
+  /**
+   * Получить пользователя по токену
+   * @param refresh значение токена
+   * @returns пользователя в формате UserI
+   */
+  getUserByToken(refresh: string): Observable<UserI> {
+    return from(this.userRepository
+      .createQueryBuilder('user')
+      .innerJoin('user.refresh_tokens', 'refresh')
+      .where('refresh.token = :token', { token: refresh })
+      .getOne()).pipe(
+        map((user: UserI) => {
+          return user;
+        })
+      )
+  }
 
-    generateRefreshTokenDto(userId?: number): RefreshTokenDto {
-        let date = new Date();
-        date.setDate(date.getDate() + 15);
-        const refreshTokenDto: RefreshTokenDto = {
-            token: uuidv4(),
-            expireDate: date
-        }
-        if (userId) {
-            refreshTokenDto.userId = userId;
-        }
-        return refreshTokenDto;
+  /**
+   * Сгенерировать вводные данные для Refresh Token
+   * @param userId необязательный id пользователя
+   * @returns RefreshTokenDto
+   */
+  generateRefreshTokenDto(userId?: number): RefreshTokenDto {
+    let date = new Date();
+    date.setDate(date.getDate() + 15);
+    const refreshTokenDto: RefreshTokenDto = {
+      token: uuidv4(),
+      expireDate: date
     }
+    if (userId) {
+      refreshTokenDto.userId = userId;
+    }
+    return refreshTokenDto;
+  }
 
-    generateJwt(user: UserI, expireTime: string): Observable<string> {
-        return from(this.jwtService.signAsync({ user }, { expiresIn: expireTime }));
-    }
+  /**
+   * Сгенерировать JWT
+   * @param data данные в строковом или JSON виде
+   * @param expireTime значение времени в виде строки
+   * @returns строку с JWT
+   */
+  generateJwt(data: any, expireTime: string): Observable<string> {
+    return from(this.jwtService.signAsync({ data }, { expiresIn: expireTime }));
+  }
 
-    generateRefresh(token: string, expireTime: string): Observable<string> {
-        return from(this.jwtService.signAsync({ token }, { expiresIn: expireTime }))
-    }
+  /**
+   * Захэшировать пароль
+   * @param password пароль в виде строки
+   * @returns хэш пароля
+   */
+  hashPassword(password: string): Observable<string> {
+    return from<string>(bcrypt.hash(password, 13));
+  }
 
-    hashPassword(password: string): Observable<string> {
-        return from<string>(bcrypt.hash(password, 13));
-    }
-
-    comparePassword(password: string, storedPassHash: string): Observable<any> {
-        return from(bcrypt.compare(password, storedPassHash));
-    }
+  /**
+   * Сравнить хэш паролей
+   * @param password приходящий пароль
+   * @param storedPassHash хранимый пароль
+   * @returns true/false
+   */
+  comparePassword(password: string, storedPassHash: string): Observable<any> {
+    return from(bcrypt.compare(password, storedPassHash));
+  }
 
 }

@@ -9,14 +9,14 @@ export class MessageEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({length: 500, nullable: false})
+  @Column({ length: 500, nullable: false })
   content: string;
-  
-  @ManyToOne(type => ChatEntity, chat => chat.messages, {nullable: false})
+
+  @ManyToOne(type => ChatEntity, chat => chat.messages, { nullable: false })
   @JoinColumn({ name: "chatId", referencedColumnName: "id" })
   chatId: string
 
-  @ManyToOne(type => UserEntity, user => user.messages, {nullable: false})
+  @ManyToOne(type => UserEntity, user => user.messages, { nullable: false })
   @JoinColumn({ name: "senderId", referencedColumnName: "id" })
   senderId: number;
 

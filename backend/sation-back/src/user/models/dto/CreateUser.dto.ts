@@ -3,7 +3,7 @@ import { LoginUserDto } from "./LoginUser.dto";
 
 export class CreateUserDto extends LoginUserDto {
 
-    @IsString()
-    login: string;
+  @IsString()
+  login: string;
 
 }

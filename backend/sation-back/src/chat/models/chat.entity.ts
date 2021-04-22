@@ -9,13 +9,13 @@ export class ChatEntity {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
-  @Column({ unique: false})
+  @Column({ unique: false })
   name: string;
 
-  @ManyToOne(type => UserEntity, user => user.chats, {nullable: false})
+  @ManyToOne(type => UserEntity, user => user.chats, { nullable: false })
   @JoinColumn({ name: "creatorId", referencedColumnName: "id" })
   creatorId: number;
-  
+
   @OneToMany(type => ChatTicketEntity, ticket => ticket.chatId)
   tickets: ChatEntity[];
 

@@ -14,128 +14,170 @@ import { SessionI } from 'src/auth/models/session.interface';
 @Injectable()
 export class UserService {
 
-    constructor(
-        @InjectRepository(UserEntity)
-        private userRepository: Repository<UserI>,
-        private authService: AuthService
-    ) { }
+  constructor(
+    @InjectRepository(UserEntity)
+    private userRepository: Repository<UserI>,
+    private authService: AuthService
+  ) { }
 
-    create(createUserDto: CreateUserDto): Observable<UserI> {
-        return this.mailExists(createUserDto.email.toLowerCase()).pipe(
-            switchMap((mailExists: boolean) => {
-                if (!mailExists) {
-                    return this.loginExists(createUserDto.login.toLowerCase()).pipe(
-                        switchMap((loginExists: boolean) => {
-                            if (!loginExists) {
-                                return this.authService.hashPassword(createUserDto.password).pipe(
-                                    switchMap((passHash: string) => {
-                                        createUserDto.password = passHash;
-                                        return from(this.userRepository.save(
-                                            this.userRepository.create(createUserDto)
-                                        )).pipe(
-                                            map((savedUser: UserI) => {
-                                                const { id, password, creationTime, updateTime, ...user } = savedUser;
-                                                return user;
-                                            })
-                                        )
-                                    })
-                                )
-                            } else {
-                                throw new HttpException("Login zanyat", HttpStatus.CONFLICT);
-                            }
-                        }))
-
-                } else {
-                    throw new HttpException("Email zanyat", HttpStatus.CONFLICT);
-                }
-            })
-        )
-    }
-
-    login(loginUserDto: LoginUserDto): Observable<SessionI> {
-        return this.findUserByEmail(loginUserDto.email).pipe(
-            switchMap((user: UserI) => {
-                if (user) {
-                    return this.validatePassword(loginUserDto.password, user.password).pipe(
-                        switchMap((match: boolean) => {
-                            if (match) {
-                                return this.generateSession(user);
-                            } else {
-                                throw new HttpException('Login failed!', HttpStatus.UNAUTHORIZED);
-                            }
-                        })
+  /**
+   * Создать нового пользователя
+   * @param createUserDto данные регистрации
+   * @returns новый пользователь в формате UserI / ошибка
+   */
+  create(createUserDto: CreateUserDto): Observable<UserI> {
+    return this.mailExists(createUserDto.email.toLowerCase()).pipe(
+      switchMap((mailExists: boolean) => {
+        if (!mailExists) {
+          return this.loginExists(createUserDto.login.toLowerCase()).pipe(
+            switchMap((loginExists: boolean) => {
+              if (!loginExists) {
+                return this.authService.hashPassword(createUserDto.password).pipe(
+                  switchMap((passHash: string) => {
+                    createUserDto.password = passHash;
+                    return from(this.userRepository.save(
+                      this.userRepository.create(createUserDto)
+                    )).pipe(
+                      map((savedUser: UserI) => {
+                        const { id, password, creationTime, updateTime, ...user } = savedUser;
+                        return user;
+                      })
                     )
-                } else {
-                    throw new HttpException("User not found, Nigga!", HttpStatus.NOT_FOUND);
-                }
-            })
-        )
-    }
-
-    generateSession(user: UserI): Observable<SessionI> {
-        return this.findOne(user.id).pipe(
-            switchMap((user: UserI) => {
-                return this.authService.generateJwt(user, '300s').pipe(
-                    switchMap((jwt: string) => {
-                        return this.authService.makeRefreshToken(user.id).pipe(
-                            map((refresh: RefreshTokenI) => {
-                                return <SessionI>{
-                                    access_token: jwt,
-                                    refresh_token: refresh
-                                }
-                            })
-                        )
-                    })
+                  })
                 )
+              } else {
+                throw new HttpException("Это имя уже занято", HttpStatus.CONFLICT);
+              }
+            }))
+
+        } else {
+          throw new HttpException("Эта почта уже занята", HttpStatus.CONFLICT);
+        }
+      })
+    )
+  }
+
+  /**
+   * Авторизовать пользователя
+   * @param loginUserDto данные авторизации
+   * @returns данные сессии SessionI / ошибка
+   */
+  login(loginUserDto: LoginUserDto): Observable<SessionI> {
+    return this.findUserByEmail(loginUserDto.email).pipe(
+      switchMap((user: UserI) => {
+        if (user) {
+          return this.validatePassword(loginUserDto.password, user.password).pipe(
+            switchMap((match: boolean) => {
+              if (match) {
+                return this.generateSession(user);
+              } else {
+                throw new HttpException('Авторизация прервана', HttpStatus.UNAUTHORIZED);
+              }
             })
-        )
-    }
+          )
+        } else {
+          throw new HttpException("Такого пользователя не существует", HttpStatus.NOT_FOUND);
+        }
+      })
+    )
+  }
 
-    findOne(id: number): Observable<UserI> {
-        return from(this.userRepository.findOne({ id }))
-    }
-
-    findAll(): Observable<UserI[]> {
-        return from(this.userRepository.find());
-    }
-
-    checkLogin(login: string): Observable<UserI> {
-        console.log(login);
-        return from(this.userRepository.findOne({login}))
-        .pipe(
-            map((user: UserI) => {
-                if (user){
-                    console.log(user);
-                    return user;
+  /**
+   * Сгенерировать данные сессии
+   * @param user пользователь в формате UserI
+   * @returns данные сессии SessionI
+   */
+  generateSession(user: UserI): Observable<SessionI> {
+    return this.findOne(user.id).pipe(
+      switchMap((user: UserI) => {
+        return this.authService.generateJwt(user, '300s').pipe(
+          switchMap((jwt: string) => {
+            return this.authService.makeRefreshToken(user.id).pipe(
+              map((refresh: RefreshTokenI) => {
+                return <SessionI>{
+                  access_token: jwt,
+                  refresh_token: refresh
                 }
-                else
-                throw new HttpException("User not found, Nigga!", HttpStatus.NOT_FOUND);
-            })
+              })
+            )
+          })
         )
-    }
+      })
+    )
+  }
 
-    private findUserByEmail(email: string): Observable<UserI> {
-        email = email.toLowerCase();
-        return from(this.userRepository.findOne({ email }, { select: ["id", "email", "password"] }));
-    }
+  /**
+   * Получить пользователя по id
+   * @param id id пользователя
+   * @returns пользователь в формате UserI
+   */
+  findOne(id: number): Observable<UserI> {
+    return from(this.userRepository.findOne({ id }))
+  }
 
-    private validatePassword(password: string, storedHash: string): Observable<boolean> {
-        return this.authService.comparePassword(password, storedHash);
-    }
+  /**
+   * Получить пользователя по имени
+   * @param login имя пользователя
+   * @returns пользователь в формате UserI / err
+   */
+  checkLogin(login: string): Observable<UserI> {
+    console.log(login);
+    return from(this.userRepository.findOne({ login }))
+      .pipe(
+        map((user: UserI) => {
+          if (user) {
+            console.log(user);
+            return user;
+          }
+          else
+            throw new HttpException("Пользователь не найден", HttpStatus.NOT_FOUND);
+        })
+      )
+  }
 
-    private mailExists(email: string): Observable<boolean> {
-        return from(this.userRepository.findOne({ email })).pipe(
-            map((user: UserI) => {
-                return user ? true : false;
-            })
-        )
-    }
+  /**
+   * Найти пользователя по почте
+   * @param email эл. почта в виде строки
+   * @returns пользователь в формате UserI
+   */
+  private findUserByEmail(email: string): Observable<UserI> {
+    email = email.toLowerCase();
+    return from(this.userRepository.findOne({ email }, { select: ["id", "email", "password"] }));
+  }
 
-    private loginExists(login: string): Observable<boolean> {
-        return from(this.userRepository.findOne({ login })).pipe(
-            map((user: UserI) => {
-                return user ? true : false;
-            })
-        )
-    }
+  /**
+   * Сверить пароль
+   * @param password входящий пароль
+   * @param storedHash хранимый пароль
+   * @returns true/false
+   */
+  private validatePassword(password: string, storedHash: string): Observable<boolean> {
+    return this.authService.comparePassword(password, storedHash);
+  }
+
+  /**
+   * Проверить занятость почты
+   * @param email эл. почта в виде строки
+   * @returns trues/false
+   */
+  private mailExists(email: string): Observable<boolean> {
+    return from(this.userRepository.findOne({ email })).pipe(
+      map((user: UserI) => {
+        return user ? true : false;
+      })
+    )
+  }
+
+  /**
+   * Проверить занятость имени пользователя
+   * @param login имя пользователя
+   * @returns true/false
+   */
+  private loginExists(login: string): Observable<boolean> {
+    return from(this.userRepository.findOne({ login })).pipe(
+      map((user: UserI) => {
+        return user ? true : false;
+      })
+    )
+  }
 }

@@ -1,5 +1,5 @@
 export class RefreshTokenDto {
-    token: string;
-    expireDate: Date;
-    userId?: number;
+  token: string;
+  expireDate: Date;
+  userId?: number;
 }
