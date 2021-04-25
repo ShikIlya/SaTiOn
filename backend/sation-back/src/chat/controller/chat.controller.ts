@@ -38,7 +38,7 @@ export class ChatController {
                 this.chatService.createOneTicket({ ...TicketDto, chatId: chat.id, memberId: req.user.id })
               ]).pipe(
                 map((tickets: ChatTicketI[]) => {
-                  return tickets;
+                  return chat.id;
                 })
               )
             })
