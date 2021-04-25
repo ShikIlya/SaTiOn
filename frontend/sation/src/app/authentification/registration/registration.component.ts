@@ -26,7 +26,26 @@ export class RegistrationComponent implements OnInit {
   }
 
   ngOnInit(): void {}
-  onSubmit() {}
+
+  /**
+   * Регистрация пользователя
+   */
+  onSubmit() {
+    if (this.registrationFormGroup.valid) {
+      const user: UserRegister = {
+        email: String(
+          this.registrationFormGroup.get('email').value
+        ).toLowerCase(),
+        login: String(
+          this.registrationFormGroup.get('login').value
+        ).toLowerCase(),
+        password: String(this.registrationFormGroup.get('password').value),
+      };
+      this.authService.register(user).subscribe((v) => {
+        console.log(v);
+      });
+    }
+  }
 
   /**
    * Инициализация формы регистрации
@@ -64,25 +83,5 @@ export class RegistrationComponent implements OnInit {
       return 'Некорректный email';
     }
     return control.hasError('pattern') ? error : '';
-  }
-
-  /**
-   * Регистрация пользователя
-   */
-  register() {
-    if (this.registrationFormGroup.valid) {
-      const user: UserRegister = {
-        email: String(
-          this.registrationFormGroup.get('email').value
-        ).toLowerCase(),
-        login: String(
-          this.registrationFormGroup.get('login').value
-        ).toLowerCase(),
-        password: String(this.registrationFormGroup.get('password').value),
-      };
-      this.authService.register(user).subscribe((v) => {
-        console.log(v);
-      });
-    }
   }
 }
