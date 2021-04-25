@@ -1,7 +1,7 @@
 <div class="auth">
   <form class="auth__form form" (ngSubmit)="onSubmit()" [formGroup]="registrationFormGroup">
     <div class="form__header">
-      <a class="form__back back" mat-icon-button [routerLink]="'/authentification/login'">
+      <a class="form__back back" mat-icon-button [routerLink]="'../login'">
         <mat-icon class="back__icon">west</mat-icon>
       </a>
       <h1 class="title">Регистрация</h1>
@@ -32,7 +32,7 @@
       </button>
     </mat-form-field>
     <div class="form__action form__action_flex">
-      <button class="form__action-btn" mat-flat-button color="primary" (click)="register()">Зарегистрироваться</button>
+      <button class="form__action-btn" mat-flat-button color="primary">Зарегистрироваться</button>
     </div>
   </form>
 </div>

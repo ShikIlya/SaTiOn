@@ -24,7 +24,20 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  onSubmit() {}
+  /**
+   * Вход пользователя в систему
+   */
+  onSubmit() {
+    if (this.loginFormGroup.valid)
+      this.authService
+        .login(this.loginFormGroup.value)
+        .subscribe((response) => {
+          if (response.status === 202)
+            this.userService.getUser().subscribe((res) => {
+              this.router.navigate(['/messenger']);
+            });
+        });
+  }
 
   /**
    * Перейти к регистрации
@@ -41,20 +54,5 @@ export class LoginComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]],
     });
-  }
-
-  /**
-   * Вход пользователя в систему
-   */
-  login() {
-    if (this.loginFormGroup.valid)
-      this.authService
-        .login(this.loginFormGroup.value)
-        .subscribe((response) => {
-          if (response.status === 202)
-            this.userService.getUser().subscribe((res) => {
-              this.router.navigate(['/messenger']);
-            });
-        });
   }
 }
