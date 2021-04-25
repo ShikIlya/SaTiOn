@@ -27,6 +27,7 @@ export class ChatController {
   @UseGuards(JwtAuthGuard)
   @Post('create')
   createTwoPersonChat(@Body() inv: TwoPersonChatDto, @Req() req) {
+    console.log(req.user);
     return this.userService.checkLogin(inv.invitedLogin)
       .pipe(
         switchMap((user: UserI) => {

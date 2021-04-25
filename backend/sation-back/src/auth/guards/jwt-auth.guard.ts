@@ -1,6 +1,6 @@
 import { ExecutionContext, Injectable, UnauthorizedException } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
-import { forkJoin, from, Observable, of } from "rxjs";
+import { forkJoin, of } from "rxjs";
 import { map, switchMap } from "rxjs/operators";
 import { UserI } from "src/user/models/user.interface";
 import { UserService } from "src/user/service/user.service";
@@ -52,7 +52,6 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
         )
       )
     else return super.canActivate(context);
-
   }
 
   activate(context: ExecutionContext) {

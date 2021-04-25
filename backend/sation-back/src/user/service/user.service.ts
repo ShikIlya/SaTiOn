@@ -121,12 +121,10 @@ export class UserService {
    * @returns пользователь в формате UserI / err
    */
   checkLogin(login: string): Observable<UserI> {
-    console.log(login);
     return from(this.userRepository.findOne({ login }))
       .pipe(
         map((user: UserI) => {
           if (user) {
-            console.log(user);
             return user;
           }
           else
