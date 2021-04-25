@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { AuthentificationService } from 'src/app/authentification/services/authentification.service';
 import { ChatsListItem } from 'src/app/shared/models/chatsListItem.model';
 import { CreateChat } from 'src/app/shared/models/createChat.model';
+import { DataStoreService } from 'src/app/shared/services/data-store/data-store.service';
 import { DialogNewChatComponent } from '../dialog-new-chat/dialog-new-chat.component';
 import { ChatService } from '../services/chat/chat.service';
 
@@ -20,7 +21,8 @@ export class SidebarComponent implements OnInit {
     private authService: AuthentificationService,
     private router: Router,
     public dialog: MatDialog,
-    private chatService: ChatService
+    private chatService: ChatService,
+    private dataStoreService: DataStoreService
   ) { }
 
   ngOnInit(): void {
@@ -32,6 +34,7 @@ export class SidebarComponent implements OnInit {
    */
   logout() {
     this.authService.logout().subscribe((res) => {
+      this.dataStoreService.setUser(null);
       this.router.navigate(['/authentification/login']);
     });
   }

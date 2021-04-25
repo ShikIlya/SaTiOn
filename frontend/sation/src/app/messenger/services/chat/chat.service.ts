@@ -38,8 +38,9 @@ export class ChatService {
 * Отправка сообщения
 * @param message String
 */
-  sendMessage(content: string) {
-    const data: MessageDto = { content: content, chatId: 'd1f1ceea-ef15-40a8-a95f-c29ff060c967', senderId: 10 }
+  sendMessage(content: string, chatId: string) {
+    const data: MessageDto = { content: content, chatId: chatId, senderId: 10 };
+    console.log(data);
     this.socket.emit('msgToServer', data);
   }
 

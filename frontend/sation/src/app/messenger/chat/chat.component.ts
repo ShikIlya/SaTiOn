@@ -1,6 +1,7 @@
 import { ElementRef, Input } from '@angular/core';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Message } from 'src/app/shared/models/message.model';
+import { DataStoreService } from 'src/app/shared/services/data-store/data-store.service';
 import { ChatService } from '../services/chat/chat.service';
 
 @Component({
@@ -87,7 +88,7 @@ export class ChatComponent implements OnInit {
   footerHeight: number = 0;
   @ViewChild('messagesList') messagesList: ElementRef;
 
-  constructor(private chatService: ChatService) {}
+  constructor(private chatService: ChatService, private dataStoreService: DataStoreService) { }
 
   ngOnInit(): void {
     /**
@@ -96,6 +97,7 @@ export class ChatComponent implements OnInit {
     this.chatService.onNewMessage().subscribe((msg) => {
       console.log('got a message: ' + msg);
     });
+    this.dataStoreService.getUser().subscribe(res => console.log(res));
   }
 
   setFooterHeight(height: number) {

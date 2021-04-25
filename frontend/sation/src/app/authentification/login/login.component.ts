@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthentificationService } from 'src/app/authentification/services/authentification.service';
+import { AuthentificationService } from '../services/authentification.service';
+import { DataStoreService } from '../../shared/services/data-store/data-store.service';
 import { UserService } from 'src/app/shared/services/user/user.service';
 
 @Component({
@@ -17,12 +18,13 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private fb: FormBuilder,
     private authService: AuthentificationService,
-    private userService: UserService
+    private userService: UserService,
+    private dataStoreService: DataStoreService
   ) {
     this.initializeLoginForm();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   /**
    * Вход пользователя в систему
@@ -33,7 +35,8 @@ export class LoginComponent implements OnInit {
         .login(this.loginFormGroup.value)
         .subscribe((response) => {
           if (response.status === 202)
-            this.userService.getUser().subscribe((res) => {
+            this.userService.getUser().subscribe((user) => {
+              this.dataStoreService.setUser(user);
               this.router.navigate(['/messenger']);
             });
         });

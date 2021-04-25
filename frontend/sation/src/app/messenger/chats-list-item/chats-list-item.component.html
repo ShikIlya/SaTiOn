@@ -1,5 +1,4 @@
-<li class="channel" [ngClass]="{'channel_active': currentChatId == chatListItem.id}" (click)="setChat(chatListItem.id)"
-  id="chat_{{chatListItem.id}}">
+<li class="channel" [ngClass]="{'channel_active': selected}" (click)="setChat(chatListItem.id)">
   <div class="channel__content">
     <div class="channel__img">
     </div>
