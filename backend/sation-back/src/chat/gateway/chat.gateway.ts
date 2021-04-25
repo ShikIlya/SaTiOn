@@ -18,8 +18,9 @@ export class ChatGateway {
   server: Server;
 
   @SubscribeMessage('msgToServer')
-  listen(client: Socket, message: MessageDto, chatId: string) {
-    return this.server.to(chatId).emit('msgToClient', message);
+  listen(client: Socket, data: MessageDto) {
+    console.log(data);
+    return this.server.to(data.chatId).emit('msgToClient', data.content);
   }
 
   @SubscribeMessage('joinRoom')

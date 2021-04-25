@@ -14,14 +14,14 @@ import { ChatService } from '../services/chat/chat.service';
   styleUrls: ['./sidebar.component.scss'],
 })
 export class SidebarComponent implements OnInit {
-  chatsList: Observable<ChatsListItem[]>;
+  chatsList: ChatsListItem[];
 
   constructor(
     private authService: AuthentificationService,
     private router: Router,
     public dialog: MatDialog,
     private chatService: ChatService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.getUserChats();
@@ -45,8 +45,8 @@ export class SidebarComponent implements OnInit {
     });
 
     /**
-     * Подписка на получение результата из модального окна
-     */
+    * Подписка на получение результата из модального окна
+      */
     dialogRef.afterClosed().subscribe((result) => {
       if (result) this.createChat(result);
     });
@@ -56,7 +56,12 @@ export class SidebarComponent implements OnInit {
    * Получение чатов пользователя
    */
   getUserChats() {
-    this.chatsList = this.chatService.getUserChats();
+    this.chatService.getUserChats().subscribe(res => {
+      this.chatsList = res;
+      this.chatsList.forEach(chat => {
+        this.chatService.connectToChat(chat.id);
+      })
+    });
   }
 
   /**

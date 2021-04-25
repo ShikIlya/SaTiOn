@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ChatsListItem } from 'src/app/shared/models/chatsListItem.model';
+import { ChatService } from '../services/chat/chat.service';
 
 @Component({
   selector: 'app-chats-list',
@@ -13,9 +14,13 @@ export class ChatsListComponent implements OnInit {
   @Input() userChats: ChatsListItem[];
   currentChatId: string = null;
 
-  constructor() {}
+  constructor(private chatService: ChatService) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.chatService.onConnectToChat().subscribe((chatId) => {
+      console.log('connected to chat: ' + chatId);
+    });
+  }
 
   /**
    * Замена активного чата

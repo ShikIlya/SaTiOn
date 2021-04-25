@@ -1,9 +1,10 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, SystemJsNgModuleLoaderConfig } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import * as io from 'socket.io-client';
 import { ChatsListItem } from 'src/app/shared/models/chatsListItem.model';
 import { CreateChat } from 'src/app/shared/models/createChat.model';
+import { MessageDto } from 'src/app/shared/models/messageDto.model';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -18,11 +19,28 @@ export class ChatService {
   }
 
   /**
+   * Подключение к чату
+   * @param id String id чата
+   */
+  connectToChat(id: string) {
+    this.socket.emit('joinRoom', id);
+  }
+
+  onConnectToChat() {
+    return new Observable(observer => {
+      this.socket.on('joinedRoom', chatId => {
+        observer.next(chatId);
+      });
+    });
+  }
+
+  /**
 * Отправка сообщения
 * @param message String
 */
-  sendMessage(message: string) {
-    this.socket.emit('message', message);
+  sendMessage(content: string) {
+    const data: MessageDto = { content: content, chatId: 'd1f1ceea-ef15-40a8-a95f-c29ff060c967', senderId: 10 }
+    this.socket.emit('msgToServer', data);
   }
 
   /**
@@ -31,7 +49,7 @@ export class ChatService {
 */
   onNewMessage() {
     return new Observable(observer => {
-      this.socket.on('message', msg => {
+      this.socket.on('msgToClient', msg => {
         observer.next(msg);
       });
     });
