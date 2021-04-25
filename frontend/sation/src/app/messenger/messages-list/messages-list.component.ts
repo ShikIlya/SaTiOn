@@ -8,6 +8,7 @@ import { Message } from 'src/app/shared/models/message.model';
 })
 export class MessagesListComponent implements OnInit {
   @Input() messages: Message[];
+  @Input() footerHeight: number;
   /**
    * Блок сообщений
    */

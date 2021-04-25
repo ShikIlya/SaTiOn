@@ -1,4 +1,4 @@
-<div class="chat__content content">
+<div class="chat__content content" [ngStyle]="{'max-height': 'calc(100vh - 59px - 30px - '+ footerHeight+'px)'}">
   <div class="content__container" #messagesList>
     <ng-container *ngFor="let message of messages">
       <app-message class="chat__message" [message]="message"></app-message>

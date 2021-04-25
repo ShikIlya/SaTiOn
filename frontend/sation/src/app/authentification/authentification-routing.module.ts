@@ -6,20 +6,20 @@ import { RegistrationComponent } from './registration/registration.component';
 const AUTH_ROUTES: Routes = [
   {
     path: 'login',
-    component: LoginComponent
+    component: LoginComponent,
   },
   {
     path: 'registration',
-    component: RegistrationComponent
+    component: RegistrationComponent,
   },
   {
     path: '**',
-    redirectTo: '/authentification/login'
-  }
+    redirectTo: '/authentification/login',
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(AUTH_ROUTES)],
   exports: [RouterModule],
 })
-export class AuthentificationRoutingModule { }
+export class AuthentificationRoutingModule {}

@@ -1,4 +1,4 @@
-import { ElementRef } from '@angular/core';
+import { ElementRef, Input } from '@angular/core';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Message } from 'src/app/shared/models/message.model';
 import { ChatService } from '../services/chat/chat.service';
@@ -84,6 +84,7 @@ export class ChatComponent implements OnInit {
     },
   ];
 
+  footerHeight: number = 0;
   @ViewChild('messagesList') messagesList: ElementRef;
 
   constructor(private chatService: ChatService) {}
@@ -95,5 +96,9 @@ export class ChatComponent implements OnInit {
     this.chatService.onNewMessage().subscribe((msg) => {
       console.log('got a message: ' + msg);
     });
+  }
+
+  setFooterHeight(height: number) {
+    this.footerHeight = height;
   }
 }

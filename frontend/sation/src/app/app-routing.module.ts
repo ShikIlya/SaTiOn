@@ -7,21 +7,21 @@ const APP_ROUTES: Routes = [
   {
     path: 'messenger',
     loadChildren: () =>
-      import('./messenger/messenger.module').then(m => m.MessengerModule),
-    canActivate: [AuthGuard]
+      import('./messenger/messenger.module').then((m) => m.MessengerModule),
+    // canActivate: [AuthGuard],
   },
   {
     path: 'authentification',
     loadChildren: () =>
       import('./authentification/authentification.module').then(
-        m => m.AuthentificationModule
+        (m) => m.AuthentificationModule
       ),
-    canActivate: [LoginGuard]
+    // canActivate: [LoginGuard],
   },
   {
     path: '**',
     redirectTo: '/messenger',
-  }
+  },
 ];
 
 @NgModule({
@@ -29,4 +29,4 @@ const APP_ROUTES: Routes = [
   exports: [RouterModule],
   providers: [AuthGuard],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

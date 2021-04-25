@@ -19,10 +19,22 @@ import { MessageComponent } from './message/message.component';
 import { MessagesListComponent } from './messages-list/messages-list.component';
 import { ChatHeaderComponent } from './chat-header/chat-header.component';
 import { ChatFooterComponent } from './chat-footer/chat-footer.component';
-
+import { AngularResizedEventModule } from 'angular-resize-event';
 
 @NgModule({
-  declarations: [MessengerComponent, ChatComponent, SidebarComponent, DialogNewChatComponent, ChatsListComponent, ChatsListItemComponent, UserMenuComponent, MessageComponent, MessagesListComponent, ChatHeaderComponent, ChatFooterComponent],
+  declarations: [
+    MessengerComponent,
+    ChatComponent,
+    SidebarComponent,
+    DialogNewChatComponent,
+    ChatsListComponent,
+    ChatsListItemComponent,
+    UserMenuComponent,
+    MessageComponent,
+    MessagesListComponent,
+    ChatHeaderComponent,
+    ChatFooterComponent,
+  ],
   imports: [
     CommonModule,
     MessengerRoutingModule,
@@ -32,7 +44,8 @@ import { ChatFooterComponent } from './chat-footer/chat-footer.component';
     MatDialogModule,
     MatFormFieldModule,
     ReactiveFormsModule,
-    MatInputModule
-  ]
+    MatInputModule,
+    AngularResizedEventModule,
+  ],
 })
-export class MessengerModule { }
+export class MessengerModule {}
