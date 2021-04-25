@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
 import { AuthentificationService } from 'src/app/authentification/services/authentification.service';
 import { ChatsListItem } from 'src/app/shared/models/chatsListItem.model';
 import { CreateChat } from 'src/app/shared/models/createChat.model';
@@ -63,7 +62,7 @@ export class SidebarComponent implements OnInit {
       this.chatsList = res;
       this.chatsList.forEach(chat => {
         this.chatService.connectToChat(chat.id);
-      })
+      });
     });
   }
 
@@ -73,7 +72,9 @@ export class SidebarComponent implements OnInit {
    */
   createChat(data: CreateChat) {
     this.chatService.createChat(data).subscribe((res) => {
-      this.getUserChats();
+      const newChat = { id: res[0].chatId, name: data.chatName };
+      this.chatsList.push(newChat);
+      this.chatService.connectToChat(newChat.id);
     });
   }
 }

@@ -1,4 +1,4 @@
 export interface CreateChat {
-  name: string;
+  chatName: string;
   invitedLogin: string;
 }
