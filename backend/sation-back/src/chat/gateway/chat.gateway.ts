@@ -1,4 +1,3 @@
-import { Body } from "@nestjs/common";
 import { SubscribeMessage, WebSocketGateway, WebSocketServer, WsResponse } from "@nestjs/websockets";
 import { map } from "rxjs/operators";
 import { Server, Socket } from 'socket.io'
