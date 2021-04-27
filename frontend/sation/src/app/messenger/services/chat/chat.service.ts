@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import * as io from 'socket.io-client';
-import { ChatsListItem } from 'src/app/shared/models/chatsListItem.model';
-import { CreateChat } from 'src/app/shared/models/createChat.model';
+import { Chat } from 'src/app/shared/models/chat.model';
+import { CreateChat } from 'src/app/shared/models/chatDto.model';
 import { MessageDto } from 'src/app/shared/models/messageDto.model';
 import { environment } from 'src/environments/environment';
 
@@ -58,8 +58,8 @@ export class ChatService {
    * Получение чатов пользователя
    * @returns Список чатов пользователя
    */
-  getUserChats(): Observable<ChatsListItem[]> {
-    return this.http.get<ChatsListItem[]>(`${this.apiUrl}/chat`, {
+  getUserChats(): Observable<Chat[]> {
+    return this.http.get<Chat[]>(`${this.apiUrl}/chat`, {
       withCredentials: true,
     });
   }
@@ -74,8 +74,8 @@ export class ChatService {
     });
   }
 
-  getChatMessages(id: string) {
-    return this.http.get(`${this.apiUrl}/chat/messages`, {
+  getChatMessages(id: string): Observable<Chat> {
+    return this.http.get<Chat>(`${this.apiUrl}/chat/messages`, {
       params: { id: id },
       withCredentials: true,
     });

@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { AuthentificationService } from 'src/app/authentification/services/authentification.service';
-import { ChatsListItem } from 'src/app/shared/models/chatsListItem.model';
-import { CreateChat } from 'src/app/shared/models/createChat.model';
+import { Chat } from 'src/app/shared/models/chat.model';
+import { CreateChat } from 'src/app/shared/models/chatDto.model';
 import { DataStoreService } from 'src/app/shared/services/data-store/data-store.service';
 import { DialogNewChatComponent } from '../dialog-new-chat/dialog-new-chat.component';
 import { ChatService } from '../services/chat/chat.service';
@@ -14,7 +14,7 @@ import { ChatService } from '../services/chat/chat.service';
   styleUrls: ['./sidebar.component.scss'],
 })
 export class SidebarComponent implements OnInit {
-  chatsList: ChatsListItem[];
+  chatsList: Chat[];
 
   constructor(
     private authService: AuthentificationService,

@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { concat } from 'rxjs';
-import { ChatsListItem } from 'src/app/shared/models/chatsListItem.model';
+import { Chat } from 'src/app/shared/models/chat.model';
 import { DataStoreService } from 'src/app/shared/services/data-store/data-store.service';
 import { ChatService } from '../services/chat/chat.service';
 
@@ -13,13 +12,13 @@ export class ChatsListComponent implements OnInit {
   /**
    * Список чатов пользователя
    */
-  @Input() userChats: ChatsListItem[];
-  currentChat: ChatsListItem = null;
+  @Input() userChats: Chat[];
+  currentChat: Chat = null;
 
   constructor(
     private chatService: ChatService,
     private dataStoreService: DataStoreService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     /**

@@ -9,9 +9,9 @@ import {
 import { ChatService } from '../services/chat/chat.service';
 import { ResizedEvent } from 'angular-resize-event';
 import { DataStoreService } from 'src/app/shared/services/data-store/data-store.service';
-import { ChatsListItem } from 'src/app/shared/models/chatsListItem.model';
 import { User } from 'src/app/shared/models/user.model';
 import { MessageDto } from 'src/app/shared/models/messageDto.model';
+import { Chat } from 'src/app/shared/models/chat.model';
 
 @Component({
   selector: 'app-chat-footer',
@@ -20,14 +20,14 @@ import { MessageDto } from 'src/app/shared/models/messageDto.model';
 })
 export class ChatFooterComponent implements OnInit {
   height: number;
-  currentChat: ChatsListItem;
+  currentChat: Chat;
   user: User;
   @Output() chatFooterHeight = new EventEmitter<number>();
   @ViewChild('chatFooter') chatFooter: ElementRef;
   constructor(
     private chatService: ChatService,
     private dataStoreService: DataStoreService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.dataStoreService.getCurrentChat().subscribe((chat) => {

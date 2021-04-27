@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ChatsListItem } from '../../shared/models/chatsListItem.model';
+import { Chat } from 'src/app/shared/models/chat.model';
 
 @Component({
   selector: 'app-chats-list-item',
@@ -7,7 +7,7 @@ import { ChatsListItem } from '../../shared/models/chatsListItem.model';
   styleUrls: ['./chats-list-item.component.scss'],
 })
 export class ChatsListItemComponent implements OnInit {
-  @Input() chatListItem: ChatsListItem;
+  @Input() chatListItem: Chat;
   @Input() selected: boolean;
   @Output() selectedChatId = new EventEmitter<string>();
   constructor() { }

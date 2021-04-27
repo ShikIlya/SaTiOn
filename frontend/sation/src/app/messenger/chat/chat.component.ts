@@ -1,7 +1,8 @@
 import { ElementRef, Input } from '@angular/core';
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { of } from 'rxjs';
+import { map, mergeMap, switchMap } from 'rxjs/operators';
 import { Chat } from 'src/app/shared/models/chat.model';
-import { ChatsListItem } from 'src/app/shared/models/chatsListItem.model';
 import { Message } from 'src/app/shared/models/message.model';
 import { DataStoreService } from 'src/app/shared/services/data-store/data-store.service';
 import { ChatService } from '../services/chat/chat.service';
@@ -19,7 +20,7 @@ export class ChatComponent implements OnInit {
   constructor(
     private chatService: ChatService,
     private dataStoreService: DataStoreService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     /**
@@ -29,15 +30,13 @@ export class ChatComponent implements OnInit {
       this.messages.push(message);
     });
     this.dataStoreService.getUser().subscribe((res) => console.log(res));
-    this.dataStoreService.getCurrentChat().subscribe((chat: ChatsListItem) => {
-      if (chat) {
-        console.log('sdfsdf');
-        this.chatService.getChatMessages(chat.id).subscribe((chat: Chat) => {
-          this.messages = chat.messages;
-          console.log(this.messages);
-        });
-      }
-    });
+
+    this.dataStoreService.getCurrentChat().pipe(switchMap((chat: Chat | null) => {
+      return chat ? this.chatService.getChatMessages(chat.id) : of(null);
+    })).subscribe((chat: Chat | any) => {
+      if (chat)
+        this.messages = chat.messages;
+    })
   }
 
   setFooterHeight(height: number) {

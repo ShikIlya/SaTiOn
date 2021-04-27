@@ -6,7 +6,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { UserRegister } from 'src/app/shared/models/userRegister.model';
+import { UserRegister } from 'src/app/shared/models/userRegisterDto.model';
 import { AuthentificationService } from '../services/authentification.service';
 
 @Component({
@@ -25,7 +25,7 @@ export class RegistrationComponent implements OnInit {
     this.initializeRegistrationForm();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   /**
    * Регистрация пользователя

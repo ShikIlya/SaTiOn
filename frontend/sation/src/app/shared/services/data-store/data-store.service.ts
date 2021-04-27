@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { ChatsListItem } from '../../models/chatsListItem.model';
+import { Chat } from '../../models/chat.model';
 import { User } from '../../models/user.model';
 import { UserService } from '../user/user.service';
 
@@ -11,7 +11,7 @@ import { UserService } from '../user/user.service';
 export class DataStoreService {
 
   private user: BehaviorSubject<User>;
-  private currentChat: BehaviorSubject<ChatsListItem>;
+  private currentChat: BehaviorSubject<Chat>;
   constructor(private userService: UserService) {
     this.user = new BehaviorSubject(null);
     this.currentChat = new BehaviorSubject(null);
@@ -44,7 +44,7 @@ export class DataStoreService {
    * Получить текущий чат
    * @returns Выбранный чат типа Observable<ChatsListItem>
    */
-  getCurrentChat(): Observable<ChatsListItem> {
+  getCurrentChat(): Observable<Chat> {
     return this.currentChat.asObservable();
   }
 
@@ -52,7 +52,7 @@ export class DataStoreService {
    * Заменить текущий чат в глобальном сторе
    * @param user Текущий чат типа ChatsListItem | null
    */
-  setCurrentChat(chat: ChatsListItem | null) {
+  setCurrentChat(chat: Chat | null) {
     this.currentChat.next(chat);
   }
 
