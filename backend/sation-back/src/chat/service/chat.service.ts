@@ -40,10 +40,11 @@ export class ChatService {
 
   getChatMessages(uuid: string): Observable<ChatI> {
     return from(
-      this.chatRepository.findOne({
-        where: [{ id: uuid }],
-        relations: ["messages", "creatorId"]
-      })
+      this.chatRepository
+        .createQueryBuilder('chat')
+        .leftJoinAndSelect('chat.messages', 'messages')
+        .where('chat.id = :id', { id: uuid })
+        .getOne()
     );
   }
 

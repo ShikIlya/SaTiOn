@@ -18,6 +18,9 @@ export class MessageEntity {
 
   @ManyToOne(type => UserEntity, user => user.messages, { nullable: false })
   @JoinColumn({ name: "senderId", referencedColumnName: "id" })
+  user: number;
+
+  @Column()
   senderId: number;
 
   @CreateDateColumn()

@@ -38,7 +38,7 @@ export class UserEntity {
   @OneToMany(type => ChatEntity, chat => chat.creatorId)
   chats: ChatEntity[];
 
-  @OneToMany(type => MessageEntity, message => message.senderId)
+  @OneToMany(type => MessageEntity, message => message.user)
   messages: MessageEntity[];
 
   @OneToMany(type => ChatTicketEntity, ticket => ticket.memberId)
