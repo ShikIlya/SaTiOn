@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { from, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { createConnection, DeleteResult, getRepository, Repository } from 'typeorm';
+import { DeleteResult, Repository } from 'typeorm';
 import { ChatTicketEntity } from '../models/chat-ticket.entity';
 import { ChatTicketI } from '../models/chat-ticket.interface';
 import { ChatEntity } from '../models/chat.entity';
@@ -36,6 +36,15 @@ export class ChatService {
       .innerJoin('chat.tickets', 'tickets')
       .where('tickets.memberId = :id', { id: id })
       .getMany())
+  }
+
+  getChatMessages(uuid: string): Observable<ChatI[]> {
+    return from(
+      this.chatRepository.find({
+        where: [{ id: uuid }],
+        relations: ["messages"],
+      })
+    );
   }
 
   /**

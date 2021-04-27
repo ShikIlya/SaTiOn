@@ -11,7 +11,7 @@ import { ChatService } from "../service/chat.service";
 export class ChatGateway {
 
   constructor(
-    private chatservice: ChatService,
+    private chatService: ChatService,
   ) { }
 
   @WebSocketServer()
@@ -19,8 +19,11 @@ export class ChatGateway {
 
   @SubscribeMessage('msgToServer')
   listen(client: Socket, data: MessageDto) {
-    console.log(data);
-    return this.server.to(data.chatId).emit('msgToClient', data.content);
+    return this.chatService.sendMessage(data).pipe(
+      map((message: MessageI) => {
+        return this.server.to(message.chatId).emit('msgToClient', message);
+      })
+    )
   }
 
   @SubscribeMessage('joinRoom')

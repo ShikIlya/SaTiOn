@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, Req, UseGuards } from '@nestjs/common';
 import { forkJoin, from, Observable } from 'rxjs';
 import { map, mergeMap, switchMap } from 'rxjs/operators';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
@@ -8,7 +8,9 @@ import { ChatTicketI } from '../models/chat-ticket.interface';
 import { ChatI } from '../models/chat.interface';
 import { TicketDto } from '../models/dto/chat-ticket.dto';
 import { ChatDto } from '../models/dto/chat.dto';
+import { MessageDto } from '../models/dto/message.dto';
 import { TwoPersonChatDto } from '../models/dto/two-person-chat.dto';
+import { MessageI } from '../models/message.interface';
 import { ChatService } from '../service/chat.service';
 
 @Controller('chat')
@@ -54,7 +56,13 @@ export class ChatController {
   @UseGuards(JwtAuthGuard)
   @Get()
   getYourChats(@Req() req): Observable<ChatI[]> {
-    return this.chatService.getChatsByUser(req.user.id)
+    return this.chatService.getChatsByUser(req.user.id);
   }
+
+  @Get('messages')
+  getChatMessages(@Query('id') id: string): Observable<ChatI[]> {
+    return this.chatService.getChatMessages(id);
+  }
+
 
 }
