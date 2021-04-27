@@ -16,23 +16,25 @@ export class ChatsListComponent implements OnInit {
   @Input() userChats: ChatsListItem[];
   currentChat: ChatsListItem = null;
 
-  constructor(private chatService: ChatService, private dataStoreService: DataStoreService) { }
+  constructor(
+    private chatService: ChatService,
+    private dataStoreService: DataStoreService
+  ) {}
 
   ngOnInit(): void {
     /**
      * Подключение пользователя к чатам
      */
-    this.chatService.onConnectToChat().subscribe(chatId => {
+    this.chatService.onConnectToChat().subscribe((chatId) => {
       console.log('connected to chat: ' + chatId);
     });
     /**
      * Получение текущего чата из глобального стора
      */
-    this.dataStoreService.getCurrentChat().subscribe(chat => {
+    this.dataStoreService.getCurrentChat().subscribe((chat) => {
       console.log('changing chat');
       this.currentChat = chat;
-    })
-
+    });
   }
 
   /**
@@ -40,6 +42,8 @@ export class ChatsListComponent implements OnInit {
    * @param id Id чата
    */
   setSelectedChat(id: string) {
-    this.dataStoreService.setCurrentChat(this.userChats.find(chat => chat.id === id));
+    this.dataStoreService.setCurrentChat(
+      this.userChats.find((chat) => chat.id === id)
+    );
   }
 }

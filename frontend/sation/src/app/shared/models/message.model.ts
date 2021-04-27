@@ -1,5 +1,7 @@
 export interface Message {
-  message: string;
-  time: string;
-  type: boolean;
+  id?: number;
+  content: string;
+  chatId: string;
+  senderId: number;
+  creationTime: string;
 }

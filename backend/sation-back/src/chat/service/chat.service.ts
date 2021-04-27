@@ -38,11 +38,11 @@ export class ChatService {
       .getMany())
   }
 
-  getChatMessages(uuid: string): Observable<ChatI[]> {
+  getChatMessages(uuid: string): Observable<ChatI> {
     return from(
-      this.chatRepository.find({
+      this.chatRepository.findOne({
         where: [{ id: uuid }],
-        relations: ["messages"],
+        relations: ["messages", "creatorId"]
       })
     );
   }

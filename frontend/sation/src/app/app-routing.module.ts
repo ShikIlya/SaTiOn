@@ -8,7 +8,7 @@ const APP_ROUTES: Routes = [
     path: 'messenger',
     loadChildren: () =>
       import('./messenger/messenger.module').then((m) => m.MessengerModule),
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
   },
   {
     path: 'authentification',
@@ -16,7 +16,7 @@ const APP_ROUTES: Routes = [
       import('./authentification/authentification.module').then(
         (m) => m.AuthentificationModule
       ),
-    // canActivate: [LoginGuard],
+    canActivate: [LoginGuard],
   },
   {
     path: '**',

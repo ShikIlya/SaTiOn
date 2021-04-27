@@ -8,7 +8,7 @@ import { MessageDto } from 'src/app/shared/models/messageDto.model';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ChatService {
   apiUrl: string = environment.baseUrl;
@@ -27,49 +27,57 @@ export class ChatService {
   }
 
   onConnectToChat() {
-    return new Observable(observer => {
-      this.socket.on('joinedRoom', chatId => {
+    return new Observable((observer) => {
+      this.socket.on('joinedRoom', (chatId) => {
         observer.next(chatId);
       });
     });
   }
 
   /**
-* Отправка сообщения
-* @param message String
-*/
-  sendMessage(content: string, chatId: string) {
-    const data: MessageDto = { content: content, chatId: chatId, senderId: 10 };
-    console.log(data);
-    this.socket.emit('msgToServer', data);
+   * Отправка сообщения
+   * @param message MessageDto
+   */
+  sendMessage(message: MessageDto) {
+    this.socket.emit('msgToServer', message);
   }
 
   /**
-* Событие создания нового сообщения
-* @returns Сообщение
-*/
+   * Событие создания нового сообщения
+   * @returns Сообщение
+   */
   onNewMessage() {
-    return new Observable(observer => {
-      this.socket.on('msgToClient', msg => {
+    return new Observable((observer) => {
+      this.socket.on('msgToClient', (msg) => {
         observer.next(msg);
       });
     });
   }
 
   /**
-* Получение чатов пользователя
-* @returns Список чатов пользователя
-*/
+   * Получение чатов пользователя
+   * @returns Список чатов пользователя
+   */
   getUserChats(): Observable<ChatsListItem[]> {
-    return this.http.get<ChatsListItem[]>(`${this.apiUrl}/chat`, { withCredentials: true });
+    return this.http.get<ChatsListItem[]>(`${this.apiUrl}/chat`, {
+      withCredentials: true,
+    });
   }
 
   /**
-* Создание чата
-* @param data Имя чата и приглашенный логин пользователя
-*/
+   * Создание чата
+   * @param data Имя чата и приглашенный логин пользователя
+   */
   createChat(data: CreateChat) {
-    return this.http.post(`${this.apiUrl}/chat/create`, data, { withCredentials: true });
+    return this.http.post(`${this.apiUrl}/chat/create`, data, {
+      withCredentials: true,
+    });
   }
 
+  getChatMessages(id: string) {
+    return this.http.get(`${this.apiUrl}/chat/messages`, {
+      params: { id: id },
+      withCredentials: true,
+    });
+  }
 }
