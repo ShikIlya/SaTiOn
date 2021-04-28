@@ -36,8 +36,12 @@ describe('MessageComponent', () => {
     }
     fixture.detectChanges();
   });
-  /* 
-    it('should create', () => {
-      expect(component).toBeTruthy();
-    }); */
+
+  it('изменить формат даты сообщения', () => {
+    expect(component.message.creationTime).toEqual('15:34');
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
 });
