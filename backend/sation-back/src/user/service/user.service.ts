@@ -34,9 +34,8 @@ export class UserService {
               if (!loginExists) {
                 return this.authService.hashPassword(createUserDto.password).pipe(
                   switchMap((passHash: string) => {
-                    createUserDto.password = passHash;
                     return from(this.userRepository.save(
-                      this.userRepository.create(createUserDto)
+                      this.userRepository.create({ ...createUserDto, password: passHash })
                     )).pipe(
                       map((savedUser: UserI) => {
                         const { id, password, creationTime, updateTime, ...user } = savedUser;
@@ -139,8 +138,7 @@ export class UserService {
    * @returns пользователь в формате UserI
    */
   private findUserByEmail(email: string): Observable<UserI> {
-    email = email.toLowerCase();
-    return from(this.userRepository.findOne({ email }, { select: ["id", "email", "password"] }));
+    return from(this.userRepository.findOne({ email: email.toLowerCase() }, { select: ["id", "email", "password"] }));
   }
 
   /**

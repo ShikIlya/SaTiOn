@@ -1,7 +1,7 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Post, Req, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { SessionI } from 'src/auth/models/session.interface';
 import { CreateUserDto } from '../models/dto/CreateUser.dto';
@@ -21,9 +21,10 @@ export class UserController {
    */
   @Post('register')
   create(@Body() createUserDto: CreateUserDto, @Res() response: Response) {
-    return this.userService.create(createUserDto).pipe(map((user: UserI) => {
-      if (user)
-        return response.status(HttpStatus.ACCEPTED).send();
+    return this.userService.create(createUserDto).pipe(switchMap((user: UserI) => {
+      if (user) {
+        return this.login({ ...LoginUserDto, email: createUserDto.email, password: createUserDto.password }, response);
+      }
     }))
   }
 
