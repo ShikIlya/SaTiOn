@@ -8,14 +8,18 @@ describe('ChatsListItemComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ChatsListItemComponent ]
+      declarations: [ChatsListItemComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ChatsListItemComponent);
     component = fixture.componentInstance;
+    component.chatListItem = {
+      id: 'chat-1',
+      name: 'test-chat-1',
+    }
     fixture.detectChanges();
   });
 
