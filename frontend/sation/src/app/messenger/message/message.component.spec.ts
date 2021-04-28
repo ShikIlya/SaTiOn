@@ -41,7 +41,7 @@ describe('MessageComponent', () => {
     expect(component.message.creationTime).toEqual('15:34');
   });
 
-  it('should create', () => {
+  it('компонент создается', () => {
     expect(component).toBeTruthy();
   });
 });

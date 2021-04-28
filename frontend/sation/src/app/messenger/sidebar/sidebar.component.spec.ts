@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+/* import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SidebarComponent } from './sidebar.component';
 
@@ -19,7 +19,8 @@ describe('SidebarComponent', () => {
     fixture.detectChanges();
   });
 
-  /*   it('should create', () => {
+    it('should create', () => {
       expect(component).toBeTruthy();
-    }); */
+    });
 });
+ */

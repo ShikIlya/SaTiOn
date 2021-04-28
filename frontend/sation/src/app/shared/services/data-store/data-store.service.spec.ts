@@ -13,7 +13,7 @@ describe('DataStoreService', () => {
     service = TestBed.inject(DataStoreService);
   });
 
-  it('should be created', () => {
+  it('сервис создается', () => {
     expect(service).toBeTruthy();
   });
 });

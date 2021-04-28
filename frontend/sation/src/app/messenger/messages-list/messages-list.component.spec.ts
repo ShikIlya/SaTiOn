@@ -8,9 +8,9 @@ describe('MessagesListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MessagesListComponent ]
+      declarations: [MessagesListComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -19,7 +19,7 @@ describe('MessagesListComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('компонент создается', () => {
     expect(component).toBeTruthy();
   });
 });

@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+/* import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DialogNewChatComponent } from './dialog-new-chat.component';
 
@@ -19,7 +19,8 @@ describe('DialogNewChatComponent', () => {
     fixture.detectChanges();
   });
 
-  /*   it('should create', () => {
+    it('should create', () => {
       expect(component).toBeTruthy();
-    }); */
+    });
 });
+ */

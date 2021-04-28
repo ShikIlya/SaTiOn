@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+/* import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ChatFooterComponent } from './chat-footer.component';
 
@@ -19,7 +19,8 @@ describe('ChatFooterComponent', () => {
     fixture.detectChanges();
   });
 
-  /*   it('should create', () => {
+    it('should create', () => {
       expect(component).toBeTruthy();
-    }); */
+    });
 });
+ */

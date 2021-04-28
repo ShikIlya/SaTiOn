@@ -8,9 +8,9 @@ describe('UserMenuComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ UserMenuComponent ]
+      declarations: [UserMenuComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -19,7 +19,7 @@ describe('UserMenuComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('компонент создается', () => {
     expect(component).toBeTruthy();
   });
 });
