@@ -43,7 +43,7 @@ export class AuthService {
   deleteRefreshToken(token: string, userId: number): Observable<boolean> {
     return from(this.refreshRepository.delete({ token, userId })).pipe(
       map((result: DeleteResult) => {
-        if (result.affected)
+        if (result.affected !== undefined)
           return true;
         else
           return false;
@@ -63,7 +63,8 @@ export class AuthService {
       .where('refresh.token = :token', { token: refresh })
       .getOne()).pipe(
         map((user: UserI) => {
-          return user;
+          if (user !== null)
+            return user;
         })
       )
   }
@@ -80,7 +81,7 @@ export class AuthService {
       token: uuidv4(),
       expireDate: date
     }
-    if (userId) {
+    if (userId !== null) {
       refreshTokenDto.userId = userId;
     }
     return refreshTokenDto;

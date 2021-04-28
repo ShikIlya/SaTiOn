@@ -64,7 +64,7 @@ export class UserService {
   login(loginUserDto: LoginUserDto): Observable<SessionI> {
     return this.findUserByEmail(loginUserDto.email).pipe(
       switchMap((user: UserI) => {
-        if (user) {
+        if (user !== null) {
           return this.validatePassword(loginUserDto.password, user.password).pipe(
             switchMap((match: boolean) => {
               if (match) {
@@ -123,7 +123,7 @@ export class UserService {
     return from(this.userRepository.findOne({ login }))
       .pipe(
         map((user: UserI) => {
-          if (user) {
+          if (user !== null) {
             return user;
           }
           else
@@ -159,7 +159,7 @@ export class UserService {
   private mailExists(email: string): Observable<boolean> {
     return from(this.userRepository.findOne({ email })).pipe(
       map((user: UserI) => {
-        return user ? true : false;
+        return user !== null ? true : false;
       })
     )
   }
@@ -172,7 +172,7 @@ export class UserService {
   private loginExists(login: string): Observable<boolean> {
     return from(this.userRepository.findOne({ login })).pipe(
       map((user: UserI) => {
-        return user ? true : false;
+        return user !== null ? true : false;
       })
     )
   }

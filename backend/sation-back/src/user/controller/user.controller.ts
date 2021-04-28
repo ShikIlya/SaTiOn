@@ -82,7 +82,7 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   @Get('is_auth')
   check(@Req() request) {
-    if (request.user)
+    if (request.user !== null)
       return true;
   }
 

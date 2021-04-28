@@ -65,7 +65,7 @@ export class ChatService {
   deleteChat(chatId: string): Observable<boolean> {
     return from(this.chatRepository.delete({ id: chatId })).pipe(
       map((result: DeleteResult) => {
-        if (result.affected)
+        if (result.affected !== undefined)
           return true;
         else
           return false;
@@ -90,7 +90,7 @@ export class ChatService {
   deleteTicket(ticketId: number): Observable<boolean> {
     return from(this.ticketRepository.delete({ id: ticketId })).pipe(
       map((result: DeleteResult) => {
-        if (result.affected)
+        if (result.affected !== undefined)
           return true;
         else
           return false;
@@ -129,7 +129,7 @@ export class ChatService {
   deleteMessage(messageId: number): Observable<boolean> {
     return from(this.messagerepository.delete({ id: messageId })).pipe(
       map((result: DeleteResult) => {
-        if (result.affected)
+        if (result.affected !== undefined)
           return true;
         else
           return false;
