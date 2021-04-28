@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { AuthentificationService } from '../services/authentification.service';
 import { DataStoreService } from '../../shared/services/data-store/data-store.service';
 import { UserService } from 'src/app/shared/services/user/user.service';
+import { switchMap } from 'rxjs/operators';
+import { User } from 'src/app/shared/models/user.model';
 
 @Component({
   selector: 'app-login',
@@ -33,12 +35,14 @@ export class LoginComponent implements OnInit {
     if (this.loginFormGroup.valid)
       this.authService
         .login(this.loginFormGroup.value)
-        .subscribe((response) => {
-          if (response.status === 202)
-            this.userService.getUser().subscribe((user) => {
-              this.dataStoreService.setUser(user);
-              this.router.navigate(['/messenger']);
-            });
+        .pipe(
+          switchMap((response) => {
+            if (response.status === 202) return this.userService.getUser();
+          })
+        )
+        .subscribe((user: User) => {
+          this.dataStoreService.setUser(user);
+          this.router.navigate(['/messenger']);
         });
   }
 

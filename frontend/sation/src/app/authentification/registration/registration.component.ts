@@ -6,7 +6,11 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
+import { switchMap } from 'rxjs/operators';
+import { User } from 'src/app/shared/models/user.model';
 import { UserRegister } from 'src/app/shared/models/userRegisterDto.model';
+import { DataStoreService } from 'src/app/shared/services/data-store/data-store.service';
+import { UserService } from 'src/app/shared/services/user/user.service';
 import { AuthentificationService } from '../services/authentification.service';
 
 @Component({
@@ -20,7 +24,9 @@ export class RegistrationComponent implements OnInit {
   constructor(
     private router: Router,
     private fb: FormBuilder,
-    private authService: AuthentificationService
+    private authService: AuthentificationService,
+    private userService: UserService,
+    private dataStoreService: DataStoreService
   ) {
     this.initializeRegistrationForm();
   }
@@ -41,9 +47,15 @@ export class RegistrationComponent implements OnInit {
         ).toLowerCase(),
         password: String(this.registrationFormGroup.get('password').value),
       };
-      this.authService.register(user).subscribe((v) => {
-        console.log(v);
-      });
+      this.authService.register(user).pipe(
+        switchMap((response) => {
+          if (response.status === 202) return this.userService.getUser();
+        })
+      )
+        .subscribe((user: User) => {
+          this.dataStoreService.setUser(user);
+          this.router.navigate(['/messenger']);
+        });
     }
   }
 

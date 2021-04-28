@@ -36,7 +36,7 @@ export class ChatComponent implements OnInit {
     })).subscribe((chat: Chat | any) => {
       if (chat)
         this.messages = chat.messages;
-    })
+    });
   }
 
   setFooterHeight(height: number) {
