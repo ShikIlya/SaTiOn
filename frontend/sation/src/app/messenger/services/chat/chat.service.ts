@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import * as io from 'socket.io-client';
 import { Chat } from 'src/app/shared/models/chat.model';
 import { CreateChat } from 'src/app/shared/models/chatDto.model';
@@ -61,7 +62,7 @@ export class ChatService {
   getUserChats(): Observable<Chat[]> {
     return this.http.get<Chat[]>(`${this.apiUrl}/chat`, {
       withCredentials: true,
-    });
+    }).pipe(catchError(this.handleError));
   }
 
   /**
@@ -78,6 +79,20 @@ export class ChatService {
     return this.http.get<Chat>(`${this.apiUrl}/chat/messages`, {
       params: { id: id },
       withCredentials: true,
-    });
+    }).pipe(catchError(this.handleError));
+  }
+
+
+  handleError(error) {
+    let errorMessage = '';
+    if (error.error instanceof ErrorEvent) {
+      // client-side error
+      errorMessage = `Error: ${error.error.message}`;
+    } else {
+      // server-side error
+      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+    }
+    window.alert(errorMessage);
+    return throwError(errorMessage);
   }
 }
