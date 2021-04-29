@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { from, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -15,15 +15,14 @@ import { MessageI } from '../models/message.interface';
 
 @Injectable()
 export class ChatService {
-
   constructor(
     @InjectRepository(ChatEntity)
     private chatRepository: Repository<ChatI>,
     @InjectRepository(ChatTicketEntity)
     private ticketRepository: Repository<ChatTicketI>,
     @InjectRepository(MessageEntity)
-    private messagerepository: Repository<MessageI>
-  ) { }
+    private messagerepository: Repository<MessageI>,
+  ) {}
 
   /**
    * Получить чаты пользователя
@@ -31,11 +30,17 @@ export class ChatService {
    * @returns Массив чатов ChatI[]
    */
   getChatsByUser(id: number): Observable<ChatI[]> {
-    return from(this.chatRepository
-      .createQueryBuilder('chat')
-      .innerJoin('chat.tickets', 'tickets')
-      .where('tickets.memberId = :id', { id: id })
-      .getMany())
+    return from(
+      this.chatRepository
+        .createQueryBuilder('chat')
+        .innerJoin('chat.tickets', 'tickets')
+        .where('tickets.memberId = :id', { id: id })
+        .getMany(),
+    ).pipe(
+      map((chats: ChatI[]) => {
+        return chats ? chats : [];
+      }),
+    );
   }
 
   getChatMessages(uuid: string): Observable<ChatI> {
@@ -44,7 +49,12 @@ export class ChatService {
         .createQueryBuilder('chat')
         .leftJoinAndSelect('chat.messages', 'messages')
         .where('chat.id = :id', { id: uuid })
-        .getOne()
+        .getOne(),
+    ).pipe(
+      map((chat: ChatI) => {
+        if (chat) return chat;
+        else throw new HttpException('Чат не найден', HttpStatus.NOT_FOUND);
+      }),
     );
   }
 
@@ -65,12 +75,10 @@ export class ChatService {
   deleteChat(chatId: string): Observable<boolean> {
     return from(this.chatRepository.delete({ id: chatId })).pipe(
       map((result: DeleteResult) => {
-        if (result.affected !== undefined)
-          return true;
-        else
-          return false;
-      })
-    )
+        if (result.affected !== null) return true;
+        else return false;
+      }),
+    );
   }
 
   /**
@@ -90,12 +98,10 @@ export class ChatService {
   deleteTicket(ticketId: number): Observable<boolean> {
     return from(this.ticketRepository.delete({ id: ticketId })).pipe(
       map((result: DeleteResult) => {
-        if (result.affected !== undefined)
-          return true;
-        else
-          return false;
-      })
-    )
+        if (result.affected !== null) return true;
+        else return false;
+      }),
+    );
   }
 
   /**
@@ -108,20 +114,6 @@ export class ChatService {
   }
 
   /**
-   * Получуть все сообщения чата
-   * @param chatId id чата
-   * @returns чат с сообщениями
-   */
-  getAllChatMessages(chatId: string): Observable<ChatI[]> {
-    return from(this.chatRepository
-      .createQueryBuilder('chat')
-      .innerJoin('chat.messages', 'message')
-      .where('message.chatId = :id', { id: chatId })
-      .innerJoin('user.messages', 'message')
-      .getMany())
-  }
-
-  /**
    * Удалить сообщения
    * @param messageId id сообщения
    * @returns true/false
@@ -129,11 +121,9 @@ export class ChatService {
   deleteMessage(messageId: number): Observable<boolean> {
     return from(this.messagerepository.delete({ id: messageId })).pipe(
       map((result: DeleteResult) => {
-        if (result.affected !== undefined)
-          return true;
-        else
-          return false;
-      })
-    )
+        if (result.affected !== null) return true;
+        else return false;
+      }),
+    );
   }
 }

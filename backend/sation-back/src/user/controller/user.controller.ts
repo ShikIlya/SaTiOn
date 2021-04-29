@@ -1,4 +1,13 @@
-import { Body, Controller, Get, HttpStatus, Post, Req, Res, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpStatus,
+  Post,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { Response } from 'express';
 import { Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
@@ -11,21 +20,27 @@ import { UserService } from '../service/user.service';
 
 @Controller('users')
 export class UserController {
-
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService) {}
 
   /**
    * Зарегестрировать пользователя
    * @param createUserDto данные регистрации (логин, email, пароль)
-   * @returns 
+   * @returns
    */
   @Post('register')
   create(@Body() createUserDto: CreateUserDto, @Res() response: Response) {
-    return this.userService.create(createUserDto).pipe(switchMap((user: UserI) => {
-      if (user) {
-        return this.login({ ...LoginUserDto, email: createUserDto.email, password: createUserDto.password }, response);
-      }
-    }))
+    return this.userService.create(createUserDto).pipe(
+      switchMap((user: UserI) => {
+        return this.login(
+          {
+            ...LoginUserDto,
+            email: createUserDto.email,
+            password: createUserDto.password,
+          },
+          response,
+        );
+      }),
+    );
   }
 
   /**
@@ -41,16 +56,15 @@ export class UserController {
           expires: new Date(Date.now() + 1000 * 60 * 5),
           httpOnly: true,
           secure: false,
-        })
+        });
         response.cookie('refresh_token', session.refresh_token.token, {
           expires: session.refresh_token.expireDate,
           httpOnly: true,
           secure: false,
-        })
+        });
         return response.status(HttpStatus.ACCEPTED).send();
-
-      })
-    )
+      }),
+    );
   }
 
   /**
@@ -62,7 +76,7 @@ export class UserController {
   logout(@Res() response) {
     response.clearCookie('refresh_token');
     response.clearCookie('access_token');
-    return response.status(200).json('User Logged out')
+    return response.status(200).json('User Logged out');
   }
 
   /**
@@ -82,9 +96,6 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   @Get('is_auth')
   check(@Req() request) {
-    if (request.user !== null)
-      return true;
+    if (request.user !== null) return true;
   }
-
 }
-

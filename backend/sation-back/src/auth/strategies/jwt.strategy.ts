@@ -15,13 +15,11 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         return token;
       },
       ignoreExpiration: false,
-      secretOrKey: configService.get('JWT_SECRET')
+      secretOrKey: configService.get('JWT_SECRET'),
     });
-
   }
 
   async validate(payload: any) {
     return { ...payload.data };
   }
 }
-

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { from, Observable } from 'rxjs';
@@ -14,14 +14,13 @@ const bcrypt = require('bcrypt');
 
 @Injectable()
 export class AuthService {
-
   constructor(
     private readonly jwtService: JwtService,
     @InjectRepository(RefreshTokenEntity)
     private refreshRepository: Repository<RefreshTokenI>,
     @InjectRepository(UserEntity)
-    private userRepository: Repository<UserI>
-  ) { }
+    private userRepository: Repository<UserI>,
+  ) {}
 
   /**
    * Создать Refresh Token
@@ -29,9 +28,11 @@ export class AuthService {
    * @returns RefreshTokenI
    */
   makeRefreshToken(userId: number): Observable<RefreshTokenI> {
-    return from(this.refreshRepository.save(
-      this.refreshRepository.create(this.generateRefreshTokenDto(userId)))
-    )
+    return from(
+      this.refreshRepository.save(
+        this.refreshRepository.create(this.generateRefreshTokenDto(userId)),
+      ),
+    );
   }
 
   /**
@@ -43,12 +44,10 @@ export class AuthService {
   deleteRefreshToken(token: string, userId: number): Observable<boolean> {
     return from(this.refreshRepository.delete({ token, userId })).pipe(
       map((result: DeleteResult) => {
-        if (result.affected !== undefined)
-          return true;
-        else
-          return false;
-      })
-    )
+        if (result.affected !== null) return true;
+        else return false;
+      }),
+    );
   }
 
   /**
@@ -57,16 +56,22 @@ export class AuthService {
    * @returns пользователя в формате UserI
    */
   getUserByToken(refresh: string): Observable<UserI> {
-    return from(this.userRepository
-      .createQueryBuilder('user')
-      .innerJoin('user.refresh_tokens', 'refresh')
-      .where('refresh.token = :token', { token: refresh })
-      .getOne()).pipe(
-        map((user: UserI) => {
-          if (user !== null)
-            return user;
-        })
-      )
+    return from(
+      this.userRepository
+        .createQueryBuilder('user')
+        .innerJoin('user.refresh_tokens', 'refresh')
+        .where('refresh.token = :token', { token: refresh })
+        .getOne(),
+    ).pipe(
+      map((user: UserI) => {
+        if (user) return user;
+        else
+          throw new HttpException(
+            'Пользователь не найден',
+            HttpStatus.NOT_FOUND,
+          );
+      }),
+    );
   }
 
   /**
@@ -79,11 +84,9 @@ export class AuthService {
     date.setDate(date.getDate() + 15);
     const refreshTokenDto: RefreshTokenDto = {
       token: uuidv4(),
-      expireDate: date
-    }
-    if (userId !== null) {
-      refreshTokenDto.userId = userId;
-    }
+      expireDate: date,
+    };
+    refreshTokenDto.userId = userId;
     return refreshTokenDto;
   }
 
@@ -115,5 +118,4 @@ export class AuthService {
   comparePassword(password: string, storedPassHash: string): Observable<any> {
     return from(bcrypt.compare(password, storedPassHash));
   }
-
 }
