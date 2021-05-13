@@ -31,7 +31,7 @@ export class RegistrationComponent implements OnInit {
     this.initializeRegistrationForm();
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 
   /**
    * Регистрация пользователя
@@ -47,11 +47,13 @@ export class RegistrationComponent implements OnInit {
         ).toLowerCase(),
         password: String(this.registrationFormGroup.get('password').value),
       };
-      this.authService.register(user).pipe(
-        switchMap((response) => {
-          if (response.status === 202) return this.userService.getUser();
-        })
-      )
+      this.authService
+        .register(user)
+        .pipe(
+          switchMap((response) => {
+            if (response.status === 202) return this.userService.getUser();
+          })
+        )
         .subscribe((user: User) => {
           this.dataStoreService.setUser(user);
           this.router.navigate(['/messenger']);
@@ -67,7 +69,7 @@ export class RegistrationComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       login: [
         '',
-        [Validators.required, Validators.pattern('[a-zA-Z\\d@$!%*#?&]+')],
+        [Validators.required, Validators.pattern('[a-zA-Z\\d]+[_a-zA-Z\\d]*')],
       ],
       password: [
         '',
