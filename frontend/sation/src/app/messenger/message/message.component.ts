@@ -24,6 +24,6 @@ export class MessageComponent implements OnInit {
 
   formatMessageTime(time: string): string {
     const date = new Date(time);
-    return `${date.getHours()}:${date.getMinutes()}`;
+    return `${date.getHours()}:` + String(date.getMinutes()).padStart(2, '0');
   }
 }
