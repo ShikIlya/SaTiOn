@@ -1,19 +1,12 @@
 @import "_variables";
 .messenger {
+  height: 100%;
+  padding: 15px 10px;
+  &__container {
+    display: flex;
+    flex-direction: row;
     height: 100%;
-    padding: 15px 10px;
-    &__container {
-        display: flex;
-        flex-direction: row;
-        height: 100%;
-        background-color: #ffffff;
-        box-shadow: rgba(0, 0, 0, 0.16) 0px 0px 4px;
-    }
-    &__sidebar {
-        flex: 0 0 30%;
-        border-right: 1px solid $borderColor;
-    }
-    &__chat {
-        flex: 0 0 70%;
-    }
+    background-color: #ffffff;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 0px 4px;
+  }
 }

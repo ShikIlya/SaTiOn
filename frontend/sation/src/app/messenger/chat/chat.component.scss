@@ -1,4 +1,8 @@
 @import "_variables";
+:host {
+  flex: 0 0 70%;
+}
+
 .chat {
   display: grid;
   grid-template-columns: 1fr;

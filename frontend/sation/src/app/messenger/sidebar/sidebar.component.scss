@@ -1,4 +1,9 @@
 @import "_variables";
+:host {
+  flex: 0 0 30%;
+  border-right: 1px solid $borderColor;
+}
+
 .sidebar {
   &__header {
     display: flex;
