@@ -20,6 +20,7 @@ import { MessagesListComponent } from './messages-list/messages-list.component';
 import { ChatHeaderComponent } from './chat-header/chat-header.component';
 import { ChatFooterComponent } from './chat-footer/chat-footer.component';
 import { AngularResizedEventModule } from 'angular-resize-event';
+import { ChooseChatComponent } from './choose-chat/choose-chat.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { AngularResizedEventModule } from 'angular-resize-event';
     MessagesListComponent,
     ChatHeaderComponent,
     ChatFooterComponent,
+    ChooseChatComponent,
   ],
   imports: [
     CommonModule,

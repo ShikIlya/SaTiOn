@@ -1,4 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Chat } from '../shared/models/chat.model';
+import { DataStoreService } from '../shared/services/data-store/data-store.service';
 
 @Component({
   selector: 'app-messenger',
@@ -6,7 +8,12 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./messenger.component.scss'],
 })
 export class MessengerComponent implements OnInit {
-  constructor() {}
+  currentChat: Chat = null;
+  constructor(private dataStoreService: DataStoreService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.dataStoreService
+      .getCurrentChat()
+      .subscribe((chat) => (this.currentChat = chat));
+  }
 }

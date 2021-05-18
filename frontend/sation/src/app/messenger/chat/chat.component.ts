@@ -14,13 +14,13 @@ import { ChatService } from '../services/chat/chat.service';
 })
 export class ChatComponent implements OnInit {
   messages: Message[] = [];
-
   footerHeight: number = 0;
+
   @ViewChild('messagesList') messagesList: ElementRef;
   constructor(
     private chatService: ChatService,
     private dataStoreService: DataStoreService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     /**
@@ -31,12 +31,16 @@ export class ChatComponent implements OnInit {
     });
     this.dataStoreService.getUser().subscribe((res) => console.log(res));
 
-    this.dataStoreService.getCurrentChat().pipe(switchMap((chat: Chat | null) => {
-      return chat ? this.chatService.getChatMessages(chat.id) : of(null);
-    })).subscribe((chat: Chat | any) => {
-      if (chat)
-        this.messages = chat.messages;
-    });
+    this.dataStoreService
+      .getCurrentChat()
+      .pipe(
+        switchMap((chat: Chat | null) => {
+          return chat ? this.chatService.getChatMessages(chat.id) : of(null);
+        })
+      )
+      .subscribe((chat: Chat | any) => {
+        if (chat) this.messages = chat.messages;
+      });
   }
 
   setFooterHeight(height: number) {
