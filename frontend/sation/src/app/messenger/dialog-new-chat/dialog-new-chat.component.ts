@@ -19,7 +19,14 @@ export class DialogNewChatComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  onSubmit() {}
+  /**
+   * Создание нового чата
+   */
+  onSubmit() {
+    if (this.newChatFormGroup.valid) {
+      this.dialogRef.close(this.newChatFormGroup.value);
+    }
+  }
 
   /**
    * Инициализация формы нового чата
@@ -29,14 +36,5 @@ export class DialogNewChatComponent implements OnInit {
       chatName: ['', [Validators.required]],
       invitedLogin: ['', [Validators.required]],
     });
-  }
-
-  /**
-   * Создание нового чата
-   */
-  createChat() {
-    if (this.newChatFormGroup.valid) {
-      this.dialogRef.close(this.newChatFormGroup.value);
-    }
   }
 }
