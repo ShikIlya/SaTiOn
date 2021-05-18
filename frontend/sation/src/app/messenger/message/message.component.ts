@@ -11,7 +11,7 @@ import { DataStoreService } from 'src/app/shared/services/data-store/data-store.
 export class MessageComponent implements OnInit {
   @Input() message: Message;
   user: User;
-  constructor(private dataStoreService: DataStoreService) { }
+  constructor(private dataStoreService: DataStoreService) {}
 
   ngOnInit(): void {
     this.dataStoreService.getUser().subscribe((user) => {

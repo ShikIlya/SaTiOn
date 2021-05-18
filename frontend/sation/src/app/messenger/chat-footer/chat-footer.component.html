@@ -4,7 +4,8 @@
       <mat-icon class="chat__btn-icon">add_circle_outline</mat-icon>
     </button>
   </div>
-  <div class="chat__write-message" contenteditable="plaintext-only" placeholder="Введите сообщение" #messageInput></div>
+  <div class="chat__write-message" contenteditable="plaintext-only" placeholder="Введите сообщение"
+    (keydown.enter)="onEnter($event)" #messageInput></div>
   <div class="chat__tools">
     <button class="chat__btn" mat-icon-button color="primary">
       <mat-icon class="chat__btn-icon" (click)="sendMessage(messageInput.textContent)">send</mat-icon>

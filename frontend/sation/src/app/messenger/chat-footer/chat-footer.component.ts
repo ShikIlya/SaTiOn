@@ -24,10 +24,11 @@ export class ChatFooterComponent implements OnInit {
   user: User;
   @Output() chatFooterHeight = new EventEmitter<number>();
   @ViewChild('chatFooter') chatFooter: ElementRef;
+  @ViewChild('messageInput') messageInput: ElementRef;
   constructor(
     private chatService: ChatService,
     private dataStoreService: DataStoreService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.dataStoreService.getCurrentChat().subscribe((chat) => {
@@ -43,15 +44,24 @@ export class ChatFooterComponent implements OnInit {
    * @param data Сообщение
    */
   sendMessage(content: string) {
-    const message: MessageDto = {
-      content: content,
-      chatId: this.currentChat.id,
-      senderId: this.user.id,
-    };
-    this.chatService.sendMessage(message);
+    if (content.trim() !== '') {
+      content = content.trim();
+      const message: MessageDto = {
+        content: content,
+        chatId: this.currentChat.id,
+        senderId: this.user.id,
+      };
+      this.chatService.sendMessage(message);
+    }
+    this.messageInput.nativeElement.textContent = '';
   }
 
   onResize(event: ResizedEvent) {
     this.chatFooterHeight.emit(event.newHeight + 1);
+  }
+
+  onEnter(event: KeyboardEvent) {
+    event.preventDefault();
+    this.sendMessage(this.messageInput.nativeElement.textContent);
   }
 }
