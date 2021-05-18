@@ -5,6 +5,7 @@
     display: flex;
     border-top: 1px solid $borderColor;
     padding: 10px;
+    align-items: center;
   }
 
   &__tools {
@@ -21,9 +22,8 @@
   }
 
   &__write-message {
-    min-height: 40px;
     overflow-y: auto;
-    padding: 2px;
+    padding: 8px 12px;
     width: 750px;
     font-size: 15px;
     color: #000;
@@ -31,6 +31,8 @@
     outline: none;
     flex: 1;
     margin: 0 10px;
+    border: 1px solid $borderColor;
+    border-radius: 8px;
 
     &:empty::before {
       content: attr(placeholder);
