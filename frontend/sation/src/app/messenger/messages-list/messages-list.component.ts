@@ -1,4 +1,11 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewChecked,
+  Component,
+  ElementRef,
+  Input,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { Message } from 'src/app/shared/models/message.model';
 
 @Component({
@@ -6,7 +13,7 @@ import { Message } from 'src/app/shared/models/message.model';
   templateUrl: './messages-list.component.html',
   styleUrls: ['./messages-list.component.scss'],
 })
-export class MessagesListComponent implements OnInit {
+export class MessagesListComponent implements OnInit, AfterViewChecked {
   @Input() messages: Message[];
   @Input() footerHeight: number;
   /**
@@ -17,4 +24,15 @@ export class MessagesListComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {}
+
+  ngAfterViewChecked(): void {
+    this.scrollToBottom();
+  }
+
+  scrollToBottom() {
+    this.messagesList.nativeElement.scroll({
+      top: this.messagesList.nativeElement.scrollHeight,
+      left: 0,
+    });
+  }
 }
