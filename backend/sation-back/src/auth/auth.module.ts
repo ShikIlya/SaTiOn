@@ -14,13 +14,12 @@ import { UserEntity } from 'src/user/models/user.entity';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => ({
-        secret: configService.get('JWT_SECRET')
-      })
+        secret: configService.get('JWT_SECRET'),
+      }),
     }),
-    TypeOrmModule.forFeature([RefreshTokenEntity, UserEntity])
-
+    TypeOrmModule.forFeature([RefreshTokenEntity, UserEntity]),
   ],
   providers: [AuthService, JwtStrategy, JwtAuthGuard],
-  exports: [AuthService]
+  exports: [AuthService],
 })
-export class AuthModule { }
+export class AuthModule {}

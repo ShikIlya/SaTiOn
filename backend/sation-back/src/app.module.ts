@@ -11,15 +11,15 @@ import { ChatModule } from './chat/chat.module';
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      url: process.env.DATABASE_URL,
       autoLoadEntities: true,
-      synchronize: true
+      synchronize: true,
+      url: process.env.DATABASE_URL,
     }),
     UserModule,
     AuthModule,
-    ChatModule
+    ChatModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}
