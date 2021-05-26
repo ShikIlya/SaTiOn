@@ -12,6 +12,7 @@ import { forkJoin } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { Server, Socket } from 'socket.io';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { WsAuthGuard } from 'src/auth/guards/ws-jwt.guard';
 import { UserI } from 'src/user/models/user.interface';
 import { UserService } from 'src/user/service/user.service';
 import { ChatTicketI } from '../models/chat-ticket.interface';
@@ -36,7 +37,7 @@ export class ChatGateway
   @WebSocketServer()
   server: Server;
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(WsAuthGuard)
   @SubscribeMessage('JoinChat')
   joinChat(client: Socket, data: TwoPersonChatDto, @Req() req) {
     return this.userService.checkLogin(data.invitedLogin).pipe(
