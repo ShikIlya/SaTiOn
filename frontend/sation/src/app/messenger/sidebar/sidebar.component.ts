@@ -48,6 +48,7 @@ export class SidebarComponent implements OnInit {
       if (chat.creatorId === this.user.id)
         this.dataStoreService.setCurrentChat(chat);
       this.chatsList.push(chat);
+      this.chatService.connectToChat(chat.id);
     });
   }
 

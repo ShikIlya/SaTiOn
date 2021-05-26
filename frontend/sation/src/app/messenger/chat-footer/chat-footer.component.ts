@@ -1,4 +1,5 @@
 import {
+  AfterViewChecked,
   Component,
   ElementRef,
   EventEmitter,
@@ -18,13 +19,16 @@ import { Chat } from 'src/app/shared/models/chat.model';
   templateUrl: './chat-footer.component.html',
   styleUrls: ['./chat-footer.component.scss'],
 })
-export class ChatFooterComponent implements OnInit {
+export class ChatFooterComponent implements OnInit, AfterViewChecked {
   height: number;
   currentChat: Chat;
   user: User;
+  isCurrentChatChanged = false;
+
   @Output() chatFooterHeight = new EventEmitter<number>();
   @ViewChild('chatFooter') chatFooter: ElementRef;
   @ViewChild('messageInput') messageInput: ElementRef;
+
   constructor(
     private chatService: ChatService,
     private dataStoreService: DataStoreService
@@ -33,10 +37,19 @@ export class ChatFooterComponent implements OnInit {
   ngOnInit(): void {
     this.dataStoreService.getCurrentChat().subscribe((chat) => {
       this.currentChat = chat;
+      this.isCurrentChatChanged = true;
     });
     this.dataStoreService.getUser().subscribe((user) => {
       this.user = user;
     });
+  }
+
+  ngAfterViewChecked(): void {
+    if (this.isCurrentChatChanged) {
+      this.messageInput.nativeElement.focus();
+      this.messageInput.nativeElement.textContent = '';
+      this.isCurrentChatChanged = false;
+    }
   }
 
   /**
