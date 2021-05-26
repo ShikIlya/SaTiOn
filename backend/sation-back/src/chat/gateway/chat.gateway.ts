@@ -37,16 +37,16 @@ export class ChatGateway
   @WebSocketServer()
   server: Server;
 
-  @UseGuards(WsAuthGuard)
+  /*   @UseGuards(WsAuthGuard) */
   @SubscribeMessage('JoinChat')
-  joinChat(client: Socket, data: TwoPersonChatDto, @Req() req) {
-    return this.userService.checkLogin(data.invitedLogin).pipe(
+  joinChat(client: Socket, data: any) {
+    return this.userService.checkLogin(data.chatInfo.invitedLogin).pipe(
       switchMap((user: UserI) => {
         return this.chatService
           .createChat({
             ...ChatDto,
-            name: data.chatName,
-            creatorId: req.user.id,
+            name: data.chatInfo.chatName,
+            creatorId: data.user.id,
           })
           .pipe(
             switchMap((chat: ChatI) => {
@@ -59,13 +59,13 @@ export class ChatGateway
                 this.chatService.createOneTicket({
                   ...TicketDto,
                   chatId: chat.id,
-                  memberId: req.user.id,
+                  memberId: data.user.id,
                 }),
               ]).pipe(
                 map((tickets: ChatTicketI[]) => {
                   return this.server
                     .to(user.login)
-                    .to(req.user.login)
+                    .to(data.user.login)
                     .emit('JoinedChat', chat);
                 }),
               );

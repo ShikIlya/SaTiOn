@@ -14,8 +14,8 @@ import { AuthService } from '../services/auth/auth.service';
 
 @Injectable()
 export class WsAuthGuard extends AuthGuard('jwt') {
-  constructor() // private authService: AuthService, // private userService: UserService,
-  {
+  constructor() {
+    // private authService: AuthService, // private userService: UserService,
     super();
   }
 

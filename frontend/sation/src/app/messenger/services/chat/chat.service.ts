@@ -6,6 +6,7 @@ import * as io from 'socket.io-client';
 import { Chat } from 'src/app/shared/models/chat.model';
 import { CreateChat } from 'src/app/shared/models/chatDto.model';
 import { MessageDto } from 'src/app/shared/models/messageDto.model';
+import { User } from 'src/app/shared/models/user.model';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -60,9 +61,11 @@ export class ChatService {
    * @returns Список чатов пользователя
    */
   getUserChats(): Observable<Chat[]> {
-    return this.http.get<Chat[]>(`${this.apiUrl}/chat`, {
-      withCredentials: true,
-    }).pipe(catchError(this.handleError));
+    return this.http
+      .get<Chat[]>(`${this.apiUrl}/chat`, {
+        withCredentials: true,
+      })
+      .pipe(catchError(this.handleError));
   }
 
   /**
@@ -76,12 +79,34 @@ export class ChatService {
   }
 
   getChatMessages(id: string): Observable<Chat> {
-    return this.http.get<Chat>(`${this.apiUrl}/chat/messages`, {
-      params: { id: id },
-      withCredentials: true,
-    }).pipe(catchError(this.handleError));
+    return this.http
+      .get<Chat>(`${this.apiUrl}/chat/messages`, {
+        params: { id: id },
+        withCredentials: true,
+      })
+      .pipe(catchError(this.handleError));
   }
 
+  /**
+   * Создать чат
+   * @param message MessageDto
+   */
+  createNewChat(data: CreateChat, hostUser: User) {
+    const chatData = { chatInfo: data, user: hostUser };
+    this.socket.emit('JoinChat', chatData);
+  }
+
+  /**
+   * Событие создания нового чата
+   * @returns Сообщение
+   */
+  onNewChat() {
+    return new Observable((observer) => {
+      this.socket.on('JoinedChat', (chat) => {
+        observer.next(chat);
+      });
+    });
+  }
 
   handleError(error) {
     let errorMessage = '';

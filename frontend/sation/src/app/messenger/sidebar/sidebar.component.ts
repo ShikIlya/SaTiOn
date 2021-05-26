@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { map } from 'rxjs/operators';
 import { AuthentificationService } from 'src/app/authentification/services/authentification.service';
 import { Chat } from 'src/app/shared/models/chat.model';
 import { CreateChat } from 'src/app/shared/models/chatDto.model';
+import { User } from 'src/app/shared/models/user.model';
 import { DataStoreService } from 'src/app/shared/services/data-store/data-store.service';
 import { DialogNewChatComponent } from '../dialog-new-chat/dialog-new-chat.component';
 import { ChatService } from '../services/chat/chat.service';
@@ -15,6 +17,7 @@ import { ChatService } from '../services/chat/chat.service';
 })
 export class SidebarComponent implements OnInit {
   chatsList: Chat[];
+  user: User = null;
 
   constructor(
     private authService: AuthentificationService,
@@ -22,10 +25,28 @@ export class SidebarComponent implements OnInit {
     public dialog: MatDialog,
     private chatService: ChatService,
     private dataStoreService: DataStoreService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
+    this.dataStoreService
+      .getUser()
+      .pipe(
+        map((user) => {
+          this.user = user;
+          return user;
+        })
+      )
+      .subscribe((user) => {
+        this.chatService.connectToChat(user.login);
+      });
+
     this.getUserChats();
+    /**
+     * Получение новых чатов в socket
+     */
+    this.chatService.onNewChat().subscribe((chat: Chat) => {
+      this.chatsList.push(chat);
+    });
   }
 
   /**
@@ -47,8 +68,8 @@ export class SidebarComponent implements OnInit {
     });
 
     /**
-    * Подписка на получение результата из модального окна
-      */
+     * Подписка на получение результата из модального окна
+     */
     dialogRef.afterClosed().subscribe((result) => {
       if (result) this.createChat(result);
     });
@@ -58,9 +79,9 @@ export class SidebarComponent implements OnInit {
    * Получение чатов пользователя
    */
   getUserChats() {
-    this.chatService.getUserChats().subscribe(res => {
+    this.chatService.getUserChats().subscribe((res) => {
       this.chatsList = res;
-      this.chatsList.forEach(chat => {
+      this.chatsList.forEach((chat) => {
         this.chatService.connectToChat(chat.id);
       });
     });
@@ -71,10 +92,11 @@ export class SidebarComponent implements OnInit {
    * @param data Название чата и логин приглашенного пользователя
    */
   createChat(data: CreateChat) {
-    this.chatService.createChat(data).subscribe(res => {
+    /* this.chatService.createChat(data).subscribe(res => {
       const newChat = { id: res['chatId'], name: data.chatName };
       this.chatsList.push(newChat);
       this.chatService.connectToChat(newChat.id);
-    });
+    }); */
+    this.chatService.createNewChat(data, this.user);
   }
 }
