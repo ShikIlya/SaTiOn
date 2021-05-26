@@ -5,16 +5,19 @@ import { DataStoreService } from 'src/app/shared/services/data-store/data-store.
 @Component({
   selector: 'app-chat-header',
   templateUrl: './chat-header.component.html',
-  styleUrls: ['./chat-header.component.scss']
+  styleUrls: ['./chat-header.component.scss'],
 })
 export class ChatHeaderComponent implements OnInit {
   currentChat: Chat = null;
-  constructor(private dataStoreService: DataStoreService) { }
+  constructor(private dataStoreService: DataStoreService) {}
 
   ngOnInit(): void {
-    this.dataStoreService.getCurrentChat().subscribe(chat => {
+    this.dataStoreService.getCurrentChat().subscribe((chat) => {
       this.currentChat = chat;
-    })
+    });
   }
 
+  closeChat() {
+    this.dataStoreService.setCurrentChat(null);
+  }
 }

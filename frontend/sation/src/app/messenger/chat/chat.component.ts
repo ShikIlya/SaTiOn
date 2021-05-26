@@ -1,4 +1,4 @@
-import { ElementRef, Input } from '@angular/core';
+import { ElementRef, HostListener, Input } from '@angular/core';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { of } from 'rxjs';
 import { map, mergeMap, switchMap } from 'rxjs/operators';
@@ -45,5 +45,10 @@ export class ChatComponent implements OnInit {
 
   setFooterHeight(height: number) {
     this.footerHeight = height;
+  }
+
+  @HostListener('document:keydown.escape', ['$event'])
+  handleCloseChat(event: KeyboardEvent) {
+    this.dataStoreService.setCurrentChat(null);
   }
 }
