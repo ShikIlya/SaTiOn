@@ -45,6 +45,8 @@ export class SidebarComponent implements OnInit {
      * Получение новых чатов в socket
      */
     this.chatService.onNewChat().subscribe((chat: Chat) => {
+      if (chat.creatorId === this.user.id)
+        this.dataStoreService.setCurrentChat(chat);
       this.chatsList.push(chat);
     });
   }

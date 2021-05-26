@@ -98,7 +98,7 @@ export class ChatService {
 
   /**
    * Событие создания нового чата
-   * @returns Сообщение
+   * @returns Чат
    */
   onNewChat() {
     return new Observable((observer) => {
