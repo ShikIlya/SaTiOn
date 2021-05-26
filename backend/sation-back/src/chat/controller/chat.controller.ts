@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Post, Query, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Query,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { forkJoin, from, Observable } from 'rxjs';
 import { map, mergeMap, switchMap } from 'rxjs/operators';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
@@ -15,38 +24,50 @@ import { ChatService } from '../service/chat.service';
 
 @Controller('chat')
 export class ChatController {
-
   constructor(
     private chatService: ChatService,
-    private userService: UserService
-  ) { }
+    private userService: UserService,
+  ) {}
 
   /**
    * Создать чат с двумя человеками
    * @param inv Вводные параметры в форме TwoPersonChatDto
-   * @returns массив ticket'ов 
+   * @returns массив ticket'ов
    */
   @UseGuards(JwtAuthGuard)
   @Post('create')
   createTwoPersonChat(@Body() inv: TwoPersonChatDto, @Req() req) {
     console.log(req.user);
-    return this.userService.checkLogin(inv.invitedLogin)
-      .pipe(
-        switchMap((user: UserI) => {
-          return this.chatService.createChat({ ...ChatDto, name: inv.chatName, creatorId: req.user.id }).pipe(
+    return this.userService.checkLogin(inv.invitedLogin).pipe(
+      switchMap((user: UserI) => {
+        return this.chatService
+          .createChat({
+            ...ChatDto,
+            name: inv.chatName,
+            creatorId: req.user.id,
+          })
+          .pipe(
             switchMap((chat: ChatI) => {
               return forkJoin([
-                this.chatService.createOneTicket({ ...TicketDto, chatId: chat.id, memberId: user.id }),
-                this.chatService.createOneTicket({ ...TicketDto, chatId: chat.id, memberId: req.user.id })
+                this.chatService.createOneTicket({
+                  ...TicketDto,
+                  chatId: chat.id,
+                  memberId: user.id,
+                }),
+                this.chatService.createOneTicket({
+                  ...TicketDto,
+                  chatId: chat.id,
+                  memberId: req.user.id,
+                }),
               ]).pipe(
                 map((tickets: ChatTicketI[]) => {
                   return { chatId: chat.id };
-                })
-              )
-            })
-          )
-        })
-      )
+                }),
+              );
+            }),
+          );
+      }),
+    );
   }
 
   /**
@@ -64,6 +85,4 @@ export class ChatController {
   getChatMessages(@Query('id') id: string): Observable<ChatI> {
     return this.chatService.getChatMessages(id);
   }
-
-
 }

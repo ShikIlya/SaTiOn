@@ -4,6 +4,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { WsException } from '@nestjs/websockets';
 import { forkJoin, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { UserI } from 'src/user/models/user.interface';
@@ -64,7 +65,9 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
 
   handleRequest(err, user) {
     if (err || !user) {
-      throw err || new UnauthorizedException();
+      throw (
+        err || new UnauthorizedException() || new WsException('Unauthorised')
+      );
     }
     return user;
   }
