@@ -94,11 +94,6 @@ export class SidebarComponent implements OnInit {
    * @param data Название чата и логин приглашенного пользователя
    */
   createChat(data: CreateChat) {
-    /* this.chatService.createChat(data).subscribe(res => {
-      const newChat = { id: res['chatId'], name: data.chatName };
-      this.chatsList.push(newChat);
-      this.chatService.connectToChat(newChat.id);
-    }); */
     this.chatService.createNewChat(data, this.user);
   }
 }
