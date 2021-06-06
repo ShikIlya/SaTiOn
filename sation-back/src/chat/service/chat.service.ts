@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { from, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { DeleteResult, Repository } from 'typeorm';
+import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { ChatTicketEntity } from '../models/chat-ticket.entity';
 import { ChatTicketI } from '../models/chat-ticket.interface';
 import { ChatEntity } from '../models/chat.entity';
@@ -114,13 +114,24 @@ export class ChatService {
   }
 
   /**
-   * Удалить сообщения
+   * Удалить сообщение
    * @param messageId id сообщения
    * @returns true/false
    */
   deleteMessage(messageId: number): Observable<boolean> {
     return from(this.messagerepository.delete({ id: messageId })).pipe(
       map((result: DeleteResult) => {
+        if (result.affected !== null) return true;
+        else return false;
+      }),
+    );
+  }
+
+  updateMessage(messageId: number, newContent): Observable<boolean> {
+    return from(
+      this.messagerepository.update({ id: messageId }, { content: newContent }),
+    ).pipe(
+      map((result: UpdateResult) => {
         if (result.affected !== null) return true;
         else return false;
       }),

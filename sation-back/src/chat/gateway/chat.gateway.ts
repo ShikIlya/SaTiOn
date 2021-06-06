@@ -1,4 +1,4 @@
-import { Logger, Req, UseGuards } from '@nestjs/common';
+import { Logger } from '@nestjs/common';
 import {
   OnGatewayConnection,
   OnGatewayDisconnect,
@@ -6,13 +6,11 @@ import {
   SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
-  WsResponse,
+  WsException,
 } from '@nestjs/websockets';
 import { forkJoin } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { Server, Socket } from 'socket.io';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { WsAuthGuard } from 'src/auth/guards/ws-jwt.guard';
 import { UserI } from 'src/user/models/user.interface';
 import { UserService } from 'src/user/service/user.service';
 import { ChatTicketI } from '../models/chat-ticket.interface';
@@ -37,7 +35,6 @@ export class ChatGateway
   @WebSocketServer()
   server: Server;
 
-  /*   @UseGuards(WsAuthGuard) */
   @SubscribeMessage('JoinChat')
   joinChat(client: Socket, data: any) {
     return this.userService.checkLogin(data.chatInfo.invitedLogin).pipe(
@@ -71,6 +68,36 @@ export class ChatGateway
               );
             }),
           );
+      }),
+    );
+  }
+
+  @SubscribeMessage('DeleteChat')
+  deleteChat(client: Socket, data: any) {
+    return this.chatService.deleteChat(data.chatId).pipe(
+      map((result: boolean) => {
+        if (result) return this.server.to(data.chatId).emit('ChatDeleted');
+        else throw new WsException('Chat ne udalilsya!');
+      }),
+    );
+  }
+
+  @SubscribeMessage('DeleteMessage')
+  deleteMessage(client: Socket, data: any) {
+    return this.chatService.deleteMessage(data.messageId).pipe(
+      map((result: boolean) => {
+        if (result) return this.server.to(data.chatId).emit(data.messageId);
+        else throw new WsException('Message ne udalilos!');
+      }),
+    );
+  }
+
+  @SubscribeMessage('EditMessage')
+  editMessage(client: Socket, data: any) {
+    return this.chatService.updateMessage(data.messageId, data.newContent).pipe(
+      map((result: any) => {
+        if (result) return this.server.to(data.chatId).emit(data);
+        else throw new WsException('Oshibka vishla!');
       }),
     );
   }
