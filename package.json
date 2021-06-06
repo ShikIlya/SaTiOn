@@ -11,8 +11,8 @@
     "start-back": "npm --prefix sation-back run start",
     "start-front": "npm --prefix sation run start",
     "install-all": "npm install & npm run install-back & npm run install-front",
-    "install-back": "npm --prefix sation-back install",
-    "install-front": "npm --prefix sation install"
+    "install-back": "cd sation-back && npm install",
+    "install-front": "cd sation && npm install"
   },
   "repository": {
     "type": "git",
