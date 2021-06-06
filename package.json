@@ -1,0 +1,23 @@
+{
+  "name": "SaTiOn",
+  "version": "1.0.0",
+  "description": "",
+  "dependencies": {
+    "npm-run-all": "^4.1.5"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "npm-run-all -p -r start-back start-front",
+    "start-back": "npm --prefix sation-back run start",
+    "start-front": "npm --prefix sation run start",
+    "install-all": "npm install & npm run install-back & npm run install-front",
+    "install-back": "npm --prefix sation-back install",
+    "install-front": "npm --prefix sation install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Trizo1/SaTiOn"
+  },
+  "author": "",
+  "license": "ISC"
+}
