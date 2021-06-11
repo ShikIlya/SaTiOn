@@ -2,7 +2,7 @@
   <div class="messenger__container container">
     <app-sidebar></app-sidebar>
     <ng-container *ngIf="currentChat !== null; else chooseChat">
-      <app-chat></app-chat>
+      <app-chat [currentChat]="currentChat"></app-chat>
     </ng-container>
     <ng-template #chooseChat>
       <app-choose-chat></app-choose-chat>

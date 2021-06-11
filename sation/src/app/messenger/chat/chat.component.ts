@@ -16,6 +16,8 @@ export class ChatComponent implements OnInit {
   messages: Message[] = [];
   footerHeight: number = 0;
 
+  @Input() currentChat: Chat;
+
   @ViewChild('messagesList') messagesList: ElementRef;
   constructor(
     private chatService: ChatService,
@@ -27,7 +29,11 @@ export class ChatComponent implements OnInit {
      * Получение новых сообщений в socket
      */
     this.chatService.onNewMessage().subscribe((message: Message) => {
-      this.messages.push(message);
+      console.log(
+        'new message:' + message.content + ' to chat: ' + message.chatId
+      );
+      if (this.currentChat)
+        if (message.chatId === this.currentChat.id) this.messages.push(message);
     });
     this.dataStoreService.getUser().subscribe((res) => console.log(res));
 
