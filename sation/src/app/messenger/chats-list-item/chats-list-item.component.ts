@@ -10,16 +10,22 @@ export class ChatsListItemComponent implements OnInit {
   @Input() chatListItem: Chat;
   @Input() selected: boolean;
   @Output() selectedChatId = new EventEmitter<string>();
-  constructor() { }
+  @Output() openChatMenu = new EventEmitter();
 
-  ngOnInit(): void { }
+  constructor() {}
+
+  ngOnInit(): void {}
 
   /**
    * Замена Output активного чата
    * @param id Идентификатор чата
    */
   setChat(chatId: string) {
-    if (!this.selected)
-      this.selectedChatId.emit(chatId);
+    if (!this.selected) this.selectedChatId.emit(chatId);
+  }
+
+  onRightClick(event: MouseEvent, data) {
+    event.preventDefault();
+    this.openChatMenu.emit({ x: event.clientX, y: event.clientY, data: data });
   }
 }

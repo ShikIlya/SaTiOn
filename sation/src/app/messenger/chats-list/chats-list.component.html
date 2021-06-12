@@ -1,7 +1,17 @@
 <ul class="list-chats">
   <ng-container *ngFor="let chat of userChats">
     <app-chats-list-item [chatListItem]="chat" [selected]="currentChat && chat.id === currentChat.id"
-      (selectedChatId)="setSelectedChat($event)">
+      (selectedChatId)="setSelectedChat($event)" (openChatMenu)="openChatMenu($event)">
     </app-chats-list-item>
   </ng-container>
+  <div style="visibility: hidden; position: fixed;" [style.left]="chatMenuPosition.x" [style.top]="chatMenuPosition.y"
+    [matMenuTriggerFor]="chatMenu"></div>
+  <mat-menu #chatMenu="matMenu" [hasBackdrop]="false">
+    <div #chatMenuWrapper>
+      <ng-template matMenuContent let-item="item">
+        <button mat-menu-item (click)="manageChat()">Редактировать</button>
+        <button mat-menu-item (click)="deleteChat()">Удалить</button>
+      </ng-template>
+    </div>
+  </mat-menu>
 </ul>

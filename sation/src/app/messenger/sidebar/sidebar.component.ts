@@ -1,7 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { MatMenuTrigger } from '@angular/material/menu';
 import { Router } from '@angular/router';
-import { map } from 'rxjs/operators';
 import { AuthentificationService } from 'src/app/authentification/services/authentification.service';
 import { Chat } from 'src/app/shared/models/chat.model';
 import { CreateChat } from 'src/app/shared/models/chatDto.model';

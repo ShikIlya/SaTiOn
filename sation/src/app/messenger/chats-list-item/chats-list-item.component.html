@@ -1,5 +1,6 @@
-<li class="channel" [ngClass]="{'channel_active': selected}" (click)="setChat(chatListItem.id)">
-  <div class="channel__content">
+<li class="channel" [ngClass]="{'channel_active': selected}" (click)="setChat(chatListItem.id)"
+  (contextmenu)="onRightClick($event, {data: 'Item ' + chatListItem.id})">
+  <div class=" channel__content">
     <div class="channel__img">
     </div>
     <div class="channel__info">
