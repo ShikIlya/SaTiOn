@@ -43,6 +43,10 @@ export class SidebarComponent implements OnInit {
     this.chatService.onDeleteChat().subscribe((chatId: string) => {
       console.log('delete chat: ' + chatId);
       this.chatService.disconnectFromChat(chatId);
+      this.chatsList.splice(
+        this.chatsList.findIndex((chat) => chat.id === chatId),
+        1
+      );
     });
   }
 
