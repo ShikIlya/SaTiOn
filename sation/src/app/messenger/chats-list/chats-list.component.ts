@@ -29,6 +29,7 @@ export class ChatsListComponent implements OnInit {
 
   @ViewChild(MatMenuTrigger, { static: true }) matMenuTrigger: MatMenuTrigger;
   @ViewChild('chatMenuWrapper') chatMenu: ElementRef;
+  @ViewChild('chatsList') chatsList: ElementRef;
 
   constructor(
     private chatService: ChatService,
@@ -44,17 +45,21 @@ export class ChatsListComponent implements OnInit {
     });
     this.matMenuTrigger.menuClosed.subscribe((v) => {
       if (!this.chatMenuClickedOutside) {
-        this.matMenuTrigger.openMenu();
         this.chatMenuIsOpened = true;
-      } else this.chatMenuClickedOutside = false;
+        this.matMenuTrigger.openMenu();
+      }
     });
   }
 
   @HostListener('document:click', ['$event'])
-  clickOutside(event) {
+  clickOutside(event: any) {
     if (!this.chatMenu.nativeElement.contains(event.target)) {
       this.closeChatMenu();
     }
+  }
+
+  clickInsideList(event: any) {
+    this.chatMenuClickedOutside = false;
   }
 
   /**
@@ -72,18 +77,14 @@ export class ChatsListComponent implements OnInit {
     this.chatMenuPosition.y = event.y + 'px';
     this.matMenuTrigger.menuData = { item: event.data };
     if (this.chatMenuIsOpened) {
-      this.matMenuTrigger.closeMenu();
       this.chatMenuIsOpened = false;
+      this.matMenuTrigger.closeMenu();
     }
     if (this.chatMenuFirstOpen) {
-      this.matMenuTrigger.openMenu();
       this.chatMenuIsOpened = true;
       this.chatMenuFirstOpen = false;
+      this.matMenuTrigger.openMenu();
     }
-  }
-
-  onClickedOutside(event: any) {
-    console.log(event);
   }
 
   closeChatMenu() {

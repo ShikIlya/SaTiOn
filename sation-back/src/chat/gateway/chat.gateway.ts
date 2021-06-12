@@ -18,7 +18,6 @@ import { ChatI } from '../models/chat.interface';
 import { TicketDto } from '../models/dto/chat-ticket.dto';
 import { ChatDto } from '../models/dto/chat.dto';
 import { MessageDto } from '../models/dto/message.dto';
-import { TwoPersonChatDto } from '../models/dto/two-person-chat.dto';
 import { MessageI } from '../models/message.interface';
 import { ChatService } from '../service/chat.service';
 

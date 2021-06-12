@@ -1,4 +1,4 @@
-<ul class="list-chats">
+<ul class="list-chats" #chatsList (contextmenu)="clickInsideList($event)">
   <ng-container *ngFor="let chat of userChats">
     <app-chats-list-item [chatListItem]="chat" [selected]="currentChat && chat.id === currentChat.id"
       (selectedChatId)="setSelectedChat($event)" (openChatMenu)="openChatMenu($event)">
