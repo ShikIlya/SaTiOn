@@ -21,6 +21,15 @@
     overflow-y: auto;
     max-height: calc(100vh - 59px - 61px - 30px); //переменные
   }
+  &__date {
+    display: flex;
+    justify-content: center;
+  }
+  &__date-value {
+    padding: 5px 10px;
+    border-radius: 10px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  }
 }
 
 ::-webkit-scrollbar {

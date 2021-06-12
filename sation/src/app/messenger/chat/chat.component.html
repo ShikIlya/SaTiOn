@@ -1,6 +1,6 @@
 <div class="chat">
   <app-chat-header [currentChat]="currentChat"></app-chat-header>
-  <app-messages-list [currentChat]="currentChat" [user]="user" [messages]="messages" [footerHeight]="footerHeight">
+  <app-messages-list [currentChat]="currentChat" [user]="user" [messages]="messagesList" [footerHeight]="footerHeight">
   </app-messages-list>
   <app-chat-footer [currentChat]="currentChat" [user]="user" (chatFooterHeight)="setFooterHeight($event)">
   </app-chat-footer>

@@ -4,6 +4,7 @@ import { of } from 'rxjs';
 import { map, mergeMap, switchMap } from 'rxjs/operators';
 import { Chat } from 'src/app/shared/models/chat.model';
 import { Message } from 'src/app/shared/models/message.model';
+import { MessagesList } from 'src/app/shared/models/messagesList.model';
 import { User } from 'src/app/shared/models/user.model';
 import { DataStoreService } from 'src/app/shared/services/data-store/data-store.service';
 import { ChatService } from '../services/chat/chat.service';
@@ -16,11 +17,11 @@ import { ChatService } from '../services/chat/chat.service';
 export class ChatComponent implements OnInit {
   messages: Message[] = [];
   footerHeight: number = 0;
+  messagesList: MessagesList[];
 
   @Input() currentChat: Chat;
   @Input() user: User;
 
-  @ViewChild('messagesList') messagesList: ElementRef;
   constructor(
     private chatService: ChatService,
     private dataStoreService: DataStoreService
@@ -30,13 +31,13 @@ export class ChatComponent implements OnInit {
     /**
      * Получение новых сообщений в socket
      */
-    this.chatService.onNewMessage().subscribe((message: Message) => {
-      console.log(
-        'new message:' + message.content + ' to chat: ' + message.chatId
-      );
-      if (this.currentChat)
-        if (message.chatId === this.currentChat.id) this.messages.push(message);
-    });
+    // this.chatService.onNewMessage().subscribe((message: Message) => {
+    //   console.log(
+    //     'new message:' + message.content + ' to chat: ' + message.chatId
+    //   );
+    //   if (this.currentChat)
+    //     if (message.chatId === this.currentChat.id) this.messages.push(message);
+    // });
 
     this.dataStoreService
       .getCurrentChat()
@@ -46,16 +47,47 @@ export class ChatComponent implements OnInit {
         })
       )
       .subscribe((chat: Chat | any) => {
-        if (chat) this.messages = chat.messages;
+        if (chat) this.messagesList = this.formatMessagesByDate(chat.messages);
       });
+  }
+
+  @HostListener('document:keydown.escape', ['$event'])
+  handleCloseChat(event: KeyboardEvent) {
+    this.dataStoreService.setCurrentChat(null);
   }
 
   setFooterHeight(height: number) {
     this.footerHeight = height;
   }
 
-  @HostListener('document:keydown.escape', ['$event'])
-  handleCloseChat(event: KeyboardEvent) {
-    this.dataStoreService.setCurrentChat(null);
+  formatMessagesByDate(messages: Message[]): MessagesList[] {
+    this.messages = this.messages.sort((a, b) => {
+      return (
+        new Date(a.creationTime).getTime() - new Date(b.creationTime).getTime()
+      );
+    });
+    const temp: MessagesList[] = [];
+    messages.forEach((message) => {
+      if (
+        !temp.some(
+          (el) =>
+            el.date === new Date(message.creationTime).toLocaleDateString()
+        )
+      ) {
+        const date = new Date(message.creationTime).toLocaleDateString();
+        console.log(date);
+        const obj = { date: date, messages: [] };
+        temp.push(obj);
+      }
+    });
+    for (const element of temp) {
+      element.messages.push(
+        ...messages.filter(
+          (message) =>
+            element.date === new Date(message.creationTime).toLocaleDateString()
+        )
+      );
+    }
+    return temp;
   }
 }

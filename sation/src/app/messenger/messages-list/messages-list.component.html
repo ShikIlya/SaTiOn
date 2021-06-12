@@ -1,7 +1,12 @@
 <div class="chat__content content" [ngStyle]="{'max-height': 'calc(100vh - 59px - 30px - '+ footerHeight+'px)'}">
   <div class="content__container" #messagesList>
-    <ng-container *ngFor="let message of messages">
-      <app-message [currentChat]="currentChat" [user]="user" class="chat__message" [message]="message"></app-message>
+    <ng-container *ngFor="let messageListItem of messages">
+      <div class="content__date">
+        <span class="content__date-value">{{checkDate(messageListItem.date)}}</span>
+      </div>
+      <ng-container *ngFor="let message of messageListItem.messages">
+        <app-message [currentChat]="currentChat" [user]="user" class="chat__message" [message]="message"></app-message>
+      </ng-container>
     </ng-container>
   </div>
 </div>
