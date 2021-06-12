@@ -24,8 +24,12 @@ export class ChatsListItemComponent implements OnInit {
     if (!this.selected) this.selectedChatId.emit(chatId);
   }
 
-  onRightClick(event: MouseEvent, data) {
+  onRightClick(event: MouseEvent, chatId: string) {
     event.preventDefault();
-    this.openChatMenu.emit({ x: event.clientX, y: event.clientY, data: data });
+    this.openChatMenu.emit({
+      x: event.clientX,
+      y: event.clientY,
+      chatId: chatId,
+    });
   }
 }

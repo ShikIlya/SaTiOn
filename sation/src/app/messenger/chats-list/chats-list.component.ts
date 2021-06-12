@@ -21,6 +21,7 @@ export class ChatsListComponent implements OnInit {
   chatMenuIsOpened = false;
   chatMenuFirstOpen = true;
   chatMenuClickedOutside = false;
+  selectedChatId = '';
   /**
    * Список чатов пользователя
    */
@@ -42,6 +43,9 @@ export class ChatsListComponent implements OnInit {
      */
     this.chatService.onConnectToChat().subscribe((chatId) => {
       console.log('connected to chat: ' + chatId);
+    });
+    this.chatService.onLeftRoom().subscribe((chatId) => {
+      console.log('disconnected from chat: ' + chatId);
     });
     this.matMenuTrigger.menuClosed.subscribe((v) => {
       if (!this.chatMenuClickedOutside) {
@@ -73,6 +77,8 @@ export class ChatsListComponent implements OnInit {
   }
 
   openChatMenu(event: any) {
+    if (this.selectedChatId !== event.chatId)
+      this.selectedChatId = event.chatId;
     this.chatMenuPosition.x = event.x + 'px';
     this.chatMenuPosition.y = event.y + 'px';
     this.matMenuTrigger.menuData = { item: event.data };
@@ -100,7 +106,8 @@ export class ChatsListComponent implements OnInit {
   }
 
   deleteChat() {
+    console.log(this.selectedChatId);
     this.closeChatMenu();
-    console.log('delete');
+    this.chatService.deleteChat(this.selectedChatId);
   }
 }

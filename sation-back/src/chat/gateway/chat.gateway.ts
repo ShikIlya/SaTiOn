@@ -75,7 +75,8 @@ export class ChatGateway
   deleteChat(client: Socket, data: any) {
     return this.chatService.deleteChat(data.chatId).pipe(
       map((result: boolean) => {
-        if (result) return this.server.to(data.chatId).emit('ChatDeleted');
+        if (result)
+          return this.server.to(data.chatId).emit('Chat deleted', data.chatId);
         else throw new WsException('Chat ne udalilsya!');
       }),
     );

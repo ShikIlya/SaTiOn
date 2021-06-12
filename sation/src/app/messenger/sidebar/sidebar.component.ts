@@ -40,6 +40,10 @@ export class SidebarComponent implements OnInit {
       if (chat.creatorId === this.user.id)
         this.dataStoreService.setCurrentChat(chat);
     });
+    this.chatService.onDeleteChat().subscribe((chatId: string) => {
+      console.log('delete chat: ' + chatId);
+      this.chatService.disconnectFromChat(chatId);
+    });
   }
 
   /**

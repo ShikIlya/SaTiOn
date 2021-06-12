@@ -28,9 +28,21 @@ export class ChatService {
     this.socket.emit('joinRoom', id);
   }
 
+  disconnectFromChat(id: string) {
+    this.socket.emit('leaveRoom', id);
+  }
+
   onConnectToChat() {
     return new Observable((observer) => {
       this.socket.on('joinedRoom', (chatId) => {
+        observer.next(chatId);
+      });
+    });
+  }
+
+  onLeftRoom() {
+    return new Observable((observer) => {
+      this.socket.on('leftRoom', (chatId) => {
         observer.next(chatId);
       });
     });
@@ -104,6 +116,18 @@ export class ChatService {
     return new Observable((observer) => {
       this.socket.on('JoinedChat', (chat) => {
         observer.next(chat);
+      });
+    });
+  }
+
+  deleteChat(chatId) {
+    this.socket.emit('DeleteChat', { chatId: chatId });
+  }
+
+  onDeleteChat() {
+    return new Observable((observer) => {
+      this.socket.on('ChatDeleted', (chatId) => {
+        observer.next(chatId);
       });
     });
   }
