@@ -77,7 +77,7 @@ export class ChatGateway
       map((result: boolean) => {
         if (result)
           return this.server.to(data.chatId).emit('Chat deleted', data.chatId);
-        else throw new WsException('Chat ne udalilsya!');
+        else throw new WsException('Ошибка удаления чата!');
       }),
     );
   }
@@ -87,7 +87,7 @@ export class ChatGateway
     return this.chatService.deleteMessage(data.messageId).pipe(
       map((result: boolean) => {
         if (result) return this.server.to(data.chatId).emit(data.messageId);
-        else throw new WsException('Message ne udalilos!');
+        else throw new WsException('Ошибка удаления сообщения!');
       }),
     );
   }
@@ -97,7 +97,7 @@ export class ChatGateway
     return this.chatService.updateMessage(data.messageId, data.newContent).pipe(
       map((result: any) => {
         if (result) return this.server.to(data.chatId).emit(data);
-        else throw new WsException('Oshibka vishla!');
+        else throw new WsException('Ошиба редактирования сообщения!');
       }),
     );
   }

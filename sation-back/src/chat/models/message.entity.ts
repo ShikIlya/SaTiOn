@@ -17,7 +17,10 @@ export class MessageEntity {
   @Column({ length: 500, nullable: false })
   content: string;
 
-  @ManyToOne((type) => ChatEntity, (chat) => chat.messages, { nullable: false })
+  @ManyToOne((type) => ChatEntity, (chat) => chat.messages, {
+    nullable: false,
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'chatId', referencedColumnName: 'id' })
   chatId: string;
 
