@@ -6,8 +6,10 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
+import { Chat } from 'src/app/shared/models/chat.model';
 import { Message } from 'src/app/shared/models/message.model';
 import { User } from 'src/app/shared/models/user.model';
+import { ChatService } from '../services/chat/chat.service';
 
 @Component({
   selector: 'app-messages-list',
@@ -17,15 +19,23 @@ import { User } from 'src/app/shared/models/user.model';
 export class MessagesListComponent implements OnInit, AfterViewChecked {
   @Input() messages: Message[];
   @Input() footerHeight: number;
+  @Input() currentChat: Chat;
   @Input() user: User;
   /**
    * Блок сообщений
    */
   @ViewChild('messagesList') private messagesList: ElementRef;
 
-  constructor() {}
+  constructor(private chatService: ChatService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.chatService.onDeleteMessage().subscribe((data) => {
+      this.messages.splice(
+        this.messages.findIndex((message) => message.id === data['messageId']),
+        1
+      );
+    });
+  }
 
   ngAfterViewChecked(): void {
     this.scrollToBottom();

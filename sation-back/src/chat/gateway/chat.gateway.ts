@@ -86,7 +86,8 @@ export class ChatGateway
   deleteMessage(client: Socket, data: any) {
     return this.chatService.deleteMessage(data.messageId).pipe(
       map((result: boolean) => {
-        if (result) return this.server.to(data.chatId).emit(data.messageId);
+        if (result)
+          return this.server.to(data.chatId).emit('MessageDeleted', data);
         else throw new WsException('Ошибка удаления сообщения!');
       }),
     );
@@ -96,7 +97,8 @@ export class ChatGateway
   editMessage(client: Socket, data: any) {
     return this.chatService.updateMessage(data.messageId, data.newContent).pipe(
       map((result: any) => {
-        if (result) return this.server.to(data.chatId).emit(data);
+        if (result)
+          return this.server.to(data.chatId).emit('MessageEdited', data);
         else throw new WsException('Ошиба редактирования сообщения!');
       }),
     );

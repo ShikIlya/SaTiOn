@@ -3,6 +3,9 @@
 .message {
   display: flex;
   flex-direction: column;
+  &:hover &__actions {
+    visibility: visible;
+  }
   &_left {
     align-items: flex-start;
   }
@@ -35,5 +38,23 @@
     line-height: 20px;
     white-space: pre-line;
     word-break: break-word;
+  }
+  &__actions {
+    position: absolute;
+    top: 0;
+    left: -14px;
+    display: flex;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-radius: 6px;
+    padding: 2px 0;
+    transform: translateX(-100%);
+    visibility: hidden;
+  }
+  &__action {
+    margin: 0 3px;
+  }
+  &__action-icon {
+    font-size: 18px;
+    width: 18px;
   }
 }

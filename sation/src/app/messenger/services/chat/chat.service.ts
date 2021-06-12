@@ -132,6 +132,18 @@ export class ChatService {
     });
   }
 
+  deleteMessage(chatId: string, messageId: number) {
+    this.socket.emit('DeleteMessage', { chatId: chatId, messageId: messageId });
+  }
+
+  onDeleteMessage() {
+    return new Observable((observer) => {
+      this.socket.on('MessageDeleted', (data) => {
+        observer.next(data);
+      });
+    });
+  }
+
   handleError(error) {
     let errorMessage = '';
     if (error.error instanceof ErrorEvent) {
