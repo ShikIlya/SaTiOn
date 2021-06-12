@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { DialogNewChatComponent } from '../dialog-new-chat/dialog-new-chat.component';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateChat } from 'src/app/shared/models/chatDto.model';
@@ -13,22 +13,15 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./choose-chat.component.scss'],
 })
 export class ChooseChatComponent implements OnInit {
-  user: User = null;
-  constructor(
-    public dialog: MatDialog,
-    private chatService: ChatService,
-    private dataStoreService: DataStoreService
-  ) {}
+  @Input() user: User;
+  constructor(public dialog: MatDialog, private chatService: ChatService) {}
 
-  ngOnInit(): void {
-    this.dataStoreService.getUser().subscribe((user) => (this.user = user));
-  }
+  ngOnInit(): void {}
 
   openDialogNewChat() {
     const dialogRef = this.dialog.open(DialogNewChatComponent, {
       restoreFocus: false,
     });
-
     /**
      * Подписка на получение результата из модального окна
      */

@@ -1,11 +1,11 @@
 <div class="messenger">
   <div class="messenger__container container">
-    <app-sidebar></app-sidebar>
+    <app-sidebar [currentChat]="currentChat" [user]="user"></app-sidebar>
     <ng-container *ngIf="currentChat !== null; else chooseChat">
-      <app-chat [currentChat]="currentChat"></app-chat>
+      <app-chat [currentChat]="currentChat" [user]="user"></app-chat>
     </ng-container>
     <ng-template #chooseChat>
-      <app-choose-chat></app-choose-chat>
+      <app-choose-chat [user]="user"></app-choose-chat>
     </ng-template>
   </div>
 </div>

@@ -16,6 +16,7 @@
     <input class="sidebar__search" type="text" placeholder="Поиск">
   </div>
   <button class="sidebar__new-chat-btn" mat-stroked-button color="warn" (click)="openDialogNewChat()">Новый чат</button>
-  <app-chats-list class="sidebar__list" [userChats]="chatsList" *ngIf="chatsList?.length > 0">
+  <app-chats-list class="sidebar__list" [currentChat]="currentChat" [userChats]="chatsList"
+    *ngIf="chatsList?.length > 0">
   </app-chats-list>
 </div>

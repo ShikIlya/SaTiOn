@@ -3,6 +3,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  Input,
   OnInit,
   Output,
   ViewChild,
@@ -21,9 +22,10 @@ import { Chat } from 'src/app/shared/models/chat.model';
 })
 export class ChatFooterComponent implements OnInit, AfterViewChecked {
   height: number;
-  currentChat: Chat;
-  user: User;
   isCurrentChatChanged = false;
+
+  @Input() currentChat: Chat;
+  @Input() user: User;
 
   @Output() chatFooterHeight = new EventEmitter<number>();
   @ViewChild('chatFooter') chatFooter: ElementRef;
@@ -36,11 +38,7 @@ export class ChatFooterComponent implements OnInit, AfterViewChecked {
 
   ngOnInit(): void {
     this.dataStoreService.getCurrentChat().subscribe((chat) => {
-      this.currentChat = chat;
       this.isCurrentChatChanged = true;
-    });
-    this.dataStoreService.getUser().subscribe((user) => {
-      this.user = user;
     });
   }
 

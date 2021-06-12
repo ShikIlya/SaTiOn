@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { map } from 'rxjs/operators';
@@ -17,7 +17,9 @@ import { ChatService } from '../services/chat/chat.service';
 })
 export class SidebarComponent implements OnInit {
   chatsList: Chat[];
-  user: User = null;
+
+  @Input() currentChat: Chat;
+  @Input() user: User;
 
   constructor(
     private authService: AuthentificationService,
@@ -28,27 +30,15 @@ export class SidebarComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.dataStoreService
-      .getUser()
-      .pipe(
-        map((user) => {
-          this.user = user;
-          return user;
-        })
-      )
-      .subscribe((user) => {
-        this.chatService.connectToChat(user.login);
-      });
-
     this.getUserChats();
     /**
      * Получение новых чатов в socket
      */
     this.chatService.onNewChat().subscribe((chat: Chat) => {
+      this.chatService.connectToChat(chat.id);
+      this.chatsList.push(chat);
       if (chat.creatorId === this.user.id)
         this.dataStoreService.setCurrentChat(chat);
-      this.chatsList.push(chat);
-      this.chatService.connectToChat(chat.id);
     });
   }
 

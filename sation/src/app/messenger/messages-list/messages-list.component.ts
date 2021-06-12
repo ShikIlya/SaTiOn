@@ -7,6 +7,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { Message } from 'src/app/shared/models/message.model';
+import { User } from 'src/app/shared/models/user.model';
 
 @Component({
   selector: 'app-messages-list',
@@ -16,6 +17,7 @@ import { Message } from 'src/app/shared/models/message.model';
 export class MessagesListComponent implements OnInit, AfterViewChecked {
   @Input() messages: Message[];
   @Input() footerHeight: number;
+  @Input() user: User;
   /**
    * Блок сообщений
    */

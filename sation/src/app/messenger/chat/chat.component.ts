@@ -4,6 +4,7 @@ import { of } from 'rxjs';
 import { map, mergeMap, switchMap } from 'rxjs/operators';
 import { Chat } from 'src/app/shared/models/chat.model';
 import { Message } from 'src/app/shared/models/message.model';
+import { User } from 'src/app/shared/models/user.model';
 import { DataStoreService } from 'src/app/shared/services/data-store/data-store.service';
 import { ChatService } from '../services/chat/chat.service';
 
@@ -17,6 +18,7 @@ export class ChatComponent implements OnInit {
   footerHeight: number = 0;
 
   @Input() currentChat: Chat;
+  @Input() user: User;
 
   @ViewChild('messagesList') messagesList: ElementRef;
   constructor(
@@ -35,7 +37,6 @@ export class ChatComponent implements OnInit {
       if (this.currentChat)
         if (message.chatId === this.currentChat.id) this.messages.push(message);
     });
-    this.dataStoreService.getUser().subscribe((res) => console.log(res));
 
     this.dataStoreService
       .getCurrentChat()

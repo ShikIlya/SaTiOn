@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Chat } from 'src/app/shared/models/chat.model';
 import { DataStoreService } from 'src/app/shared/services/data-store/data-store.service';
 
@@ -8,14 +8,10 @@ import { DataStoreService } from 'src/app/shared/services/data-store/data-store.
   styleUrls: ['./chat-header.component.scss'],
 })
 export class ChatHeaderComponent implements OnInit {
-  currentChat: Chat = null;
+  @Input() currentChat: Chat;
   constructor(private dataStoreService: DataStoreService) {}
 
-  ngOnInit(): void {
-    this.dataStoreService.getCurrentChat().subscribe((chat) => {
-      this.currentChat = chat;
-    });
-  }
+  ngOnInit(): void {}
 
   closeChat() {
     this.dataStoreService.setCurrentChat(null);

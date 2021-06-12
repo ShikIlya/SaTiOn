@@ -13,12 +13,12 @@ export class ChatsListComponent implements OnInit {
    * Список чатов пользователя
    */
   @Input() userChats: Chat[];
-  currentChat: Chat = null;
+  @Input() currentChat: Chat;
 
   constructor(
     private chatService: ChatService,
     private dataStoreService: DataStoreService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     /**
@@ -26,13 +26,6 @@ export class ChatsListComponent implements OnInit {
      */
     this.chatService.onConnectToChat().subscribe((chatId) => {
       console.log('connected to chat: ' + chatId);
-    });
-    /**
-     * Получение текущего чата из глобального стора
-     */
-    this.dataStoreService.getCurrentChat().subscribe((chat) => {
-      console.log('changing chat');
-      this.currentChat = chat;
     });
   }
 
