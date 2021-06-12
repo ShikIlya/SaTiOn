@@ -32,6 +32,7 @@
     margin: 0 10px;
     border: 1px solid $borderColor;
     border-radius: 8px;
+    max-width: 747px;
 
     &:empty::before {
       content: attr(placeholder);

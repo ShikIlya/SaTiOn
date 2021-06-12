@@ -75,4 +75,16 @@ export class ChatFooterComponent implements OnInit, AfterViewChecked {
     event.preventDefault();
     this.sendMessage(this.messageInput.nativeElement.textContent);
   }
+
+  onKeydown(event: KeyboardEvent) {
+    if (this.messageInput.nativeElement.textContent.length > 500) {
+      if (
+        !(event.ctrlKey && event.code === 'KeyA') &&
+        event.code !== 'Backspace' &&
+        event.code !== 'Delete'
+      ) {
+        event.preventDefault();
+      }
+    }
+  }
 }
