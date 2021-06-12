@@ -81,7 +81,7 @@ export class ChatsListComponent implements OnInit {
       this.selectedChatId = event.chatId;
     this.chatMenuPosition.x = event.x + 'px';
     this.chatMenuPosition.y = event.y + 'px';
-    this.matMenuTrigger.menuData = { item: event.data };
+
     if (this.chatMenuIsOpened) {
       this.chatMenuIsOpened = false;
       this.matMenuTrigger.closeMenu();

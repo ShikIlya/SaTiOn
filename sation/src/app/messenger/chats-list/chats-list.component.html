@@ -9,8 +9,14 @@
   <mat-menu #chatMenu="matMenu" [hasBackdrop]="false">
     <div #chatMenuWrapper>
       <ng-template matMenuContent>
-        <button mat-menu-item (click)="manageChat()">Редактировать</button>
-        <button mat-menu-item (click)="deleteChat()">Удалить</button>
+        <button mat-menu-item (click)="manageChat()">
+          <mat-icon>edit</mat-icon>
+          <span>Редактировать</span>
+        </button>
+        <button mat-menu-item (click)="deleteChat()">
+          <mat-icon>delete</mat-icon>
+          <span>Удалить</span>
+        </button>
       </ng-template>
     </div>
   </mat-menu>
