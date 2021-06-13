@@ -49,6 +49,7 @@ export class ChatService {
         .createQueryBuilder('chat')
         .leftJoinAndSelect('chat.messages', 'messages')
         .where('chat.id = :id', { id: uuid })
+        .leftJoinAndSelect('messages.user', 'user.nickname')
         .getOne(),
     ).pipe(
       map((chat: ChatI) => {
@@ -118,9 +119,7 @@ export class ChatService {
           this.messagerepository
             .createQueryBuilder('message')
             .where('message.id = :id', { id: message.id })
-            .leftJoinAndSelect('message.user', 'user')
-            .select('message')
-            .addSelect('user.nickname')
+            .leftJoinAndSelect('message.user', 'user.nickname')
             .getOne(),
         ).pipe(
           map((msg: MessageI) => {
