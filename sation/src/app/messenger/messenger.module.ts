@@ -4,7 +4,6 @@ import { MessengerComponent } from './messenger.component';
 import { ChatComponent } from './chat/chat.component';
 import { MessengerRoutingModule } from './messenger-routing.module';
 import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -41,7 +40,6 @@ import { ChooseChatComponent } from './choose-chat/choose-chat.component';
     CommonModule,
     MessengerRoutingModule,
     MatButtonModule,
-    MatIconModule,
     MatMenuModule,
     MatDialogModule,
     MatFormFieldModule,

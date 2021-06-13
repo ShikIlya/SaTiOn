@@ -1,15 +1,15 @@
 <div class="sidebar">
   <div class="sidebar__header">
     <button class="sidebar__btn" mat-icon-button [matMenuTriggerFor]="userMenu">
-      <mat-icon class="sidebar__btn-icon">tune</mat-icon>
+      <img class="sidebar__btn-icon" src="./assets/svg/toc.svg" alt="Выбрать">
     </button>
     <mat-menu #userMenu="matMenu">
       <button mat-menu-item>
-        <mat-icon>settings</mat-icon>
+        <img class="menu-icon" src="./assets/svg/settings.svg" alt="Настройки">
         <span>Настройки</span>
       </button>
       <button mat-menu-item (click)="logout()">
-        <mat-icon>logout</mat-icon>
+        <img class="menu-icon" src="./assets/svg/logout.svg" alt="Выйти">
         <span>Выйти</span>
       </button>
     </mat-menu>

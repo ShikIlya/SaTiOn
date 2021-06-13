@@ -5,6 +5,11 @@
   max-height: calc(100vh - 56px - 36px - 6px - 10px - 30px); //исправить под переменные
 }
 
+.icon-menu {
+  vertical-align: middle;
+  margin-right: 16px;
+}
+
 ::-webkit-scrollbar {
   width: 4px;
   height: 4px;

@@ -5,10 +5,10 @@
     <p class="message__time">{{message.creationTime}}</p>
     <div class="message__actions" *ngIf="message.senderId === user.id">
       <button class="message__action" mat-icon-button color="warn">
-        <mat-icon class="message__action-icon">edit</mat-icon>
+        <img class="icon-menu" src="./assets/svg/editMessage.svg" alt="Редактировать">
       </button>
       <button class="message__action" mat-icon-button color="warn" (click)="deleteMessage()">
-        <mat-icon class="message__action-icon">delete</mat-icon>
+        <img class="icon-menu" src="./assets/svg/deleteMessage.svg" alt="Удалить">
       </button>
     </div>
   </div>
