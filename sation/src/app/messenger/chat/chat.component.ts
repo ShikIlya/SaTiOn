@@ -31,13 +31,20 @@ export class ChatComponent implements OnInit {
     /**
      * Получение новых сообщений в socket
      */
-    // this.chatService.onNewMessage().subscribe((message: Message) => {
-    //   console.log(
-    //     'new message:' + message.content + ' to chat: ' + message.chatId
-    //   );
-    //   if (this.currentChat)
-    //     if (message.chatId === this.currentChat.id) this.messages.push(message);
-    // });
+    this.chatService.onNewMessage().subscribe((message: Message) => {
+      console.log(
+        'new message:' + message.content + ' to chat: ' + message.chatId
+      );
+      if (this.currentChat)
+        if (message.chatId === this.currentChat.id) {
+          const date = new Date(message.creationTime).toLocaleDateString();
+          const messageListItem = this.messagesList.find(
+            (el) => el.date === date
+          );
+          if (messageListItem) messageListItem.messages.push(message);
+          else this.messagesList.push({ date: date, messages: [message] });
+        }
+    });
 
     this.dataStoreService
       .getCurrentChat()
@@ -75,7 +82,6 @@ export class ChatComponent implements OnInit {
         )
       ) {
         const date = new Date(message.creationTime).toLocaleDateString();
-        console.log(date);
         const obj = { date: date, messages: [] };
         temp.push(obj);
       }

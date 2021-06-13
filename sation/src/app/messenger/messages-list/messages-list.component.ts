@@ -9,6 +9,7 @@ import {
 import { Chat } from 'src/app/shared/models/chat.model';
 import { Message } from 'src/app/shared/models/message.model';
 import { MessagesList } from 'src/app/shared/models/messagesList.model';
+import { OnDeleteMessage } from 'src/app/shared/models/onDeleteMessage.model';
 import { User } from 'src/app/shared/models/user.model';
 import { ChatService } from '../services/chat/chat.service';
 
@@ -18,24 +19,34 @@ import { ChatService } from '../services/chat/chat.service';
   styleUrls: ['./messages-list.component.scss'],
 })
 export class MessagesListComponent implements OnInit, AfterViewChecked {
-  @Input() messages: MessagesList[];
+  @Input() messagesList: MessagesList[];
   @Input() footerHeight: number;
   @Input() currentChat: Chat;
   @Input() user: User;
   /**
    * Блок сообщений
    */
-  @ViewChild('messagesList') private messagesList: ElementRef;
+  @ViewChild('messagesListComp') private messagesListComp: ElementRef;
 
   constructor(private chatService: ChatService) {}
 
   ngOnInit(): void {
-    // this.chatService.onDeleteMessage().subscribe((data) => {
-    //   this.messages.splice(
-    //     this.messages.findIndex((message) => message.id === data['messageId']),
-    //     1
-    //   );
-    // });
+    this.chatService.onDeleteMessage().subscribe((data: OnDeleteMessage) => {
+      const messageListItem = this.messagesList.find((messageListItem) => {
+        return messageListItem.messages.some((el) => el.id === data.messageId);
+      });
+      messageListItem.messages.splice(
+        messageListItem.messages.findIndex(
+          (message) => message.id === data.messageId
+        ),
+        1
+      );
+      if (messageListItem.messages.length === 0)
+        this.messagesList.splice(
+          this.messagesList.findIndex((el) => el.date === messageListItem.date),
+          1
+        );
+    });
   }
 
   ngAfterViewChecked(): void {
@@ -43,8 +54,8 @@ export class MessagesListComponent implements OnInit, AfterViewChecked {
   }
 
   scrollToBottom() {
-    this.messagesList.nativeElement.scroll({
-      top: this.messagesList.nativeElement.scrollHeight,
+    this.messagesListComp.nativeElement.scroll({
+      top: this.messagesListComp.nativeElement.scrollHeight,
       left: 0,
     });
   }
