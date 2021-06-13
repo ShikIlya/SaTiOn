@@ -7,10 +7,12 @@ const AUTH_ROUTES: Routes = [
   {
     path: 'login',
     component: LoginComponent,
+    data: { title: 'Авторизация SaTiOn' },
   },
   {
     path: 'registration',
     component: RegistrationComponent,
+    data: { title: 'Регистрация SaTiOn' },
   },
   {
     path: '**',
