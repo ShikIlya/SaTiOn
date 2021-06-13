@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { from, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { ChatTicketEntity } from '../models/chat-ticket.entity';
 import { ChatTicketI } from '../models/chat-ticket.interface';
@@ -110,7 +110,28 @@ export class ChatService {
    * @returns сообщение в форме MessageI
    */
   sendMessage(messageDto: MessageDto): Observable<MessageI> {
-    return from(this.messagerepository.save(messageDto));
+    return from(
+      this.messagerepository.save(this.messagerepository.create(messageDto)),
+    ).pipe(
+      switchMap((message: MessageI) => {
+        return from(
+          this.messagerepository
+            .createQueryBuilder('message')
+            .where('message.id = :id', { id: message.id })
+            .leftJoinAndSelect('message.user', 'user')
+            .select('message')
+            .addSelect('user.nickname')
+            .getOne(),
+        ).pipe(
+          map((msg: MessageI) => {
+            return {
+              ...message,
+              user: msg.user.nickname,
+            };
+          }),
+        );
+      }),
+    );
   }
 
   /**

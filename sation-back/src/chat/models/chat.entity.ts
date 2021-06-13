@@ -26,7 +26,7 @@ export class ChatEntity {
   @OneToMany((type) => ChatTicketEntity, (ticket) => ticket.chatId)
   tickets: ChatEntity[];
 
-  @OneToMany((type) => MessageEntity, (message) => message.chatId)
+  @OneToMany((type) => MessageEntity, (message) => message.chat)
   messages: MessageEntity[];
 
   @CreateDateColumn({ select: false })

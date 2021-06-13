@@ -22,6 +22,9 @@ export class MessageEntity {
     onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'chatId', referencedColumnName: 'id' })
+  chat: string;
+
+  @Column()
   chatId: string;
 
   @ManyToOne((type) => UserEntity, (user) => user.messages, { nullable: false })
