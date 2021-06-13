@@ -5,7 +5,8 @@
         <span class="content__date-value">{{checkDate(messageListItem.date)}}</span>
       </div>
       <ng-container *ngFor="let message of messageListItem.messages">
-        <app-message [currentChat]="currentChat" [user]="user" class="chat__message" [message]="message"></app-message>
+        <app-message class="chat__message" [currentChat]="currentChat" [user]="user" [message]="message"
+          (onEditMessage)="editMessage($event)"></app-message>
       </ng-container>
     </ng-container>
   </div>

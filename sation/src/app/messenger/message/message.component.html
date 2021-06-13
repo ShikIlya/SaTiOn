@@ -2,9 +2,9 @@
   <div class="message__container"
     [ngClass]="message.senderId === user.id ? 'message__container_green':'message__container_blue'">
     <p class="message__content">{{message.content}}</p>
-    <p class="message__time">{{message.creationTime}}</p>
+    <p class="message__time">{{formatMessageTime(message.creationTime)}}</p>
     <div class="message__actions" *ngIf="message.senderId === user.id">
-      <button class="message__action" mat-icon-button color="warn">
+      <button class="message__action" mat-icon-button color="warn" (click)="editMessage()">
         <img class="icon-menu" src="../../../assets/svg/editMessage.svg" alt="Редактировать">
       </button>
       <button class="message__action" mat-icon-button color="warn" (click)="deleteMessage()">

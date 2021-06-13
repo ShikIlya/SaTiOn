@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Chat } from 'src/app/shared/models/chat.model';
 import { Message } from 'src/app/shared/models/message.model';
 import { User } from 'src/app/shared/models/user.model';
@@ -14,6 +14,7 @@ export class MessageComponent implements OnInit {
   @Input() message: Message;
   @Input() currentChat: Chat;
   @Input() user: User;
+  @Output() onEditMessage = new EventEmitter<Message>();
   constructor(
     private dataStoreService: DataStoreService,
     private chatService: ChatService
@@ -23,9 +24,6 @@ export class MessageComponent implements OnInit {
     this.dataStoreService.getUser().subscribe((user) => {
       this.user = user;
     });
-    this.message.creationTime = this.formatMessageTime(
-      this.message.creationTime
-    );
   }
 
   formatMessageTime(time: string): string {
@@ -35,5 +33,9 @@ export class MessageComponent implements OnInit {
 
   deleteMessage() {
     this.chatService.deleteMessage(this.currentChat.id, this.message.id);
+  }
+
+  editMessage() {
+    this.onEditMessage.emit(this.message);
   }
 }

@@ -5,6 +5,7 @@ import { map, mergeMap, switchMap } from 'rxjs/operators';
 import { Chat } from 'src/app/shared/models/chat.model';
 import { Message } from 'src/app/shared/models/message.model';
 import { MessagesList } from 'src/app/shared/models/messagesList.model';
+import { OnEditMessage } from 'src/app/shared/models/onEditMessage.model';
 import { User } from 'src/app/shared/models/user.model';
 import { DataStoreService } from 'src/app/shared/services/data-store/data-store.service';
 import { ChatService } from '../services/chat/chat.service';
@@ -18,6 +19,8 @@ export class ChatComponent implements OnInit {
   messages: Message[] = [];
   footerHeight: number = 0;
   messagesList: MessagesList[];
+  editMode = false;
+  messageToEdit: Message = null;
 
   @Input() currentChat: Chat;
   @Input() user: User;
@@ -45,6 +48,29 @@ export class ChatComponent implements OnInit {
           else this.messagesList.push({ date: date, messages: [message] });
         }
     });
+
+    this.chatService
+      .onEditMessage()
+      .subscribe((editedMessage: OnEditMessage) => {
+        console.log(
+          'edited message:' +
+            editedMessage.newContent +
+            ' to chat: ' +
+            editedMessage.chatId
+        );
+        if (this.currentChat)
+          if (editedMessage.chatId === this.currentChat.id) {
+            for (const messagesListItem of this.messagesList) {
+              const messageItem = messagesListItem.messages.find(
+                (message) => message.id === editedMessage.messageId
+              );
+              if (messageItem) {
+                messageItem.content = editedMessage.newContent;
+                break;
+              }
+            }
+          }
+      });
 
     this.dataStoreService
       .getCurrentChat()
@@ -95,5 +121,15 @@ export class ChatComponent implements OnInit {
       );
     }
     return temp;
+  }
+
+  editMessage(message: Message) {
+    this.editMode = true;
+    this.messageToEdit = message;
+  }
+
+  onCancelEdit(event: any) {
+    this.editMode = false;
+    this.messageToEdit = null;
   }
 }

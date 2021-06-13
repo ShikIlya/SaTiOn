@@ -14,6 +14,7 @@ import { DataStoreService } from 'src/app/shared/services/data-store/data-store.
 import { User } from 'src/app/shared/models/user.model';
 import { MessageDto } from 'src/app/shared/models/messageDto.model';
 import { Chat } from 'src/app/shared/models/chat.model';
+import { Message } from 'src/app/shared/models/message.model';
 
 @Component({
   selector: 'app-chat-footer',
@@ -26,8 +27,12 @@ export class ChatFooterComponent implements OnInit, AfterViewChecked {
 
   @Input() currentChat: Chat;
   @Input() user: User;
+  @Input() editMode;
+  @Input() messageToEdit: Message;
 
   @Output() chatFooterHeight = new EventEmitter<number>();
+  @Output() onCancelEdit = new EventEmitter();
+
   @ViewChild('chatFooter') chatFooter: ElementRef;
   @ViewChild('messageInput') messageInput: ElementRef;
 
@@ -86,5 +91,18 @@ export class ChatFooterComponent implements OnInit, AfterViewChecked {
         event.preventDefault();
       }
     }
+  }
+
+  cancelEdit() {
+    this.onCancelEdit.emit();
+  }
+
+  saveMessage(content: string) {
+    this.chatService.editMessage(
+      this.messageToEdit.chatId,
+      this.messageToEdit.id,
+      content
+    );
+    this.cancelEdit();
   }
 }

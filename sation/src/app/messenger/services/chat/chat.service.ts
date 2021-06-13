@@ -7,6 +7,7 @@ import { Chat } from 'src/app/shared/models/chat.model';
 import { CreateChat } from 'src/app/shared/models/chatDto.model';
 import { MessageDto } from 'src/app/shared/models/messageDto.model';
 import { OnDeleteMessage } from 'src/app/shared/models/onDeleteMessage.model';
+import { OnEditMessage } from 'src/app/shared/models/onEditMessage.model';
 import { User } from 'src/app/shared/models/user.model';
 import { environment } from 'src/environments/environment';
 
@@ -140,6 +141,22 @@ export class ChatService {
   onDeleteMessage() {
     return new Observable((observer) => {
       this.socket.on('MessageDeleted', (data: OnDeleteMessage) => {
+        observer.next(data);
+      });
+    });
+  }
+
+  editMessage(chatId: string, messageId: number, newContent: string) {
+    this.socket.emit('EditMessage', {
+      chatId: chatId,
+      messageId: messageId,
+      newContent: newContent,
+    });
+  }
+
+  onEditMessage() {
+    return new Observable((observer) => {
+      this.socket.on('MessageEdited', (data: OnEditMessage) => {
         observer.next(data);
       });
     });

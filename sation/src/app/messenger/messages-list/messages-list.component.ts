@@ -2,8 +2,10 @@ import {
   AfterViewChecked,
   Component,
   ElementRef,
+  EventEmitter,
   Input,
   OnInit,
+  Output,
   ViewChild,
 } from '@angular/core';
 import { Chat } from 'src/app/shared/models/chat.model';
@@ -23,6 +25,7 @@ export class MessagesListComponent implements OnInit, AfterViewChecked {
   @Input() footerHeight: number;
   @Input() currentChat: Chat;
   @Input() user: User;
+  @Output() onEditMessage = new EventEmitter<Message>();
   /**
    * Блок сообщений
    */
@@ -73,5 +76,9 @@ export class MessagesListComponent implements OnInit, AfterViewChecked {
       return 'вчера';
     }
     return date;
+  }
+
+  editMessage(message: Message) {
+    this.onEditMessage.emit(message);
   }
 }

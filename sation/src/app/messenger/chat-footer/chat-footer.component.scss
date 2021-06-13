@@ -7,7 +7,6 @@
     padding: 10px;
     align-items: center;
   }
-
   &__tools {
     display: flex;
     flex-direction: row;
@@ -20,7 +19,6 @@
     font-size: 28px;
     width: 28px;
   }
-
   &__write-message {
     overflow-y: auto;
     padding: 8px 12px;
@@ -33,10 +31,12 @@
     border: 1px solid $borderColor;
     border-radius: 8px;
     max-width: 747px;
-
     &:empty::before {
       content: attr(placeholder);
       color: black;
     }
+  }
+  &__write-message_short {
+    max-width: 703px;
   }
 }
