@@ -152,3 +152,7 @@ ul {
 .cdk-overlay-connected-position-bounding-box {
   cursor: pointer;
 }
+
+.mat-menu-panel {
+  min-height: 0 !important;
+}

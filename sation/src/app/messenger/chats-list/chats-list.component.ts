@@ -100,13 +100,7 @@ export class ChatsListComponent implements OnInit {
     this.matMenuTrigger.closeMenu();
   }
 
-  manageChat() {
-    this.closeChatMenu();
-    console.log('manage');
-  }
-
   deleteChat() {
-    console.log(this.selectedChatId);
     this.closeChatMenu();
     this.chatService.deleteChat(this.selectedChatId);
   }

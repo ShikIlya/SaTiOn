@@ -1,7 +1,7 @@
 <div class="chat__footer" #chatFooter (resized)="onResize($event)">
   <div class="chat__tools">
     <button class="chat__btn" mat-icon-button>
-      <img class="chat__btn-icon" src="./assets/svg/add_circle_outline.svg" alt="">
+      <img class="chat__btn-icon" src="../../../assets/svg/add_circle_outline.svg" alt="">
     </button>
   </div>
   <div class="chat__write-message" contenteditable="plaintext-only" placeholder="Введите сообщение"
@@ -9,7 +9,7 @@
   </div>
   <div class="chat__tools">
     <button class="chat__btn" mat-icon-button color="primary">
-      <img class="chat__btn-icon" src="./assets/svg/send.svg" alt="Отправить"
+      <img class="chat__btn-icon" src="../../../assets/svg/send.svg" alt="Отправить"
         (click)="sendMessage(messageInput.textContent)">
     </button>
   </div>

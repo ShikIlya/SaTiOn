@@ -12,7 +12,8 @@
       <input class="form__input" matInput [type]="hidePass ? 'password' : 'text'" formControlName="password">
       <button class="form__pass-hide" mat-icon-button matSuffix type="button" (click)="hidePass = !hidePass"
         [attr.aria-label]="'Hide password'">
-        <img class="form__icon" [src]="hidePass ? './assets/svg/visibility_off.svg' : './assets/svg/visibility.svg'"
+        <img class="form__icon"
+          [src]="hidePass ? '../../../assets/svg/visibility_off.svg' : '../../../assets/svg/visibility.svg'"
           alt="Показать пароль">
       </button>
     </mat-form-field>

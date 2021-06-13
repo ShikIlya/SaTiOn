@@ -2,7 +2,7 @@
   <form class="auth__form form" (ngSubmit)="onSubmit()" [formGroup]="registrationFormGroup">
     <div class="form__header">
       <a class="form__back back" mat-icon-button [routerLink]="'../login'">
-        <img class="back__icon" src="./assets/svg/west.svg" alt="Назад">
+        <img class="back__icon" src="../../../assets/svg/west.svg" alt="Назад">
       </a>
       <h1 class="title">Регистрация</h1>
     </div>
@@ -28,7 +28,8 @@
       </mat-error>
       <button class="form__pass-hidePass" mat-icon-button matSuffix type="button" (click)="hidePass = !hidePass"
         [attr.aria-label]="'hidePass password'" [attr.aria-pressed]="hidePass">
-        <img class="form__icon" [src]="hidePass ? './assets/svg/visibility_off.svg' : './assets/svg/visibility.svg'"
+        <img class="form__icon"
+          [src]="hidePass ? '../../../assets/svg/visibility_off.svg' : '../../../assets/svg/visibility.svg'"
           alt="Показать пароль">
       </button>
     </mat-form-field>

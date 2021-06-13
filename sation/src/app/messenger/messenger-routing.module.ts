@@ -6,7 +6,7 @@ const MESSENGER_ROUTES: Routes = [
   {
     path: '',
     component: MessengerComponent,
-    data: { title: 'Мессенджер SaTiOn' },
+    data: { title: 'Мессенджер — SaTiOn' },
   },
 ];
 
