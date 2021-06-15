@@ -46,7 +46,7 @@
     font-weight: 500;
   }
 
-  &__last-message {
+  &__message {
     display: inline-block;
     white-space: nowrap;
     overflow: hidden;
@@ -54,6 +54,11 @@
     max-width: 253px;
     font-weight: 300;
     opacity: 0.8;
+  }
+
+  &__message-user {
+    font-weight: 400;
+    color: #1976d2;
   }
 
   &__last-time {

@@ -62,7 +62,7 @@ export class ChatGateway
                   return this.server
                     .to(user.login)
                     .to(data.user.login)
-                    .emit('JoinedChat', chat);
+                    .emit('JoinedChat', { ...chat, messages: [] });
                 }),
               );
             }),

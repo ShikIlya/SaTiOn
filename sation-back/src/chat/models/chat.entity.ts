@@ -29,6 +29,6 @@ export class ChatEntity {
   @OneToMany((type) => MessageEntity, (message) => message.chat)
   messages: MessageEntity[];
 
-  @CreateDateColumn({ select: false })
+  @CreateDateColumn({ select: true, type: 'timestamp with time zone' })
   creationTime: string;
 }

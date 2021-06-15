@@ -1,16 +1,28 @@
 <ul class="list-chats" #chatsList (contextmenu)="clickInsideList($event)">
-  <ng-container *ngFor="let chat of userChats">
-    <app-chats-list-item [chatListItem]="chat" [selected]="currentChat && chat.id === currentChat.id"
-      (selectedChatId)="setSelectedChat($event)" (openChatMenu)="openChatMenu($event)">
+  <ng-container *ngFor="let chat of userChats | chatsList">
+    <app-chats-list-item
+      [chatListItem]="chat"
+      [selected]="currentChat && chat.id === currentChat.id"
+      (selectedChatId)="setSelectedChat($event)"
+      (openChatMenu)="openChatMenu($event)"
+    >
     </app-chats-list-item>
   </ng-container>
-  <div style="visibility: hidden; position: fixed;" [style.left]="chatMenuPosition.x" [style.top]="chatMenuPosition.y"
-    [matMenuTriggerFor]="chatMenu"></div>
+  <div
+    style="visibility: hidden; position: fixed"
+    [style.left]="chatMenuPosition.x"
+    [style.top]="chatMenuPosition.y"
+    [matMenuTriggerFor]="chatMenu"
+  ></div>
   <mat-menu #chatMenu="matMenu" [hasBackdrop]="false">
     <div #chatMenuWrapper>
       <ng-template matMenuContent>
         <button mat-menu-item (click)="deleteChat()">
-          <img class="icon-menu" src="../../../assets/svg/deleteChat.svg" alt="Удалить">
+          <img
+            class="icon-menu"
+            src="../../../assets/svg/deleteChat.svg"
+            alt="Удалить"
+          />
           <span>Удалить</span>
         </button>
       </ng-template>
