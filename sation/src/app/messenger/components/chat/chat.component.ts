@@ -8,7 +8,7 @@ import { MessagesList } from 'src/app/shared/models/messagesList.model';
 import { OnEditMessage } from 'src/app/shared/models/onEditMessage.model';
 import { User } from 'src/app/shared/models/user.model';
 import { DataStoreService } from 'src/app/shared/services/data-store/data-store.service';
-import { ChatService } from '../services/chat/chat.service';
+import { ChatService } from '../../services/chat/chat.service';
 
 @Component({
   selector: 'app-chat',

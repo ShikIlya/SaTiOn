@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { DialogNewChatComponent } from '../dialog-new-chat/dialog-new-chat.component';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateChat } from 'src/app/shared/models/chatDto.model';
-import { ChatService } from '../services/chat/chat.service';
+import { ChatService } from '../../services/chat/chat.service';
 import { User } from 'src/app/shared/models/user.model';
 import { DataStoreService } from 'src/app/shared/services/data-store/data-store.service';
 import { map } from 'rxjs/operators';

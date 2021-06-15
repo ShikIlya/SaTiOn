@@ -9,7 +9,7 @@ import {
 import { MatMenuTrigger } from '@angular/material/menu';
 import { Chat } from 'src/app/shared/models/chat.model';
 import { DataStoreService } from 'src/app/shared/services/data-store/data-store.service';
-import { ChatService } from '../services/chat/chat.service';
+import { ChatService } from '../../services/chat/chat.service';
 
 @Component({
   selector: 'app-chats-list',

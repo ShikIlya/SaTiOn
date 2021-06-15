@@ -9,7 +9,7 @@ import { Message } from 'src/app/shared/models/message.model';
 import { User } from 'src/app/shared/models/user.model';
 import { DataStoreService } from 'src/app/shared/services/data-store/data-store.service';
 import { DialogNewChatComponent } from '../dialog-new-chat/dialog-new-chat.component';
-import { ChatService } from '../services/chat/chat.service';
+import { ChatService } from '../../services/chat/chat.service';
 
 @Component({
   selector: 'app-sidebar',

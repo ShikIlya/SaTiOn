@@ -13,7 +13,7 @@ import { Message } from 'src/app/shared/models/message.model';
 import { MessagesList } from 'src/app/shared/models/messagesList.model';
 import { OnDeleteMessage } from 'src/app/shared/models/onDeleteMessage.model';
 import { User } from 'src/app/shared/models/user.model';
-import { ChatService } from '../services/chat/chat.service';
+import { ChatService } from '../../services/chat/chat.service';
 
 @Component({
   selector: 'app-messages-list',

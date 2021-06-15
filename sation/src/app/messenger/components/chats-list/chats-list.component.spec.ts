@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MessengerModule } from '../messenger.module';
+import { MessengerModule } from '../../messenger.module';
 import { HttpClientModule } from '@angular/common/http';
 import { ChatsListComponent } from './chats-list.component';
 import { DataStoreService } from 'src/app/shared/services/data-store/data-store.service';
@@ -13,14 +13,10 @@ describe('ChatsListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        MessengerModule,
-        HttpClientModule
-      ],
+      imports: [MessengerModule, HttpClientModule],
       declarations: [ChatsListComponent],
-      providers: [DataStoreService]
-    })
-      .compileComponents();
+      providers: [DataStoreService],
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -42,15 +38,15 @@ describe('ChatsListComponent', () => {
             id: 1,
             content: 'privet',
             senderId: 1,
-            creationTime: '2021-04-27 15:34:00.378221'
+            creationTime: '2021-04-27 15:34:00.378221',
           },
           {
             id: 2,
             content: 'hello',
             senderId: 2,
-            creationTime: '2021-04-27 15:35:00.245678'
+            creationTime: '2021-04-27 15:35:00.245678',
           },
-        ]
+        ],
       },
       {
         id: '2',
@@ -62,17 +58,18 @@ describe('ChatsListComponent', () => {
             id: 1,
             content: 'test',
             senderId: 1,
-            creationTime: '2021-04-27 15:36:00.378221'
+            creationTime: '2021-04-27 15:36:00.378221',
           },
           {
             id: 2,
             content: 'test-2',
             senderId: 1,
-            creationTime: '2021-04-27 15:37:00.245678'
+            creationTime: '2021-04-27 15:37:00.245678',
           },
-        ]
-      }];
-    service.getCurrentChat().subscribe(v => currentChat = v);
+        ],
+      },
+    ];
+    service.getCurrentChat().subscribe((v) => (currentChat = v));
     component.setSelectedChat(component.userChats[0].id);
     expect(currentChat).toEqual(component.userChats[0]);
   });

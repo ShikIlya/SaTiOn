@@ -8,7 +8,7 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { ChatService } from '../services/chat/chat.service';
+import { ChatService } from '../../services/chat/chat.service';
 import { ResizedEvent } from 'angular-resize-event';
 import { DataStoreService } from 'src/app/shared/services/data-store/data-store.service';
 import { User } from 'src/app/shared/models/user.model';
