@@ -35,6 +35,31 @@ export class ChatService {
         .createQueryBuilder('chat')
         .innerJoin('chat.tickets', 'tickets')
         .where('tickets.memberId = :id', { id: id })
+        .leftJoinAndSelect('chat.messages', 'messages')
+        .andWhere((qb) => {
+          const yesMessages = qb
+            .subQuery()
+            .from(MessageEntity, 'msg')
+            .select('msg.id')
+            .where('msg.chatId = chat.id')
+            .orderBy({ 'msg.creationTime': 'DESC' })
+            .limit(1)
+            .getQuery();
+          const noMessages = qb
+            .subQuery()
+            .from(MessageEntity, 'msg')
+            .select('msg.id')
+            .where('msg.chatId = chat.id')
+            .limit(1)
+            .getQuery();
+          return (
+            '( messages.id = ' +
+            yesMessages +
+            ' OR ' +
+            noMessages +
+            ' IS NULL )'
+          );
+        })
         .getMany(),
     ).pipe(
       map((chats: ChatI[]) => {
