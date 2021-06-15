@@ -76,7 +76,15 @@ export class ChatController {
   @UseGuards(JwtAuthGuard)
   @Get()
   getYourChats(@Req() req): Observable<ChatI[]> {
-    return this.chatService.getChatsByUser(req.user.id);
+    return this.chatService.getChatsByUser(req.user.id).pipe(
+      map((chats: ChatI[]) => {
+        chats.forEach((chat) => {
+          if (chat.messages[0])
+            chat.messages[0].user = chat.messages[0].user.nickname;
+        });
+        return chats;
+      }),
+    );
   }
 
   @UseGuards(JwtAuthGuard)

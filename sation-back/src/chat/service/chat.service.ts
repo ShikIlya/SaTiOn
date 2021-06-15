@@ -36,6 +36,7 @@ export class ChatService {
         .innerJoin('chat.tickets', 'tickets')
         .where('tickets.memberId = :id', { id: id })
         .leftJoinAndSelect('chat.messages', 'messages')
+        .leftJoinAndSelect('messages.user', 'user.nickname')
         .andWhere((qb) => {
           const yesMessages = qb
             .subQuery()
