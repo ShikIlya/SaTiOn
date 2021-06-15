@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { AuthentificationService } from 'src/app/authentification/services/authentification.service';
 import { Chat } from 'src/app/shared/models/chat.model';
 import { CreateChat } from 'src/app/shared/models/chatDto.model';
+import { Message } from 'src/app/shared/models/message.model';
 import { User } from 'src/app/shared/models/user.model';
 import { DataStoreService } from 'src/app/shared/services/data-store/data-store.service';
 import { DialogNewChatComponent } from '../dialog-new-chat/dialog-new-chat.component';
@@ -47,6 +48,11 @@ export class SidebarComponent implements OnInit {
         this.chatsList.findIndex((chat) => chat.id === chatId),
         1
       );
+    });
+    this.chatService.onNewMessage().subscribe((message: Message) => {
+      this.chatsList.find(
+        (chatListItem) => chatListItem.id === message.chatId
+      ).messages[0] = message;
     });
   }
 
