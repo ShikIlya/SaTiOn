@@ -1,13 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { LoginComponent } from './login.component';
+import { RegistrationComponent } from './registration.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AuthentificationModule } from '../authentification.module';
+import { AuthentificationModule } from '../../authentification.module';
 
-describe('LoginComponent', () => {
-  let component: LoginComponent;
-  let fixture: ComponentFixture<LoginComponent>;
+describe('RegistrationComponent', () => {
+  let component: RegistrationComponent;
+  let fixture: ComponentFixture<RegistrationComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -15,15 +15,14 @@ describe('LoginComponent', () => {
         AuthentificationModule,
         RouterTestingModule,
         HttpClientModule,
-        BrowserAnimationsModule
+        BrowserAnimationsModule,
       ],
-      declarations: [LoginComponent]
-    })
-      .compileComponents();
+      declarations: [RegistrationComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(LoginComponent);
+    fixture = TestBed.createComponent(RegistrationComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

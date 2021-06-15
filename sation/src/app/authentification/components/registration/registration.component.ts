@@ -11,7 +11,7 @@ import { User } from 'src/app/shared/models/user.model';
 import { UserRegister } from 'src/app/shared/models/userRegisterDto.model';
 import { DataStoreService } from 'src/app/shared/services/data-store/data-store.service';
 import { UserService } from 'src/app/shared/services/user/user.service';
-import { AuthentificationService } from '../services/authentification.service';
+import { AuthentificationService } from '../../services/authentification.service';
 
 @Component({
   selector: 'app-registration',

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthentificationService } from '../services/authentification.service';
-import { DataStoreService } from '../../shared/services/data-store/data-store.service';
+import { AuthentificationService } from '../../services/authentification.service';
+import { DataStoreService } from '../../../shared/services/data-store/data-store.service';
 import { UserService } from 'src/app/shared/services/user/user.service';
 import { switchMap } from 'rxjs/operators';
 import { User } from 'src/app/shared/models/user.model';
@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
     this.initializeLoginForm();
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 
   /**
    * Вход пользователя в систему
