@@ -34,7 +34,7 @@ export class UserController {
         return this.login(
           {
             ...LoginUserDto,
-            email: createUserDto.email,
+            username: createUserDto.email,
             password: createUserDto.password,
           },
           response,

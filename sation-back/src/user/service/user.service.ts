@@ -10,6 +10,7 @@ import { LoginUserDto } from '../models/dto/LoginUser.dto';
 import { CreateUserDto } from '../models/dto/CreateUser.dto';
 import { RefreshTokenI } from 'src/auth/models/refresh-token.interface';
 import { SessionI } from 'src/auth/models/session.interface';
+import { userInfo } from 'os';
 
 @Injectable()
 export class UserService {
@@ -77,7 +78,7 @@ export class UserService {
    * @returns данные сессии SessionI / ошибка
    */
   login(loginUserDto: LoginUserDto): Observable<SessionI> {
-    return this.findUserByEmail(loginUserDto.email).pipe(
+    return this.findUserByEmailOrLogin(loginUserDto.username).pipe(
       switchMap((user: UserI) => {
         if (user) {
           return this.validatePassword(
@@ -168,12 +169,18 @@ export class UserService {
    * @param email эл. почта в виде строки
    * @returns пользователь в формате UserI
    */
-  private findUserByEmail(email: string): Observable<UserI> {
+  private findUserByEmailOrLogin(username: string): Observable<UserI> {
     return from(
-      this.userRepository.findOne(
-        { email: email.toLowerCase() },
-        { select: ['id', 'email', 'password'] },
-      ),
+      this.userRepository
+        .createQueryBuilder('user')
+        .select(['user.login', 'user.email', 'user.password', 'user.id'])
+        .where('user.email = :email', { email: username.toLowerCase() })
+        .orWhere('user.login = :login', { login: username.toLowerCase() })
+        .getOne(),
+    ).pipe(
+      map((user: UserI) => {
+        return user;
+      }),
     );
   }
 
