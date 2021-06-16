@@ -85,6 +85,36 @@ export class ChatService {
     );
   }
 
+  getMessageById(id: number) {
+    return from(
+      this.messagerepository
+        .createQueryBuilder('message')
+        .where('message.id = :id', { id: id })
+        .leftJoinAndSelect('message.user', 'user.nickname')
+        .getOne(),
+    ).pipe(
+      map((message: MessageI) => {
+        return { ...message, user: message.user.nickname };
+      }),
+    );
+  }
+
+  getLastMessageByChat(id: string) {
+    return from(
+      this.messagerepository
+        .createQueryBuilder('message')
+        .leftJoinAndSelect('message.user', 'user.nickname')
+        .where('message.chatId = :id', { id: id })
+        .orderBy({ 'message.creationTime': 'DESC' })
+        .limit(1)
+        .getOne(),
+    ).pipe(
+      map((message: MessageI) => {
+        return { ...message, user: message.user.nickname };
+      }),
+    );
+  }
+
   /**
    * Создать чат
    * @param chatDto вводные данные чата

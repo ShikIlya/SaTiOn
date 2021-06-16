@@ -85,9 +85,15 @@ export class ChatGateway
   @SubscribeMessage('DeleteMessage')
   deleteMessage(client: Socket, data: any) {
     return this.chatService.deleteMessage(data.messageId).pipe(
-      map((result: boolean) => {
+      switchMap((result: boolean) => {
         if (result)
-          return this.server.to(data.chatId).emit('MessageDeleted', data);
+          return this.chatService.getLastMessageByChat(data.chatId).pipe(
+            map((message: MessageI) => {
+              return this.server
+                .to(data.chatId)
+                .emit('MessageDeleted', message);
+            }),
+          );
         else throw new WsException('Ошибка удаления сообщения!');
       }),
     );
@@ -96,10 +102,14 @@ export class ChatGateway
   @SubscribeMessage('EditMessage')
   editMessage(client: Socket, data: any) {
     return this.chatService.updateMessage(data.messageId, data.newContent).pipe(
-      map((result: any) => {
-        if (result)
-          return this.server.to(data.chatId).emit('MessageEdited', data);
-        else throw new WsException('Ошиба редактирования сообщения!');
+      switchMap((result: any) => {
+        if (result) {
+          return this.chatService.getMessageById(data.messageId).pipe(
+            map((message: MessageI) => {
+              return this.server.to(data.chatId).emit('MessageEdited', message);
+            }),
+          );
+        } else throw new WsException('Ошиба редактирования сообщения!');
       }),
     );
   }
