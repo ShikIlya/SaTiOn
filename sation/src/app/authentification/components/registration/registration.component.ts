@@ -5,8 +5,10 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
+import { SnackbarComponent } from 'src/app/shared/components/snackbar/snackbar.component';
 import { User } from 'src/app/shared/models/user.model';
 import { UserRegister } from 'src/app/shared/models/userRegisterDto.model';
 import { DataStoreService } from 'src/app/shared/services/data-store/data-store.service';
@@ -26,7 +28,8 @@ export class RegistrationComponent implements OnInit {
     private fb: FormBuilder,
     private authService: AuthentificationService,
     private userService: UserService,
-    private dataStoreService: DataStoreService
+    private dataStoreService: DataStoreService,
+    private snackBar: MatSnackBar
   ) {
     this.initializeRegistrationForm();
   }
@@ -54,10 +57,21 @@ export class RegistrationComponent implements OnInit {
             if (response.status === 202) return this.userService.getUser();
           })
         )
-        .subscribe((user: User) => {
-          this.dataStoreService.setUser(user);
-          this.router.navigate(['/messenger']);
-        });
+        .subscribe(
+          (user: User) => {
+            this.dataStoreService.setUser(user);
+            this.router.navigate(['/messenger']);
+          },
+          (err) => {
+            this.snackBar.openFromComponent(SnackbarComponent, {
+              data: err.error.message,
+              duration: 5000,
+              horizontalPosition: 'right',
+              verticalPosition: 'top',
+            });
+            console.log(err);
+          }
+        );
     }
   }
 

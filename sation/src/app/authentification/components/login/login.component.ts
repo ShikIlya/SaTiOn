@@ -4,8 +4,10 @@ import { Router } from '@angular/router';
 import { AuthentificationService } from '../../services/authentification.service';
 import { DataStoreService } from '../../../shared/services/data-store/data-store.service';
 import { UserService } from 'src/app/shared/services/user/user.service';
-import { switchMap } from 'rxjs/operators';
+import { catchError, switchMap } from 'rxjs/operators';
 import { User } from 'src/app/shared/models/user.model';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { SnackbarComponent } from 'src/app/shared/components/snackbar/snackbar.component';
 
 @Component({
   selector: 'app-login',
@@ -21,7 +23,8 @@ export class LoginComponent implements OnInit {
     private fb: FormBuilder,
     private authService: AuthentificationService,
     private userService: UserService,
-    private dataStoreService: DataStoreService
+    private dataStoreService: DataStoreService,
+    private snackBar: MatSnackBar
   ) {
     this.initializeLoginForm();
   }
@@ -40,10 +43,21 @@ export class LoginComponent implements OnInit {
             if (response.status === 202) return this.userService.getUser();
           })
         )
-        .subscribe((user: User) => {
-          this.dataStoreService.setUser(user);
-          this.router.navigate(['/messenger']);
-        });
+        .subscribe(
+          (user: User) => {
+            this.dataStoreService.setUser(user);
+            this.router.navigate(['/messenger']);
+          },
+          (err) => {
+            this.snackBar.openFromComponent(SnackbarComponent, {
+              data: err.error.message,
+              duration: 5000,
+              horizontalPosition: 'right',
+              verticalPosition: 'top',
+            });
+            console.log(err);
+          }
+        );
   }
 
   /**
