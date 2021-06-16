@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { generateString, InjectRepository } from '@nestjs/typeorm';
 import { map, mergeMap, switchMap } from 'rxjs/operators';
-import { from, Observable } from 'rxjs';
+import { from, Observable, throwError } from 'rxjs';
 import { AuthService } from 'src/auth/services/auth/auth.service';
 import { Repository, UpdateResult } from 'typeorm';
 import { UserEntity } from '../models/user.entity';
@@ -11,6 +11,7 @@ import { CreateUserDto } from '../models/dto/CreateUser.dto';
 import { RefreshTokenI } from 'src/auth/models/refresh-token.interface';
 import { SessionI } from 'src/auth/models/session.interface';
 import { userInfo } from 'os';
+import { error } from 'console';
 
 @Injectable()
 export class UserService {
@@ -25,7 +26,7 @@ export class UserService {
    * @param createUserDto данные регистрации
    * @returns новый пользователь в формате UserI / ошибка
    */
-  create(createUserDto: CreateUserDto): Observable<UserI> {
+  create(createUserDto: CreateUserDto): Observable<UserI | any> {
     return this.mailExists(createUserDto.email.toLowerCase()).pipe(
       switchMap((mailExists: boolean) => {
         if (!mailExists) {
@@ -58,15 +59,16 @@ export class UserService {
                     }),
                   );
               } else {
-                throw new HttpException(
-                  'Это имя уже занято',
-                  HttpStatus.CONFLICT,
-                );
+                return throwError({
+                  login: 'Этот логин уже занят',
+                });
               }
             }),
           );
         } else {
-          throw new HttpException('Эта почта уже занята', HttpStatus.CONFLICT);
+          return throwError({
+            email: 'Этот адрес почты уже занят',
+          });
         }
       }),
     );
@@ -89,18 +91,16 @@ export class UserService {
               if (match) {
                 return this.generateSession(user);
               } else {
-                throw new HttpException(
-                  'Авторизация прервана',
-                  HttpStatus.UNAUTHORIZED,
-                );
+                return throwError({
+                  password: 'Некорректный пароль',
+                });
               }
             }),
           );
         } else {
-          throw new HttpException(
-            'Такого пользователя не существует',
-            HttpStatus.NOT_FOUND,
-          );
+          return throwError({
+            username: 'Такого пользователя не существует',
+          });
         }
       }),
     );
