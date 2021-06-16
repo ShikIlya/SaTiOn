@@ -3,10 +3,13 @@ import {
   ElementRef,
   HostListener,
   Input,
+  OnDestroy,
   OnInit,
   ViewChild,
 } from '@angular/core';
 import { MatMenuTrigger } from '@angular/material/menu';
+import { takeUntil } from 'rxjs/operators';
+import { Destroyer } from 'src/app/shared/destroyer';
 import { Chat } from 'src/app/shared/models/chat.model';
 import { DataStoreService } from 'src/app/shared/services/data-store/data-store.service';
 import { ChatService } from '../../services/chat/chat.service';
@@ -16,7 +19,7 @@ import { ChatService } from '../../services/chat/chat.service';
   templateUrl: './chats-list.component.html',
   styleUrls: ['./chats-list.component.scss'],
 })
-export class ChatsListComponent implements OnInit {
+export class ChatsListComponent extends Destroyer implements OnInit, OnDestroy {
   chatMenuPosition = { x: '0', y: '0' };
   chatMenuIsOpened = false;
   chatMenuFirstOpen = true;
@@ -35,24 +38,38 @@ export class ChatsListComponent implements OnInit {
   constructor(
     private chatService: ChatService,
     private dataStoreService: DataStoreService
-  ) {}
+  ) {
+    super();
+  }
 
   ngOnInit(): void {
     /**
      * Подключение пользователя к чатам
      */
-    this.chatService.onConnectToChat().subscribe((chatId) => {
-      console.log('connected to chat: ' + chatId);
-    });
-    this.chatService.onLeftRoom().subscribe((chatId) => {
-      console.log('disconnected from chat: ' + chatId);
-    });
-    this.matMenuTrigger.menuClosed.subscribe((v) => {
-      if (!this.chatMenuClickedOutside) {
-        this.chatMenuIsOpened = true;
-        this.matMenuTrigger.openMenu();
-      }
-    });
+    this.chatService
+      .onConnectToChat()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((chatId) => {
+        console.log('connected to chat: ' + chatId);
+      });
+    this.chatService
+      .onLeftRoom()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((chatId) => {
+        console.log('disconnected from chat: ' + chatId);
+      });
+    this.matMenuTrigger.menuClosed
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((v) => {
+        if (!this.chatMenuClickedOutside) {
+          this.chatMenuIsOpened = true;
+          this.matMenuTrigger.openMenu();
+        }
+      });
+  }
+
+  ngOnDestroy(): void {
+    super.ngOnDestroy();
   }
 
   @HostListener('document:click', ['$event'])

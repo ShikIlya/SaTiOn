@@ -1,4 +1,13 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
+import { Destroyer } from 'src/app/shared/destroyer';
 import { Chat } from 'src/app/shared/models/chat.model';
 import { Message } from 'src/app/shared/models/message.model';
 import { User } from 'src/app/shared/models/user.model';
@@ -10,7 +19,7 @@ import { ChatService } from '../../services/chat/chat.service';
   templateUrl: './message.component.html',
   styleUrls: ['./message.component.scss'],
 })
-export class MessageComponent implements OnInit {
+export class MessageComponent extends Destroyer implements OnInit, OnDestroy {
   @Input() message: Message;
   @Input() currentChat: Chat;
   @Input() user: User;
@@ -18,12 +27,21 @@ export class MessageComponent implements OnInit {
   constructor(
     private dataStoreService: DataStoreService,
     private chatService: ChatService
-  ) {}
+  ) {
+    super();
+  }
 
   ngOnInit(): void {
-    this.dataStoreService.getUser().subscribe((user) => {
-      this.user = user;
-    });
+    this.dataStoreService
+      .getUser()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((user) => {
+        this.user = user;
+      });
+  }
+
+  ngOnDestroy(): void {
+    super.ngOnDestroy();
   }
 
   formatMessageTime(time: string): string {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -7,8 +7,9 @@ import {
 } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, takeUntil } from 'rxjs/operators';
 import { SnackbarComponent } from 'src/app/shared/components/snackbar/snackbar.component';
+import { Destroyer } from 'src/app/shared/destroyer';
 import { User } from 'src/app/shared/models/user.model';
 import { UserRegister } from 'src/app/shared/models/userRegisterDto.model';
 import { DataStoreService } from 'src/app/shared/services/data-store/data-store.service';
@@ -20,7 +21,10 @@ import { AuthentificationService } from '../../services/authentification.service
   templateUrl: './registration.component.html',
   styleUrls: ['./registration.component.scss'],
 })
-export class RegistrationComponent implements OnInit {
+export class RegistrationComponent
+  extends Destroyer
+  implements OnInit, OnDestroy
+{
   hidePass = true;
   registrationFormGroup: FormGroup;
   constructor(
@@ -31,10 +35,15 @@ export class RegistrationComponent implements OnInit {
     private dataStoreService: DataStoreService,
     private snackBar: MatSnackBar
   ) {
+    super();
     this.initializeRegistrationForm();
   }
 
   ngOnInit(): void {}
+
+  ngOnDestroy(): void {
+    super.ngOnDestroy();
+  }
 
   /**
    * Регистрация пользователя
@@ -53,6 +62,7 @@ export class RegistrationComponent implements OnInit {
       this.authService
         .register(user)
         .pipe(
+          takeUntil(this.destroy$),
           switchMap((response) => {
             if (response.status === 202) return this.userService.getUser();
           })

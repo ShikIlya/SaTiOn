@@ -5,6 +5,7 @@ import {
   ElementRef,
   EventEmitter,
   Input,
+  OnDestroy,
   OnInit,
   Output,
   ViewChild,
@@ -16,13 +17,18 @@ import { User } from 'src/app/shared/models/user.model';
 import { MessageDto } from 'src/app/shared/models/messageDto.model';
 import { Chat } from 'src/app/shared/models/chat.model';
 import { Message } from 'src/app/shared/models/message.model';
+import { Destroyer } from 'src/app/shared/destroyer';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-chat-footer',
   templateUrl: './chat-footer.component.html',
   styleUrls: ['./chat-footer.component.scss'],
 })
-export class ChatFooterComponent implements OnInit, AfterViewChecked {
+export class ChatFooterComponent
+  extends Destroyer
+  implements OnInit, AfterViewChecked, OnDestroy
+{
   height: number;
   isCurrentChatChanged = false;
 
@@ -40,12 +46,17 @@ export class ChatFooterComponent implements OnInit, AfterViewChecked {
   constructor(
     private chatService: ChatService,
     private dataStoreService: DataStoreService
-  ) {}
+  ) {
+    super();
+  }
 
   ngOnInit(): void {
-    this.dataStoreService.getCurrentChat().subscribe((chat) => {
-      this.isCurrentChatChanged = true;
-    });
+    this.dataStoreService
+      .getCurrentChat()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((chat) => {
+        this.isCurrentChatChanged = true;
+      });
   }
 
   ngAfterViewChecked(): void {
@@ -54,6 +65,10 @@ export class ChatFooterComponent implements OnInit, AfterViewChecked {
       this.messageInput.nativeElement.textContent = '';
       this.isCurrentChatChanged = false;
     }
+  }
+
+  ngOnDestroy(): void {
+    super.ngOnDestroy();
   }
 
   /**

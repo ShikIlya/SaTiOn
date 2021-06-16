@@ -4,10 +4,13 @@ import {
   ElementRef,
   EventEmitter,
   Input,
+  OnDestroy,
   OnInit,
   Output,
   ViewChild,
 } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
+import { Destroyer } from 'src/app/shared/destroyer';
 import { Chat } from 'src/app/shared/models/chat.model';
 import { Message } from 'src/app/shared/models/message.model';
 import { MessagesList } from 'src/app/shared/models/messagesList.model';
@@ -20,7 +23,10 @@ import { ChatService } from '../../services/chat/chat.service';
   templateUrl: './messages-list.component.html',
   styleUrls: ['./messages-list.component.scss'],
 })
-export class MessagesListComponent implements OnInit, AfterViewChecked {
+export class MessagesListComponent
+  extends Destroyer
+  implements OnInit, AfterViewChecked, OnDestroy
+{
   @Input() messagesList: MessagesList[];
   @Input() footerHeight: number;
   @Input() currentChat: Chat;
@@ -31,29 +37,42 @@ export class MessagesListComponent implements OnInit, AfterViewChecked {
    */
   @ViewChild('messagesListComp') private messagesListComp: ElementRef;
 
-  constructor(private chatService: ChatService) {}
+  constructor(private chatService: ChatService) {
+    super();
+  }
 
   ngOnInit(): void {
-    this.chatService.onDeleteMessage().subscribe((data: OnDeleteMessage) => {
-      const messageListItem = this.messagesList.find((messageListItem) => {
-        return messageListItem.messages.some((el) => el.id === data.deletedId);
-      });
-      messageListItem.messages.splice(
-        messageListItem.messages.findIndex(
-          (message) => message.id === data.deletedId
-        ),
-        1
-      );
-      if (messageListItem.messages.length === 0)
-        this.messagesList.splice(
-          this.messagesList.findIndex((el) => el.date === messageListItem.date),
+    this.chatService
+      .onDeleteMessage()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data: OnDeleteMessage) => {
+        const messageListItem = this.messagesList.find((messageListItem) => {
+          return messageListItem.messages.some(
+            (el) => el.id === data.deletedId
+          );
+        });
+        messageListItem.messages.splice(
+          messageListItem.messages.findIndex(
+            (message) => message.id === data.deletedId
+          ),
           1
         );
-    });
+        if (messageListItem.messages.length === 0)
+          this.messagesList.splice(
+            this.messagesList.findIndex(
+              (el) => el.date === messageListItem.date
+            ),
+            1
+          );
+      });
   }
 
   ngAfterViewChecked(): void {
     this.scrollToBottom();
+  }
+
+  ngOnDestroy(): void {
+    super.ngOnDestroy();
   }
 
   scrollToBottom() {
