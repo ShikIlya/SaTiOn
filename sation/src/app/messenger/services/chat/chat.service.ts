@@ -19,7 +19,7 @@ export class ChatService {
   private socket: SocketIOClient.Socket;
 
   constructor(private http: HttpClient) {
-    this.socket = io('http://localhost:8080');
+    this.socket = io(environment.socketUrl);
   }
 
   /**
