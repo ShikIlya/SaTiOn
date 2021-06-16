@@ -1,4 +1,5 @@
 import {
+  AfterContentChecked,
   AfterViewChecked,
   Component,
   ElementRef,
@@ -79,7 +80,9 @@ export class ChatFooterComponent implements OnInit, AfterViewChecked {
 
   onEnter(event: KeyboardEvent) {
     event.preventDefault();
-    this.sendMessage(this.messageInput.nativeElement.textContent);
+    this.editMode
+      ? this.saveMessage(this.messageInput.nativeElement.textContent)
+      : this.sendMessage(this.messageInput.nativeElement.textContent);
   }
 
   onKeydown(event: KeyboardEvent) {

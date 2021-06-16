@@ -120,7 +120,7 @@ export class ChatComponent implements OnInit {
     return temp;
   }
 
-  editMessage(message: Message) {
+  onEditMessage(message: Message) {
     this.editMode = true;
     this.messageToEdit = message;
   }
