@@ -36,7 +36,7 @@ export class MessageComponent extends Destroyer implements OnInit, OnDestroy {
       .getUser()
       .pipe(takeUntil(this.destroy$))
       .subscribe((user) => {
-        this.user = user;
+        if (user) this.user = user;
       });
   }
 
