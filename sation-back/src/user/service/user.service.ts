@@ -26,7 +26,7 @@ export class UserService {
    * @param createUserDto данные регистрации
    * @returns новый пользователь в формате UserI / ошибка
    */
-  create(createUserDto: CreateUserDto): Observable<UserI | any> {
+  create(createUserDto: CreateUserDto): Observable<UserI> {
     return this.mailExists(createUserDto.email.toLowerCase()).pipe(
       switchMap((mailExists: boolean) => {
         if (!mailExists) {
@@ -59,16 +59,18 @@ export class UserService {
                     }),
                   );
               } else {
-                return throwError({
-                  login: 'Этот логин уже занят',
-                });
+                throw new HttpException(
+                  'Этот логин занят',
+                  HttpStatus.NOT_ACCEPTABLE,
+                );
               }
             }),
           );
         } else {
-          return throwError({
-            email: 'Этот адрес почты уже занят',
-          });
+          throw new HttpException(
+            'Этот адрес почты занят',
+            HttpStatus.NOT_ACCEPTABLE,
+          );
         }
       }),
     );
@@ -91,16 +93,18 @@ export class UserService {
               if (match) {
                 return this.generateSession(user);
               } else {
-                return throwError({
-                  password: 'Некорректный пароль',
-                });
+                throw new HttpException(
+                  'Некорректный пароль',
+                  HttpStatus.NOT_ACCEPTABLE,
+                );
               }
             }),
           );
         } else {
-          return throwError({
-            username: 'Такого пользователя не существует',
-          });
+          throw new HttpException(
+            'Такого пользователя не существует',
+            HttpStatus.NOT_FOUND,
+          );
         }
       }),
     );
