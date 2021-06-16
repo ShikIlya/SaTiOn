@@ -4,11 +4,11 @@
       <h1 class="title">Авторизация</h1>
     </div>
     <mat-form-field class="form__field" appearance="standard">
-      <mat-label class="form__label">Enter your email</mat-label>
-      <input class="form__input" matInput placeholder="pat@example.com" formControlName="email">
+      <mat-label class="form__label">Введите имя пользователя</mat-label>
+      <input class="form__input" matInput placeholder="pat@example.com" formControlName="username">
     </mat-form-field>
     <mat-form-field class="form__field" appearance="standard">
-      <mat-label class="form__label">Enter your password</mat-label>
+      <mat-label class="form__label">Введите пароль</mat-label>
       <input class="form__input" matInput [type]="hidePass ? 'password' : 'text'" formControlName="password">
       <button class="form__pass-hide" mat-icon-button matSuffix type="button" (click)="hidePass = !hidePass"
         [attr.aria-label]="'Hide password'">

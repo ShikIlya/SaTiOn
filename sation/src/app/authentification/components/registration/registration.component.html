@@ -7,19 +7,19 @@
       <h1 class="title">Регистрация</h1>
     </div>
     <mat-form-field class="form__field" appearance="standard">
-      <mat-label class="form__label">Enter your email</mat-label>
+      <mat-label class="form__label">Введите эл. почту</mat-label>
       <input class="form__input" matInput placeholder="pat@example.com" formControlName="email">
       <mat-error *ngIf="registrationFormGroup.get('email').invalid">
         {{getErrorMessage(registrationFormGroup.get('email'), 'Некорректный email')}}</mat-error>
     </mat-form-field>
     <mat-form-field class="form__field" appearance="standard">
-      <mat-label class="form__label">Enter your login</mat-label>
+      <mat-label class="form__label">Введите логин</mat-label>
       <input class="form__input" matInput formControlName="login">
       <mat-error *ngIf="registrationFormGroup.get('login').invalid">
         {{getErrorMessage(registrationFormGroup.get('login'), 'Только латинские символы')}}</mat-error>
     </mat-form-field>
     <mat-form-field class="form__field" appearance="standard">
-      <mat-label class="form__label">Enter your password</mat-label>
+      <mat-label class="form__label">Введите пароль</mat-label>
       <input class="form__input" matInput [type]="hidePass ? 'password' : 'text'" placeholder="paSsword!"
         formControlName="password">
       <mat-error *ngIf="registrationFormGroup.get('password').invalid">
