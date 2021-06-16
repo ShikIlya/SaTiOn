@@ -36,11 +36,11 @@ export class MessagesListComponent implements OnInit, AfterViewChecked {
   ngOnInit(): void {
     this.chatService.onDeleteMessage().subscribe((data: OnDeleteMessage) => {
       const messageListItem = this.messagesList.find((messageListItem) => {
-        return messageListItem.messages.some((el) => el.id === data.messageId);
+        return messageListItem.messages.some((el) => el.id === data.deletedId);
       });
       messageListItem.messages.splice(
         messageListItem.messages.findIndex(
-          (message) => message.id === data.messageId
+          (message) => message.id === data.deletedId
         ),
         1
       );

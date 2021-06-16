@@ -89,9 +89,11 @@ export class ChatGateway
         if (result)
           return this.chatService.getLastMessageByChat(data.chatId).pipe(
             map((message: MessageI) => {
-              return this.server
-                .to(data.chatId)
-                .emit('MessageDeleted', message);
+              return this.server.to(data.chatId).emit('MessageDeleted', {
+                message: message,
+                deletedId: data.messageId,
+                chatId: data.chatId,
+              });
             }),
           );
         else throw new WsException('Ошибка удаления сообщения!');

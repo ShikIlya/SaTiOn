@@ -110,7 +110,8 @@ export class ChatService {
         .getOne(),
     ).pipe(
       map((message: MessageI) => {
-        return { ...message, user: message.user.nickname };
+        if (message) return { ...message, user: message.user.nickname };
+        else return null;
       }),
     );
   }

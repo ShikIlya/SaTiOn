@@ -5,9 +5,9 @@ import { catchError } from 'rxjs/operators';
 import * as io from 'socket.io-client';
 import { Chat } from 'src/app/shared/models/chat.model';
 import { CreateChat } from 'src/app/shared/models/chatDto.model';
+import { Message } from 'src/app/shared/models/message.model';
 import { MessageDto } from 'src/app/shared/models/messageDto.model';
 import { OnDeleteMessage } from 'src/app/shared/models/onDeleteMessage.model';
-import { OnEditMessage } from 'src/app/shared/models/onEditMessage.model';
 import { User } from 'src/app/shared/models/user.model';
 import { environment } from 'src/environments/environment';
 
@@ -156,7 +156,7 @@ export class ChatService {
 
   onEditMessage() {
     return new Observable((observer) => {
-      this.socket.on('MessageEdited', (data: OnEditMessage) => {
+      this.socket.on('MessageEdited', (data: Message) => {
         observer.next(data);
       });
     });

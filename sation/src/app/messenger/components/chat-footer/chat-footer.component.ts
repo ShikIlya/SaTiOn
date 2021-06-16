@@ -70,6 +70,7 @@ export class ChatFooterComponent implements OnInit, AfterViewChecked {
       this.chatService.sendMessage(message);
     }
     this.messageInput.nativeElement.textContent = '';
+    this.messageInput.nativeElement.focus();
   }
 
   onResize(event: ResizedEvent) {
@@ -95,6 +96,7 @@ export class ChatFooterComponent implements OnInit, AfterViewChecked {
 
   cancelEdit() {
     this.onCancelEdit.emit();
+    this.messageInput.nativeElement.focus();
   }
 
   saveMessage(content: string) {
@@ -104,5 +106,6 @@ export class ChatFooterComponent implements OnInit, AfterViewChecked {
       content
     );
     this.cancelEdit();
+    this.messageInput.nativeElement.focus();
   }
 }

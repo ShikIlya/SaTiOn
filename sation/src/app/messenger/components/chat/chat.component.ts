@@ -1,11 +1,10 @@
-import { ElementRef, HostListener, Input } from '@angular/core';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { HostListener, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { of } from 'rxjs';
-import { map, mergeMap, switchMap } from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';
 import { Chat } from 'src/app/shared/models/chat.model';
 import { Message } from 'src/app/shared/models/message.model';
 import { MessagesList } from 'src/app/shared/models/messagesList.model';
-import { OnEditMessage } from 'src/app/shared/models/onEditMessage.model';
 import { User } from 'src/app/shared/models/user.model';
 import { DataStoreService } from 'src/app/shared/services/data-store/data-store.service';
 import { ChatService } from '../../services/chat/chat.service';
@@ -49,28 +48,26 @@ export class ChatComponent implements OnInit {
         }
     });
 
-    this.chatService
-      .onEditMessage()
-      .subscribe((editedMessage: OnEditMessage) => {
-        console.log(
-          'edited message:' +
-            editedMessage.newContent +
-            ' to chat: ' +
-            editedMessage.chatId
-        );
-        if (this.currentChat)
-          if (editedMessage.chatId === this.currentChat.id) {
-            for (const messagesListItem of this.messagesList) {
-              const messageItem = messagesListItem.messages.find(
-                (message) => message.id === editedMessage.messageId
-              );
-              if (messageItem) {
-                messageItem.content = editedMessage.newContent;
-                break;
-              }
+    this.chatService.onEditMessage().subscribe((editedMessage: Message) => {
+      console.log(
+        'edited message:' +
+          editedMessage.content +
+          ' to chat: ' +
+          editedMessage.chatId
+      );
+      if (this.currentChat)
+        if (editedMessage.chatId === this.currentChat.id) {
+          for (const messagesListItem of this.messagesList) {
+            const messageItem = messagesListItem.messages.find(
+              (message) => message.id === editedMessage.id
+            );
+            if (messageItem) {
+              messageItem.content = editedMessage.content;
+              break;
             }
           }
-      });
+        }
+    });
 
     this.dataStoreService
       .getCurrentChat()

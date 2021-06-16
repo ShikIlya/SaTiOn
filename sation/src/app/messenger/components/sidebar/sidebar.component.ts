@@ -1,6 +1,5 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatMenuTrigger } from '@angular/material/menu';
 import { Router } from '@angular/router';
 import { AuthentificationService } from 'src/app/authentification/services/authentification.service';
 import { Chat } from 'src/app/shared/models/chat.model';
@@ -10,6 +9,7 @@ import { User } from 'src/app/shared/models/user.model';
 import { DataStoreService } from 'src/app/shared/services/data-store/data-store.service';
 import { DialogNewChatComponent } from '../dialog-new-chat/dialog-new-chat.component';
 import { ChatService } from '../../services/chat/chat.service';
+import { OnDeleteMessage } from 'src/app/shared/models/onDeleteMessage.model';
 
 @Component({
   selector: 'app-sidebar',
@@ -50,9 +50,13 @@ export class SidebarComponent implements OnInit {
       );
     });
     this.chatService.onNewMessage().subscribe((message: Message) => {
-      this.chatsList.find(
-        (chatListItem) => chatListItem.id === message.chatId
-      ).messages[0] = message;
+      this.setLastMessage(message);
+    });
+    this.chatService.onEditMessage().subscribe((message: Message) => {
+      this.onUpdateMessage(message);
+    });
+    this.chatService.onDeleteMessage().subscribe((data: OnDeleteMessage) => {
+      this.onDeleteMessage(data);
     });
   }
 
@@ -100,5 +104,29 @@ export class SidebarComponent implements OnInit {
    */
   createChat(data: CreateChat) {
     this.chatService.createNewChat(data, this.user);
+  }
+
+  setLastMessage(message: Message) {
+    this.chatsList.find(
+      (chatListItem) => chatListItem.id === message.chatId
+    ).messages[0] = message;
+  }
+
+  onUpdateMessage(message: Message) {
+    const chatListItem = this.chatsList.find(
+      (chatListItem) => chatListItem.id === message.chatId
+    );
+    if (message.id === chatListItem.messages[0].id)
+      chatListItem.messages[0] = message;
+  }
+
+  onDeleteMessage(data: OnDeleteMessage) {
+    const chatListItem = this.chatsList.find(
+      (chatListItem) => chatListItem.id === data.chatId
+    );
+    if (!data.message) {
+      chatListItem.messages.splice(0, 1);
+    } else if (data.deletedId === chatListItem.messages[0].id)
+      chatListItem.messages[0] = data.message;
   }
 }
