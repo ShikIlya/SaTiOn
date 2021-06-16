@@ -10,6 +10,6 @@ async function bootstrap() {
   app.use(cookieParser());
   app.enableCors({ credentials: true, origin: true });
 
-  await app.listen(8080);
+  await app.listen(process.env.PORT || 8080);
 }
 bootstrap();
